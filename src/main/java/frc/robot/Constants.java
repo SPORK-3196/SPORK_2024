@@ -1,0 +1,97 @@
+package frc.robot;
+
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
+
+public class Constants {
+
+
+    public static class kAuto {
+      public static HolonomicPathFollowerConfig AutoConfig = new HolonomicPathFollowerConfig(
+        new PIDConstants(2,0,0.1),
+        new PIDConstants(2, 0, 0.1),
+        kSwerve.MaxSpeed,
+        Units.inchesToMeters(12),
+        new ReplanningConfig(false, false)
+        );
+    }
+
+    public static class kShooter {
+        
+        
+    }
+
+    public static class kIntake {
+        
+        
+    }
+
+    public static class kClimber {
+        
+        
+    }
+
+    public static class kSwerve {
+        private static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(24);
+        private static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(24);
+        
+        public static final double kDeadband = 0.1;
+        
+        public static final double MaxSpeed = 0.8;  // m/s
+        public static final double wheelDiameter = Units.inchesToMeters(4.0);
+        public static final double WheelCircumference = wheelDiameter * Math.PI;
+        public static final double RotationGearRatio = (150/7)/1;
+        public static final double DriveGearRatio = 8.14/1;
+
+        //Spark Max IDs 
+        public static final int frontLeftDrive = 1;
+        public static final int frontLeftSteer =5;
+        public static final int backLeftDrive = 2;
+        public static final int backLeftSteer = 6;
+        public static final int backRightDrive = 4;
+        public static final int backRightSteer = 8;
+        public static final int frontRightDrive = 3;
+        public static final int frontRightSteer = 7;
+
+        //CRTE CANcoder IDs
+        public static int kFrontLeftDriveAbsoluteEncoderPort = 2;
+        public static int kBackLeftDriveAbsoluteEncoderPort = 3;
+        public static int kFrontRightDriveAbsoluteEncoderPort = 4;
+        public static int kBackRightDriveAbsoluteEncoderPort = 1;
+
+        // Swerve module Offsets
+        public static Rotation2d FlOffset = Rotation2d.fromDegrees(347.6);
+        public static Rotation2d FrOffset = Rotation2d.fromDegrees(341);
+        public static Rotation2d BlOffset = Rotation2d.fromDegrees(69);
+        public static Rotation2d BrOffset = Rotation2d.fromDegrees(181.8);
+        
+
+        public static final SwerveDriveKinematics kinematics =
+        new SwerveDriveKinematics(
+                // Front left
+                new Translation2d(kSwerve.DRIVETRAIN_WHEELBASE_METERS / 2.0,
+                kSwerve.DRIVETRAIN_TRACKWIDTH_METERS / 2.0),
+                // Front right
+                new Translation2d(kSwerve.DRIVETRAIN_WHEELBASE_METERS / 2.0,
+                        -kSwerve.DRIVETRAIN_TRACKWIDTH_METERS / 2.0),
+                // Back left
+                new Translation2d(-kSwerve.DRIVETRAIN_WHEELBASE_METERS / 2.0,
+                kSwerve.DRIVETRAIN_TRACKWIDTH_METERS / 2.0),
+                // Back right
+                new Translation2d(-kSwerve.DRIVETRAIN_WHEELBASE_METERS / 2.0,
+                        -kSwerve.DRIVETRAIN_TRACKWIDTH_METERS / 2.0)
+        );
+    }
+
+    public static class kRollerBars {
+    
+        
+    }
+    
+}
