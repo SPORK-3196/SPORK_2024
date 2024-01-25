@@ -28,7 +28,8 @@ public class Constants {
     }
 
     public static class kIntake {
-        
+        public static double IntakeSpeed = 0.5;
+        public static double FeedSpeed = 0.2;
         
     }
 
