@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
   public Roller mRoller = new Roller();
   public Shooter mShooter = new Shooter();
   
-  public static AHRS gyro = new AHRS(Port.kMXP);
+  public static AHRS gyro = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
   
   // Controllers 
   public XboxController driver = new XboxController(0);
