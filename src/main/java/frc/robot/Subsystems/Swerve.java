@@ -88,6 +88,9 @@ public class Swerve extends SubsystemBase {
     }
 
     public void Drive(ChassisSpeeds dSpeeds){
+
+        // TODO discretize speeds
+        //dSpeeds.discretize(dSpeeds,null);
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(dSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
 
@@ -128,7 +131,7 @@ public class Swerve extends SubsystemBase {
         Y = Math.copySign(Y*Y, Y);
         z = Math.copySign(z*z, z);
 
-        speeds = new ChassisSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z);
+        speeds = new ChassisSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxAngularSpeed);
 
         return ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyroAngle());
     }

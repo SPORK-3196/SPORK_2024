@@ -89,6 +89,7 @@ public class Constants {
         
         public static final double kDeadband = 0.1;
         
+        public static final double MaxAngularSpeed = 1.2; // m/s
         public static final double MaxSpeed = 0.8;  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
@@ -112,10 +113,10 @@ public class Constants {
         public static int kBackRightDriveAbsoluteEncoderPort = 1;
 
         // Swerve module Offsets
-        public static Rotation2d FlOffset = Rotation2d.fromDegrees(347.6);
-        public static Rotation2d FrOffset = Rotation2d.fromDegrees(341);
-        public static Rotation2d BlOffset = Rotation2d.fromDegrees(69);
-        public static Rotation2d BrOffset = Rotation2d.fromDegrees(181.8);
+        public static Rotation2d FlOffset = Rotation2d.fromRotations(0.72);
+        public static Rotation2d FrOffset = Rotation2d.fromRotations(0.31);
+        public static Rotation2d BlOffset = Rotation2d.fromRotations(0.08);
+        public static Rotation2d BrOffset = Rotation2d.fromRotations(0.96);
         
 
         public static final SwerveDriveKinematics kinematics =

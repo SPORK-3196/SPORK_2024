@@ -27,9 +27,9 @@ public class Robot extends TimedRobot {
 
   // Subsystem Initalising 
   public Swerve mSwerve = new Swerve();
-  public Intake mIntake = new Intake();
-  public Roller mRoller = new Roller();
-  public Shooter mShooter = new Shooter();
+  // public Intake mIntake = new Intake();
+  // public Roller mRoller = new Roller();
+  // public Shooter mShooter = new Shooter();
   
   public static AHRS gyro = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
   
@@ -157,15 +157,16 @@ public class Robot extends TimedRobot {
       kSecondary.kLeftTrigger_Widget.setDouble(kSecondary.kLeftTrigger);
       kSecondary.kRightTrigger_Widget.setDouble(kSecondary.kRightTrigger);
     }
+    
 
     // shows both outside and durring a game 
 
 
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
-    SmartDashboard.putNumber("FR angle",Swerve.FR.getCANforshuffle().getDegrees());
-    SmartDashboard.putNumber("BR angle",Swerve.BR.getCANforshuffle().getDegrees());
-    SmartDashboard.putNumber("FL angle",Swerve.FL.getCANforshuffle().getDegrees());
-    SmartDashboard.putNumber("BL angle",Swerve.BL.getCANforshuffle().getDegrees());
+    SmartDashboard.putNumber("FR angle",Swerve.FR.getCANforshuffle().getRotations());
+    SmartDashboard.putNumber("BR angle",Swerve.BR.getCANforshuffle().getRotations());
+    SmartDashboard.putNumber("FL angle",Swerve.FL.getCANforshuffle().getRotations());
+    SmartDashboard.putNumber("BL angle",Swerve.BL.getCANforshuffle().getRotations());
   }
 
   @Override

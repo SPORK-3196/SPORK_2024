@@ -11,5 +11,10 @@ public class Climb extends SubsystemBase{
     }
 
 
+    // TODO set climb up and down based on the triggers 
+
+    // TODO get driver input
+
+
 
 }
