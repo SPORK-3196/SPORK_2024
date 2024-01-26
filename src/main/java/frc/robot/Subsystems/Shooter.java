@@ -14,7 +14,6 @@ public class Shooter extends SubsystemBase {
     public Shooter(){
         RightNEO.setInverted(kShooter.RightInvert);
         LeftNEO.setInverted(kShooter.LeftInvert);
-
     }
 
     // set shooter to a speed
@@ -22,4 +21,6 @@ public class Shooter extends SubsystemBase {
     }
 
     // TODO AMP vs Shooting speed change
+
+    
 }
