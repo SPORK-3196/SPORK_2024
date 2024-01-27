@@ -1,14 +1,75 @@
 package frc.robot;
 
-
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
 public class OI {
+    public static ShuffleboardTab X1_Tab = Shuffleboard.getTab("Driver");
+    public static ShuffleboardTab X2_Tab = Shuffleboard.getTab("Secondary");
+    
     
     public class kDriver{
-        
-        
+
+        public static boolean a_Button = false;
+        public static boolean b_Button = false;
+        public static boolean x_Button = false;
+        public static boolean y_Button = false;
+
+        public static boolean kRightBumper = false;
+        public static boolean kLeftBumper = false;
+
+        public static boolean kStart = false;
+        public static boolean kBack = false;
+
+        public static double kRightTrigger = 0;
+        public static double kLeftTrigger = 0;
+
+        public static GenericEntry a_Button_Widget = X1_Tab.add("A_Button", false).getEntry();
+        public static GenericEntry b_Button_Widget = X1_Tab.add("B_Button", false).getEntry();
+        public static GenericEntry x_Button_Widget = X1_Tab.add("X_Button", false).getEntry();
+        public static GenericEntry y_Button_Widget = X1_Tab.add("Y_Button", false).getEntry();
+
+        public static GenericEntry kRightBumper_Widget = X1_Tab.add("Right Bumper", false).getEntry();
+        public static GenericEntry kLeftBumper_Widget = X1_Tab.add("Left Bumper", false).getEntry();
+
+        public static GenericEntry kBack_Widget = X1_Tab.add("Back", false).getEntry();
+        public static GenericEntry kStart_Widget = X1_Tab.add("Start", false).getEntry();
+
+        public static GenericEntry kRightTrigger_Widget = X1_Tab.add("Right trigger", 0.0).getEntry();
+        public static GenericEntry kLeftTrigger_Widget = X1_Tab.add("Left trigger", 0.0).getEntry();
     }
 
+    public class kSecondary{
 
+        public static boolean a_Button = false;
+        public static boolean b_Button = false;
+        public static boolean x_Button = false;
+        public static boolean y_Button = false;
+
+        public static boolean kRightBumper = false;
+        public static boolean kLeftBumper = false;
+
+        public static boolean kStart = false;
+        public static boolean kBack = false;
+
+        public static double kRightTrigger = 0;
+        public static double kLeftTrigger = 0;
+
+        public static GenericEntry a_Button_Widget = X2_Tab.add("A_Button", false).getEntry();
+        public static GenericEntry b_Button_Widget = X2_Tab.add("B_Button", false).getEntry();
+        public static GenericEntry x_Button_Widget = X2_Tab.add("X_Button", false).getEntry();
+        public static GenericEntry y_Button_Widget = X2_Tab.add("Y_Button", false).getEntry();
+
+        public static GenericEntry kRightBumper_Widget = X2_Tab.add("Right Bumper", false).getEntry();
+        public static GenericEntry kLeftBumper_Widget = X2_Tab.add("Left Bumper", false).getEntry();
+
+        public static GenericEntry kBack_Widget = X2_Tab.add("Back", false).getEntry();
+        public static GenericEntry kStart_Widget = X2_Tab.add("Start", false).getEntry();
+
+        public static GenericEntry kRightTrigger_Widget = X2_Tab.add("Right trigger", 0.0).getEntry();
+        public static GenericEntry kLeftTrigger_Widget = X2_Tab.add("Left trigger", 0.0).getEntry();
+    }
 
 }

@@ -6,28 +6,155 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.OI.kDriver;
+import frc.robot.OI.kSecondary;
+import frc.robot.Subsystems.Intake;
+import frc.robot.Subsystems.Roller;
+import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  // Subsystem Initalising 
+  public Swerve mSwerve = new Swerve();
+  public Intake mIntake = new Intake();
+  public Roller mRoller = new Roller();
+  public Shooter mShooter = new Shooter();
   
   public static AHRS gyro = new AHRS(Port.kMXP);
+  
+  // Controllers 
+  public XboxController driver = new XboxController(0);
+  public XboxController secondary = new XboxController(1);
+
+  // Driver buttons
+  public JoystickButton driver_a_Button = new JoystickButton(driver, XboxController.Button.kA.value);
+  public JoystickButton driver_b_Button = new JoystickButton(driver, XboxController.Button.kB.value);
+  public JoystickButton driver_x_Button = new JoystickButton(driver, XboxController.Button.kX.value);
+  public JoystickButton driver_y_Button = new JoystickButton(driver, XboxController.Button.kY.value);
+
+  // Driver bumpers and triggers
+  public JoystickButton driver_left_Bumper = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+  public JoystickButton driver_Right_Bumper = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+  public JoystickButton driver_Left_Trigger = new JoystickButton(driver, XboxController.Axis.kLeftTrigger.value);
+  public JoystickButton driver_Right_Trigger = new JoystickButton(driver, XboxController.Axis.kRightTrigger.value);
+
+  // Driver misc buttons
+  public JoystickButton driver_Start = new JoystickButton(driver, XboxController.Button.kStart.value);
+  public JoystickButton driver_Back = new JoystickButton(driver, XboxController.Button.kBack.value); 
+
+  // Secondary buttons
+  public JoystickButton secondary_a_Button = new JoystickButton(secondary, XboxController.Button.kA.value);
+  public JoystickButton secondary_b_Button = new JoystickButton(secondary, XboxController.Button.kB.value);
+  public JoystickButton secondary_x_Button = new JoystickButton(secondary, XboxController.Button.kX.value);
+  public JoystickButton secondary_y_Button = new JoystickButton(secondary, XboxController.Button.kY.value);
+
+  // Secondary bumpers and triggers
+  public JoystickButton secondary_left_Bumper = new JoystickButton(secondary, XboxController.Button.kLeftBumper.value);
+  public JoystickButton secondary_Right_Bumper = new JoystickButton(secondary, XboxController.Button.kRightBumper.value);
+  public JoystickButton secondary_Left_Trigger = new JoystickButton(secondary, XboxController.Axis.kLeftTrigger.value);
+  public JoystickButton secondary_Right_Trigger = new JoystickButton(secondary, XboxController.Axis.kRightTrigger.value);
+
+  // Secondary misc buttons
+  public JoystickButton secondary_Start = new JoystickButton(secondary, XboxController.Button.kStart.value);
+  public JoystickButton secondary_Back = new JoystickButton(secondary, XboxController.Button.kBack.value); 
+
 
   @Override
   public void robotInit() {
-    m_robotContainer = new RobotContainer();
+    mSwerve.setDefaultCommand(
+      mSwerve.teleDrive(
+      () -> driver.getLeftY(), 
+      () -> driver.getLeftX(), 
+      () -> driver.getRightX()));  
+    configureBindings();
   }
 
   @Override
   public void robotPeriodic() {
+
     CommandScheduler.getInstance().run();
+
+    // Driver SmartDashboard output
+    if(driver.isConnected()){
+      kDriver.a_Button = driver.getAButton();
+      kDriver.b_Button = driver.getBButton();
+      kDriver.x_Button = driver.getXButton();
+      kDriver.y_Button = driver.getYButton();
+
+      kDriver.kBack = driver.getBackButton();
+      kDriver.kStart = driver.getStartButton();
+
+      kDriver.kRightBumper = driver.getRightBumper();
+      kDriver.kLeftBumper = driver.getLeftBumper();
+
+      kDriver.kRightTrigger = driver.getRightTriggerAxis();
+      kDriver.kLeftTrigger = driver.getLeftTriggerAxis();
+    }
+
+    // Secondary SmartDashboard output
+    if(secondary.isConnected()){
+      kSecondary.a_Button = secondary.getAButton();
+      kSecondary.b_Button = secondary.getBButton();
+      kSecondary.x_Button = secondary.getXButton();
+      kSecondary.y_Button = secondary.getYButton();
+
+      kSecondary.kBack = secondary.getBackButton();
+      kSecondary.kStart = secondary.getStartButton();
+
+      kSecondary.kRightBumper = secondary.getRightBumper();
+      kSecondary.kLeftBumper = secondary.getLeftBumper();
+
+      kSecondary.kRightTrigger = secondary.getRightTriggerAxis();
+      kSecondary.kLeftTrigger = secondary.getLeftTriggerAxis();
+    }
+
+    // stream to SmartDashboard if DriverStation is not in game
+    if (!DriverStation.isFMSAttached()) {
+      kDriver.a_Button_Widget.setBoolean(kDriver.a_Button);
+      kDriver.b_Button_Widget.setBoolean(kDriver.b_Button);
+      kDriver.x_Button_Widget.setBoolean(kDriver.x_Button);
+      kDriver.y_Button_Widget.setBoolean(kDriver.y_Button);
+
+      kDriver.kBack_Widget.setBoolean(kDriver.kBack);
+      kDriver.kStart_Widget.setBoolean(kDriver.kStart);
+
+      kDriver.kLeftBumper_Widget.setBoolean(kDriver.kLeftBumper);
+      kDriver.kRightBumper_Widget.setBoolean(kDriver.kRightBumper);
+
+      kDriver.kLeftTrigger_Widget.setDouble(kDriver.kLeftTrigger);
+      kDriver.kRightTrigger_Widget.setDouble(kDriver.kRightTrigger);
+
+
+      kSecondary.a_Button_Widget.setBoolean(kSecondary.a_Button);
+      kSecondary.b_Button_Widget.setBoolean(kSecondary.b_Button);
+      kSecondary.x_Button_Widget.setBoolean(kSecondary.x_Button);
+      kSecondary.y_Button_Widget.setBoolean(kSecondary.y_Button);
+
+      kSecondary.kBack_Widget.setBoolean(kSecondary.kBack);
+      kSecondary.kStart_Widget.setBoolean(kSecondary.kStart);
+
+      kSecondary.kLeftBumper_Widget.setBoolean(kSecondary.kLeftBumper);
+      kSecondary.kRightBumper_Widget.setBoolean(kSecondary.kRightBumper);
+
+      kSecondary.kLeftTrigger_Widget.setDouble(kSecondary.kLeftTrigger);
+      kSecondary.kRightTrigger_Widget.setDouble(kSecondary.kRightTrigger);
+    }
+    if(DriverStation.isFMSAttached()){
+      
+    }
+  
 
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
     SmartDashboard.putNumber("FR angle",Swerve.FR.getCANforshuffle().getDegrees());
@@ -47,7 +174,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -83,4 +210,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testExit() {}
+
+  private void configureBindings() {    
+    driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
+    driver_b_Button.toggleOnTrue(new InstantCommand(() -> mShooter.RunShooter(0.5)));  // replace with constant val for testing 
+
+  }
+
+  public Command getAutonomousCommand() {
+    return Commands.print("No autonomous command configured");
+  }
+
+
 }
