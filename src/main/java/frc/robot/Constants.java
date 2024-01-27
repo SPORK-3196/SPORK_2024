@@ -3,6 +3,7 @@ package frc.robot;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -10,6 +11,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public class Constants {
+
+    //TODO constants need to be tested and finalised
+
+    //TODO get others to work on this
+
+    public static class kVision{
+
+
+
+    }
 
 
     public static class kAuto {
@@ -23,19 +34,53 @@ public class Constants {
     }
 
     public static class kShooter {
-        
-        
+
+        //Setup 
+        public static int RightNeoPort = 10;
+        public static int LeftNeoPort = 11;
+        public static boolean RightInvert = true;
+        public static boolean LeftInvert = false;
+        public static IdleMode ShooterIdleMode = IdleMode.kBrake; // may change
+
+
+
+        // Stuff
+         
+
+
     }
 
     public static class kIntake {
+        //setup
+        public static int IntakePort = 9;
+        public static boolean IntakeInvert = false;
+        public static IdleMode IntakeIdle = IdleMode.kBrake;
+
+
+        //speeds
         public static double IntakeSpeed = 0.5;
         public static double FeedSpeed = 0.2;
         
     }
 
+
+    public static class kRollerBars {
+        public static int RollerNeoPort = 9; // change 
+        public static double RollerSpeed = 0.5; // test rollers
+        public static boolean RollerInvert = false;
+        public static IdleMode RollerIdle = IdleMode.kBrake;
+        
+    }
+    
+
     public static class kClimber {
-        
-        
+        //setup
+        public static int RightArmPort = 12;
+        public static int LeftArmPort = 13;
+        public static boolean RightArmInvert = false;
+        public static boolean LeftArmInvert = false;
+        public static IdleMode ClimberIdle = IdleMode.kBrake;
+
     }
 
     public static class kSwerve {
@@ -89,10 +134,4 @@ public class Constants {
                         -kSwerve.DRIVETRAIN_TRACKWIDTH_METERS / 2.0)
         );
     }
-
-    public static class kRollerBars {
-    
-        
-    }
-    
 }
