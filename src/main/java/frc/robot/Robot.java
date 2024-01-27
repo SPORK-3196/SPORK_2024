@@ -68,8 +68,10 @@ public class Robot extends TimedRobot {
 
   // Secondary misc buttons
   public JoystickButton secondary_Start = new JoystickButton(secondary, XboxController.Button.kStart.value);
-  public JoystickButton secondary_Back = new JoystickButton(secondary, XboxController.Button.kBack.value); 
+  public JoystickButton secondary_Back = new JoystickButton(secondary, XboxController.Button.kBack.value);
 
+  public JoystickButton secondary_RJSD = new JoystickButton(secondary, XboxController.Button.kRightStick.value);
+  public JoystickButton secondary_LJSD = new JoystickButton(secondary, XboxController.Button.kLeftStick.value);
 
   @Override
   public void robotInit() {
@@ -83,7 +85,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-
     CommandScheduler.getInstance().run();
 
     // Driver SmartDashboard output
@@ -112,6 +113,9 @@ public class Robot extends TimedRobot {
 
       kSecondary.kBack = secondary.getBackButton();
       kSecondary.kStart = secondary.getStartButton();
+
+      kSecondary.kRJSD = secondary.getRightStickButton();
+      kSecondary.kLJSD = secondary.getLeftStickButton();
 
       kSecondary.kRightBumper = secondary.getRightBumper();
       kSecondary.kLeftBumper = secondary.getLeftBumper();
@@ -144,6 +148,9 @@ public class Robot extends TimedRobot {
 
       kSecondary.kBack_Widget.setBoolean(kSecondary.kBack);
       kSecondary.kStart_Widget.setBoolean(kSecondary.kStart);
+
+      kSecondary.kRJSD_Entry.setBoolean(kSecondary.kRJSD);
+      kSecondary.kLJSD_Entry.setBoolean(kSecondary.kLJSD);
 
       kSecondary.kLeftBumper_Widget.setBoolean(kSecondary.kLeftBumper);
       kSecondary.kRightBumper_Widget.setBoolean(kSecondary.kRightBumper);

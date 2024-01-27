@@ -53,6 +53,9 @@ public class OI {
         public static boolean kStart = false;
         public static boolean kBack = false;
 
+        public static boolean kRJSD = false;
+        public static boolean kLJSD = false;
+
         public static double kRightTrigger = 0;
         public static double kLeftTrigger = 0;
 
@@ -67,8 +70,10 @@ public class OI {
         public static GenericEntry kBack_Widget = X2_Tab.add("Back", false).getEntry();
         public static GenericEntry kStart_Widget = X2_Tab.add("Start", false).getEntry();
 
+        public static GenericEntry kRJSD_Entry = X2_Tab.add("Right joy", false).getEntry();
+        public static GenericEntry kLJSD_Entry = X2_Tab.add("Left joy", false).getEntry();
+
         public static GenericEntry kRightTrigger_Widget = X2_Tab.add("Right trigger", 0.0).getEntry();
         public static GenericEntry kLeftTrigger_Widget = X2_Tab.add("Left trigger", 0.0).getEntry();
     }
-
 }
