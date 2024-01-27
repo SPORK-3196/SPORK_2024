@@ -151,10 +151,9 @@ public class Robot extends TimedRobot {
       kSecondary.kLeftTrigger_Widget.setDouble(kSecondary.kLeftTrigger);
       kSecondary.kRightTrigger_Widget.setDouble(kSecondary.kRightTrigger);
     }
-    if(DriverStation.isFMSAttached()){
-      
-    }
-  
+
+    // shows both outside and durring a game 
+
 
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
     SmartDashboard.putNumber("FR angle",Swerve.FR.getCANforshuffle().getDegrees());
@@ -213,8 +212,6 @@ public class Robot extends TimedRobot {
 
   private void configureBindings() {    
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
-    driver_b_Button.toggleOnTrue(new InstantCommand(() -> mShooter.RunShooter(0.5)));  // replace with constant val for testing 
-
   }
 
   public Command getAutonomousCommand() {

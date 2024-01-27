@@ -11,21 +11,26 @@ public class Intake extends SubsystemBase {
 private CANSparkMax IntakeNeo = new CANSparkMax(kIntake.IntakePort, MotorType.kBrushless);
 
     public Intake(){
-    
-
-
+    IntakeNeo.setIdleMode(kIntake.IntakeIdle);
+    IntakeNeo.setInverted(kIntake.IntakeInvert);
     }
 
-    public void intake(){
-        IntakeNeo.set(kIntake.IntakeSpeed);
+    // Intake game pieces
+    public void grab(){
+        
     }
 
+    // Feed pieces into the shooter
     public void feed(){
-        IntakeNeo.set(kIntake.FeedSpeed);
+        
     }
 
+    // spit pieces out of the intake 
+    public void spit(){
 
-    // TODO Add intake in and out 
+    }
+
+    // TODO Add intake in and out
     
 
     // TODO add logic to stop intake when a piece is in
