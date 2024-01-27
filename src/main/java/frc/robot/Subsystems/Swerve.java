@@ -61,7 +61,6 @@ public class Swerve extends SubsystemBase {
         return Robot.gyro.getRotation2d();
     }
 
-
     @Override
     public void periodic(){
         Pose.update(gyroAngle(), getPositions());

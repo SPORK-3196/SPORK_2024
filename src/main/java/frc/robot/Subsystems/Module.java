@@ -6,6 +6,8 @@ import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -32,18 +34,19 @@ public class Module extends SubsystemBase{
     public RelativeEncoder DriveEncoder;
 
     public CANcoder absoluteEncoder;
-    private CANcoderConfiguration config = new CANcoderConfiguration();
+    private CANcoderConfiguration config;
 
     public Module(int TurnNeoID, int DriveID, int absoluteEncoderID, Rotation2d offset){
         
         this.offset = offset;
         State = new SwerveModuleState();
+        config = new CANcoderConfiguration();
         
-        AzumuthNEO = new CANSparkMax(absoluteEncoderID, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
+        AzumuthNEO = new CANSparkMax(TurnNeoID, MotorType.kBrushless);
         AzumuthNEO.setInverted(true);
         AzumuthNEO.setIdleMode(IdleMode.kBrake);
 
-        DriveNEO = new CANSparkMax(DriveID, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
+        DriveNEO = new CANSparkMax(DriveID, MotorType.kBrushless);
         DriveNEO.setIdleMode(IdleMode.kBrake);
         DriveNEO.setSmartCurrentLimit(15);
         DriveNEO.enableVoltageCompensation(12);
