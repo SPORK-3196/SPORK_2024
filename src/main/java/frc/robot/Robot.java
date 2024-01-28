@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
+import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Constants.kClimber;
 import frc.robot.OI.kDriver;
 import frc.robot.OI.kSecondary;
@@ -232,6 +233,8 @@ public class Robot extends TimedRobot {
     // Secondary Button Bindings
     secondary_Left_Trigger.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
     secondary_Right_Trigger.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
+
+    secondary_a_Button.onTrue(new RunIntake(mIntake, mShooter));
 
   }
 
