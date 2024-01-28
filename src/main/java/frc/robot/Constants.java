@@ -67,7 +67,11 @@ public class Constants {
         // Speeds
         public static double IntakeSpeed = 0.5;
         public static double FeedSpeed = 0.2;
-        
+
+        // PID Values
+        public static double kP = 0;
+        public static double KI = 0;
+        public static double kD = 0;
     }
 
 

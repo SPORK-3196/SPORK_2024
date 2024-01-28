@@ -30,6 +30,9 @@ public SparkLimitSwitch NoteIn = IntakeNeo.getForwardLimitSwitch(Type.kNormallyO
     IntakeAxis.setInverted(kIntake.IntakeAxisInvert);
 
     IntakePID = IntakeAxis.getPIDController();
+    IntakePID.setP(kIntake.kP);
+    IntakePID.setI(kIntake.KI);
+    IntakePID.setD(kIntake.kD);
     }
 
     // Intake game pieces

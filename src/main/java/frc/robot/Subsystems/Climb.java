@@ -40,14 +40,8 @@ public class Climb extends SubsystemBase{
     }
 
     public void RightStop(){
-        RightArm.set(0);;
+        RightArm.set(0);
     }
 
-
-    // TODO set climb up and down based on the triggers 
-
     // TODO get driver input
-
-
-
 }
