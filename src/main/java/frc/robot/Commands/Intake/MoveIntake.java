@@ -10,13 +10,18 @@ public class MoveIntake extends Command{
 
     public MoveIntake(Intake intake, double Position){
         mIntake = intake;
+        Pos = Position;
 
         addRequirements(mIntake);
     }
 
     @Override
     public void execute() {
-        
+        if(Pos == 90){
+            mIntake.ShooterPos();
+        }else if(Pos == 270){
+            mIntake.FloorPos();
+        }
     }
 
     @Override

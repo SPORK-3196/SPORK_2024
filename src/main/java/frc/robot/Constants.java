@@ -45,7 +45,8 @@ public class Constants {
 
 
 
-        // Stuff
+        // Targets
+        public static double TargetVelocity = 0.5; // M/s
          
 
 
