@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.PubSub;
 
 public class Constants {
 
@@ -51,13 +52,19 @@ public class Constants {
     }
 
     public static class kIntake {
-        //setup
+        // Setup
         public static int IntakePort = 9;
+        public static int IntakeAxisPort = 14;
         public static boolean IntakeInvert = false;
+        public static boolean IntakeAxisInvert = false;
+        public static IdleMode IntakeAxisIdle = IdleMode.kBrake;
         public static IdleMode IntakeIdle = IdleMode.kBrake;
 
+        // Positions
+        public static double FloorPickup = 0.0;  //TODO change these values
+        public static double ShooterFeed = 0.0; 
 
-        //speeds
+        // Speeds
         public static double IntakeSpeed = 0.5;
         public static double FeedSpeed = 0.2;
         
@@ -80,6 +87,10 @@ public class Constants {
         public static boolean RightArmInvert = false;
         public static boolean LeftArmInvert = false;
         public static IdleMode ClimberIdle = IdleMode.kBrake;
+
+
+        // Speeds
+        public static double ClimbSpeed = 0.5;
 
     }
 

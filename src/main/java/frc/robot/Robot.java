@@ -15,8 +15,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Commands.Climber.ArmsDown;
+import frc.robot.Commands.Climber.ArmsUp;
+import frc.robot.Constants.kClimber;
 import frc.robot.OI.kDriver;
 import frc.robot.OI.kSecondary;
+import frc.robot.Subsystems.Climb;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Roller;
 import frc.robot.Subsystems.Shooter;
@@ -27,9 +31,10 @@ public class Robot extends TimedRobot {
 
   // Subsystem Initalising 
   public Swerve mSwerve = new Swerve();
-  // public Intake mIntake = new Intake();
-  // public Roller mRoller = new Roller();
-  // public Shooter mShooter = new Shooter();
+  public Climb mClimb = new Climb();
+  public Intake mIntake = new Intake();
+  public Roller mRoller = new Roller();
+  public Shooter mShooter = new Shooter();
   
   public static AHRS gyro = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
   
@@ -157,7 +162,7 @@ public class Robot extends TimedRobot {
       kSecondary.kLeftTrigger_Widget.setDouble(kSecondary.kLeftTrigger);
       kSecondary.kRightTrigger_Widget.setDouble(kSecondary.kRightTrigger);
     }
-    
+
 
     // shows both outside and durring a game 
 
@@ -218,7 +223,16 @@ public class Robot extends TimedRobot {
   public void testExit() {}
 
   private void configureBindings() {    
+
+    // Driver Button Bindings
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
+
+    
+
+    // Secondary Button Bindings
+    secondary_Left_Trigger.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
+    secondary_Right_Trigger.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
+
   }
 
   public Command getAutonomousCommand() {
