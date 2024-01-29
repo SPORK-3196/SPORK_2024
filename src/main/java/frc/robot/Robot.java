@@ -127,41 +127,45 @@ public class Robot extends TimedRobot {
 
       kSecondary.kRightTrigger = secondary.getRightTriggerAxis();
       kSecondary.kLeftTrigger = secondary.getLeftTriggerAxis();
+
+      kSecondary.kPOV = secondary.getPOV();
     }
 
     // stream to SmartDashboard if DriverStation is not in game
     if (!DriverStation.isFMSAttached()) {
-      kDriver.a_Button_Widget.setBoolean(kDriver.a_Button);
-      kDriver.b_Button_Widget.setBoolean(kDriver.b_Button);
-      kDriver.x_Button_Widget.setBoolean(kDriver.x_Button);
-      kDriver.y_Button_Widget.setBoolean(kDriver.y_Button);
+      kDriver.a_Button_Entry.setBoolean(kDriver.a_Button);
+      kDriver.b_Button_Entry.setBoolean(kDriver.b_Button);
+      kDriver.x_Button_Entry.setBoolean(kDriver.x_Button);
+      kDriver.y_Button_Entry.setBoolean(kDriver.y_Button);
 
-      kDriver.kBack_Widget.setBoolean(kDriver.kBack);
-      kDriver.kStart_Widget.setBoolean(kDriver.kStart);
+      kDriver.kBack_Entry.setBoolean(kDriver.kBack);
+      kDriver.kStart_Entry.setBoolean(kDriver.kStart);
 
-      kDriver.kLeftBumper_Widget.setBoolean(kDriver.kLeftBumper);
-      kDriver.kRightBumper_Widget.setBoolean(kDriver.kRightBumper);
+      kDriver.kLeftBumper_Entry.setBoolean(kDriver.kLeftBumper);
+      kDriver.kRightBumper_Entry.setBoolean(kDriver.kRightBumper);
 
-      kDriver.kLeftTrigger_Widget.setDouble(kDriver.kLeftTrigger);
-      kDriver.kRightTrigger_Widget.setDouble(kDriver.kRightTrigger);
+      kDriver.kLeftTrigger_Entry.setDouble(kDriver.kLeftTrigger);
+      kDriver.kRightTrigger_Entry.setDouble(kDriver.kRightTrigger);
 
 
-      kSecondary.a_Button_Widget.setBoolean(kSecondary.a_Button);
-      kSecondary.b_Button_Widget.setBoolean(kSecondary.b_Button);
-      kSecondary.x_Button_Widget.setBoolean(kSecondary.x_Button);
-      kSecondary.y_Button_Widget.setBoolean(kSecondary.y_Button);
+      kSecondary.a_Button_Entry.setBoolean(kSecondary.a_Button);
+      kSecondary.b_Button_Entry.setBoolean(kSecondary.b_Button);
+      kSecondary.x_Button_Entry.setBoolean(kSecondary.x_Button);
+      kSecondary.y_Button_Entry.setBoolean(kSecondary.y_Button);
 
-      kSecondary.kBack_Widget.setBoolean(kSecondary.kBack);
-      kSecondary.kStart_Widget.setBoolean(kSecondary.kStart);
+      kSecondary.kBack_Entry.setBoolean(kSecondary.kBack);
+      kSecondary.kStart_Entry.setBoolean(kSecondary.kStart);
 
       kSecondary.kRJSD_Entry.setBoolean(kSecondary.kRJSD);
       kSecondary.kLJSD_Entry.setBoolean(kSecondary.kLJSD);
 
-      kSecondary.kLeftBumper_Widget.setBoolean(kSecondary.kLeftBumper);
-      kSecondary.kRightBumper_Widget.setBoolean(kSecondary.kRightBumper);
+      kSecondary.kLeftBumper_Entry.setBoolean(kSecondary.kLeftBumper);
+      kSecondary.kRightBumper_Entry.setBoolean(kSecondary.kRightBumper);
 
-      kSecondary.kLeftTrigger_Widget.setDouble(kSecondary.kLeftTrigger);
-      kSecondary.kRightTrigger_Widget.setDouble(kSecondary.kRightTrigger);
+      kSecondary.kLeftTrigger_Entry.setDouble(kSecondary.kLeftTrigger);
+      kSecondary.kRightTrigger_Entry.setDouble(kSecondary.kRightTrigger);
+
+      kSecondary.kPOV_Entry.setDouble(kSecondary.kPOV);
     }
 
 
