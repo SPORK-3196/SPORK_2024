@@ -211,7 +211,17 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+
+    if(secondary.getPOV() == 90){
+      mIntake.ShooterPos();
+    }
+    if (secondary.getPOV() == 180) {
+      mIntake.FloorPos();
+    }
+
+    
+  }
 
   @Override
   public void teleopExit() {}
