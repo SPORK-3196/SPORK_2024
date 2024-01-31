@@ -36,7 +36,7 @@ public class AutoHashmap {
     }
 
     private void loadActions(){
-        
+
     }
 
     private void LoadAutos(){
