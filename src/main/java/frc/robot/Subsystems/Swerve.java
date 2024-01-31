@@ -126,7 +126,7 @@ public class Swerve extends SubsystemBase {
         if(Math.abs(x) <= kSwerve.kDeadband) x = 0;
         if(Math.abs(Y) <= kSwerve.kDeadband) Y = 0;
         if(Math.abs(z) <= kSwerve.kDeadband) z = 0;
-
+        
         x = Math.copySign(x*x, x);
         Y = Math.copySign(Y*Y, Y);
         z = Math.copySign(z*z, z);

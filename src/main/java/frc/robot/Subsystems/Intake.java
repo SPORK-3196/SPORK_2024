@@ -65,13 +65,6 @@ public SparkLimitSwitch NoteIn = IntakeNeo.getForwardLimitSwitch(Type.kNormallyO
     }
 
     // TODO add avalibility for old intake design
-    
-
-    // TODO add logic to stop intake when a piece is in
-
-    
-    // TODO add Logic to Feed note when intake is up and when the shooter is spooling up
-
 
     
 }

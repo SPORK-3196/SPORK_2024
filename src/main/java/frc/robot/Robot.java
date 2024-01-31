@@ -9,12 +9,14 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Commands.Auto.AutoHashmap;
 import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
 import frc.robot.Commands.Intake.RunIntake;
@@ -36,6 +38,8 @@ public class Robot extends TimedRobot {
   public Intake mIntake = new Intake();
   public Roller mRoller = new Roller();
   public Shooter mShooter = new Shooter();
+
+  private AutoHashmap Autos = new AutoHashmap(mSwerve);
   
   public static AHRS gyro = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
   
@@ -84,8 +88,12 @@ public class Robot extends TimedRobot {
       mSwerve.teleDrive(
       () -> driver.getLeftY(), 
       () -> driver.getLeftX(), 
-      () -> driver.getRightX()));  
+      () -> driver.getRightX()));
     configureBindings();
+
+    m_autonomousCommand = Autos.getSendable().getSelected();
+    Autos.getSendable().onChange((Command) -> m_autonomousCommand = Command);
+    Shuffleboard.getTab("Auto").add("Auto Selector", Autos.getSendable());
   }
 
   @Override
@@ -186,8 +194,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = getAutonomousCommand();
-
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
