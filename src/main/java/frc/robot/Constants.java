@@ -45,6 +45,7 @@ public class Constants {
 
 
         // Targets
+        public static double IdleSpeed = 0.2; // can change
         public static double TargetVelocity = 0.5; // M/s
          
 
@@ -76,7 +77,7 @@ public class Constants {
 
 
     public static class kRollerBars {
-        public static int RollerNeoPort = 9; // change 
+        public static int RollerNeoPort = 9; // TODO change 
         public static double RollerSpeed = 0.5; // test rollers
         public static boolean RollerInvert = false;
         public static IdleMode RollerIdle = IdleMode.kBrake;

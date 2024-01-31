@@ -23,10 +23,13 @@ public class Shooter extends SubsystemBase {
 
     // set shooter to a speed
     public void setShooterSpeed(double speed){
+        RightNEO.set(speed);
+        LeftNEO.set(speed);
+    }
 
-
-    // TODO set the speed of the motors to a vaiable "speed"
-
+    public void ShooterIdle(){
+        // TODO set shooter to go to the Idle speed 
+        setShooterSpeed(kShooter.IdleSpeed);
     }
 
     public boolean isShooterToSpeed(){
