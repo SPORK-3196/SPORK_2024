@@ -34,10 +34,10 @@ public class Robot extends TimedRobot {
 
   // Subsystem Initalising 
   public Swerve mSwerve = new Swerve();
-  public Climb mClimb = new Climb();
-  public Intake mIntake = new Intake();
-  public Roller mRoller = new Roller();
-  public Shooter mShooter = new Shooter();
+  // public Climb mClimb = new Climb();
+  // public Intake mIntake = new Intake();
+  // public Roller mRoller = new Roller();
+  // public Shooter mShooter = new Shooter();
 
   private AutoHashmap Autos = new AutoHashmap(mSwerve);
   
@@ -219,12 +219,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    if(secondary.getPOV() == 90){
-      mIntake.ShooterPos();
-    }
-    if (secondary.getPOV() == 180) {
-      mIntake.FloorPos();
-    }
+    // if(secondary.getPOV() == 90){
+    //   mIntake.ShooterPos();
+    // }
+    // if (secondary.getPOV() == 180) {
+    //   mIntake.FloorPos();
+    // }
 
     
   }
@@ -251,10 +251,10 @@ public class Robot extends TimedRobot {
     
 
     // Secondary Button Bindings
-    secondary_Left_Trigger.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
-    secondary_Right_Trigger.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
+    // secondary_Left_Trigger.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
+    // secondary_Right_Trigger.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
 
-    secondary_a_Button.onTrue(new RunIntake(mIntake, mShooter));
+    // secondary_a_Button.onTrue(new RunIntake(mIntake, mShooter));
 
   }
 

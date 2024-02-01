@@ -3,6 +3,7 @@ package frc.robot.Commands.Auto;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -14,8 +15,8 @@ public class AutoHashmap {
     @SuppressWarnings("unused")
     private final Swerve swerve;
 
-    private final LinkedHashMap<String, PathPlannerPath> path = 
-        new LinkedHashMap<String, PathPlannerPath>();
+    private final LinkedHashMap<String, Command> path = 
+        new LinkedHashMap<String, Command>();
     private final LinkedHashMap<String, Command> Autos = 
         new LinkedHashMap<String, Command>();
     private final SendableChooser<Command> sendableChooser = 
@@ -32,7 +33,7 @@ public class AutoHashmap {
 
     
     private void LoadPaths(){
-        path.put("Path", PathPlannerPath.fromPathFile("Path"));
+       //path.put("Simple Forward", PathPlannerPath.fromPathFile("path"));
     }
 
     private void loadActions(){
@@ -40,14 +41,14 @@ public class AutoHashmap {
     }
 
     private void LoadAutos(){
-        Autos.put("No Auto", Commands.waitSeconds(0));
+        Autos.put("No Auto", null);
     }
 
     private void populateSendable(){
         sendableChooser.setDefaultOption("No Auto", Autos.get("No Auto"));
             for(Map.Entry<String, Command> entry : Autos.entrySet()){
                 sendableChooser.addOption(entry.getKey(), entry.getValue());
-            }
+        }
     }
 
     public SendableChooser<Command> getSendable(){

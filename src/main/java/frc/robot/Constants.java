@@ -17,6 +17,11 @@ public class Constants {
     //TODO get others to work on this
 
     public static class kVision{
+        
+
+
+
+
 
 
 
@@ -42,13 +47,9 @@ public class Constants {
         public static boolean LeftInvert = false;
         public static IdleMode ShooterIdleMode = IdleMode.kBrake; // may change
 
-
-
         // Targets
         public static double IdleSpeed = 0.2; // can change
         public static double TargetVelocity = 0.5; // M/s
-         
-
 
     }
 
@@ -68,7 +69,6 @@ public class Constants {
         // Speeds
         public static double IntakeSpeed = 0.5;
         public static double FeedSpeed = 0.2;
-
         // PID Values
         public static double kP = 0;
         public static double KI = 0;
@@ -105,8 +105,8 @@ public class Constants {
         
         public static final double kDeadband = 0.1;
         
-        public static final double MaxAngularSpeed = 1.2; // m/s
-        public static final double MaxSpeed = 0.8;  // m/s
+        public static final double MaxAngularSpeed = Units.feetToMeters(5); // m/s
+        public static final double MaxSpeed = Units.feetToMeters(5);  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
         public static final double RotationGearRatio = (150/7)/1;
@@ -114,7 +114,7 @@ public class Constants {
 
         //Spark Max IDs 
         public static final int frontLeftDrive = 1;
-        public static final int frontLeftSteer =5;
+        public static final int frontLeftSteer = 5;
         public static final int backLeftDrive = 2;
         public static final int backLeftSteer = 6;
         public static final int backRightDrive = 4;
