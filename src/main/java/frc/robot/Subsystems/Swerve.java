@@ -96,7 +96,6 @@ public class Swerve extends SubsystemBase {
 
         setStates(targetStates);
 
-        speeds = dSpeeds;
     }
 
     public ChassisSpeeds getChassisSpeeds(){
@@ -131,9 +130,11 @@ public class Swerve extends SubsystemBase {
         Y = Math.copySign(Y*Y, Y);
         z = Math.copySign(z*z, z);
 
-        speeds = new ChassisSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxAngularSpeed);
+        var ROspeeds = new ChassisSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxAngularSpeed);
 
-        return ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyroAngle());
+        speeds = ROspeeds;
+        
+        return ChassisSpeeds.fromFieldRelativeSpeeds(ROspeeds, gyroAngle());
     }
 
     public Pose2d getPose(){

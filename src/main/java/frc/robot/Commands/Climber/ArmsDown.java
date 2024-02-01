@@ -9,9 +9,10 @@ public class ArmsDown extends Command {
     private double speed;
 
 
-    public ArmsDown(Climb mClimb, double mspeed){
-        Climb = mClimb;
-        speed = mspeed;
+    public ArmsDown(Climb Climb, double speed){
+        this.Climb = Climb;
+        this.speed = speed;
+        
         addRequirements(Climb);
     }
 

@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -16,13 +17,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Commands.Auto.AutoHashmap;
 import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
 import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Constants.kClimber;
 import frc.robot.OI.kDriver;
 import frc.robot.OI.kSecondary;
+import frc.robot.Subsystems.AutoSendable;
 import frc.robot.Subsystems.Climb;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Roller;
@@ -34,12 +35,13 @@ public class Robot extends TimedRobot {
 
   // Subsystem Initalising 
   public Swerve mSwerve = new Swerve();
+  public AutoBuilder builder = new AutoBuilder();
   // public Climb mClimb = new Climb();
   // public Intake mIntake = new Intake();
   // public Roller mRoller = new Roller();
   // public Shooter mShooter = new Shooter();
+  private AutoSendable Autos;
 
-  private AutoHashmap Autos = new AutoHashmap(mSwerve);
   
   public static AHRS gyro = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
   
@@ -90,10 +92,9 @@ public class Robot extends TimedRobot {
       () -> driver.getLeftX(), 
       () -> driver.getRightX()));
     configureBindings();
+    
 
-    m_autonomousCommand = Autos.getSendable().getSelected();
-    Autos.getSendable().onChange((Command) -> m_autonomousCommand = Command);
-    Shuffleboard.getTab("Auto").add("Auto Selector", Autos.getSendable());
+    m_autonomousCommand = Autos.getChosenCommand();
   }
 
   @Override
@@ -198,9 +199,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+    
+    
+
+
+
+
+
+
   }
 
   @Override
@@ -211,9 +217,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+
+
+
+
   }
 
   @Override
