@@ -42,6 +42,7 @@ public class AutoHashmap {
 
     private void LoadAutos(){
         Autos.put("No Auto", null);
+        Autos.put("simple forward", (Command) PathPlannerAuto.getPathGroupFromAutoFile("simple Forward Turn"));
     }
 
     private void populateSendable(){
