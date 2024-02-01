@@ -1,28 +1,43 @@
 package frc.robot.Subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathPlannerPath;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kAuto;
 
-public class AutoSendable {
+public class AutoSendable extends SubsystemBase {
     private final Swerve swerve;
 
-    public AutoBuilder builder;
+    public SendableChooser<Command> PathChooser = new SendableChooser<>();
+    public SendableChooser<Command> Auto = AutoBuilder.buildAutoChooser("No Auto");
 
-    public SendableChooser<Command> Auto = AutoBuilder.buildAutoChooser();
 
-    public AutoSendable(Swerve swerve,AutoBuilder builder){
+    public AutoSendable(Swerve swerve){
         this.swerve = swerve;
-        this.builder = builder;
 
-        
+        SmartDashboard.putData("Auto Chooser", Auto);
+        SmartDashboard.putData("path Chooser", PathChooser);
+        SmartDashboard.putBoolean("Auto Builder Config", AutoBuilder.isConfigured());
+        SmartDashboard.putBoolean("is pathfinding config", AutoBuilder.isPathfindingConfigured());
+
         AutoBuilder.buildAuto("simple Forward Turn");
-        
-        AutoBuilder.buildAutoChooser();
+    }
+
+    public Command RunPath(PathPlannerPath Path, boolean Alliance){
+        return this.runOnce(() -> 
+        new FollowPathHolonomic(
+        Path,
+        swerve::getPose,
+        swerve::getChassisSpeeds,
+        (speeds) -> swerve.Drive(speeds),
+        kAuto.AutoConfig,
+        () -> Alliance,
+        swerve));
     }
 
     public Command getChosenCommand(){

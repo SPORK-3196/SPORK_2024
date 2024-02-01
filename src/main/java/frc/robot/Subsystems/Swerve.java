@@ -75,18 +75,6 @@ public class Swerve extends SubsystemBase {
         // Degrees/sec
     }
 
-    public Command RunPath(PathPlannerPath Path, boolean Alliance){
-        return this.runOnce(() -> 
-        new FollowPathHolonomic(
-        Path,
-        this::getPose,
-        this::getChassisSpeeds,
-        (speeds) -> Drive(speeds),
-        kAuto.AutoConfig,
-        () -> Alliance,
-        this));
-    }
-
     public void Drive(ChassisSpeeds dSpeeds){
 
         // TODO discretize speeds

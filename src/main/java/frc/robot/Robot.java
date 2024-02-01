@@ -35,7 +35,6 @@ public class Robot extends TimedRobot {
 
   // Subsystem Initalising 
   public Swerve mSwerve = new Swerve();
-  public AutoBuilder builder = new AutoBuilder();
   // public Climb mClimb = new Climb();
   // public Intake mIntake = new Intake();
   // public Roller mRoller = new Roller();
