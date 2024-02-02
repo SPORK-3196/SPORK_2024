@@ -21,7 +21,6 @@ public class AutoSendable extends SubsystemBase {
     public AutoSendable(Swerve swerve){
         this.swerve = swerve;
 
-        AutoBuilder.configureHolonomic(null, null, null, null, null, null, swerve);
         SmartDashboard.putData("Auto Chooser", Auto);
         SmartDashboard.putData("path Chooser", PathChooser);
         SmartDashboard.putBoolean("Auto Builder Config", AutoBuilder.isConfigured());
@@ -30,7 +29,7 @@ public class AutoSendable extends SubsystemBase {
     }
 
     public void SetUpPaths(){
-        PathChooser.setDefaultOption("Nothing", null);
+        PathChooser.setDefaultOption("Nothing", Commands.waitSeconds(0));
         PathChooser.addOption("Simple Forward Turn", Commands.runOnce(() -> {RunPath(PathPlannerPath.fromPathFile("path"), false);}));
     }
 

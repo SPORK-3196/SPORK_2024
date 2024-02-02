@@ -113,13 +113,7 @@ public class Robot extends TimedRobot {
     cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
 
     
-    // m_autonomousCommand = GetAuto();
-  }
-
-  public Command GetAuto(){
-    return new SequentialCommandGroup(
-      Autos.getpath()
-    );
+    m_autonomousCommand = Autos.getpath();
   }
 
   @Override
@@ -224,8 +218,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = GetAuto();
-    // m_autonomousCommand.schedule();
+    m_autonomousCommand = Autos.getpath();
+    m_autonomousCommand.schedule();
   }
 
   @Override
@@ -236,7 +230,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // m_autonomousCommand.cancel();
+    m_autonomousCommand.cancel();
   }
 
   @Override
