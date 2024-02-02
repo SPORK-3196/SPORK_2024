@@ -7,6 +7,9 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -16,11 +19,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
 import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Constants.kClimber;
+import frc.robot.Constants.kVision;
 import frc.robot.OI.kDriver;
 import frc.robot.OI.kSecondary;
 import frc.robot.Subsystems.AutoSendable;
@@ -39,7 +45,7 @@ public class Robot extends TimedRobot {
   // public Intake mIntake = new Intake();
   // public Roller mRoller = new Roller();
   // public Shooter mShooter = new Shooter();
-  private AutoSendable Autos;
+  private AutoSendable Autos = new AutoSendable(mSwerve);
 
   
   public static AHRS gyro = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
@@ -91,9 +97,18 @@ public class Robot extends TimedRobot {
       () -> driver.getLeftX(), 
       () -> driver.getRightX()));
     configureBindings();
-    
 
-    m_autonomousCommand = Autos.getChosenCommand();
+    kVision.PrimaryCamFeed = new HttpCamera("Primary Camera", "http://10.31.96.11:5800");
+
+    PortForwarder.add(5800, "10.31.96.11", 5800);
+
+    //m_autonomousCommand = GetAuto();
+  }
+
+  public Command GetAuto(){
+    return new SequentialCommandGroup(
+      Autos.getpath()
+    );
   }
 
   @Override
@@ -198,14 +213,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    
-    
-
-
-
-
-
-
+    // m_autonomousCommand = GetAuto();
+    // m_autonomousCommand.schedule();
   }
 
   @Override
@@ -216,10 +225,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
-
-
-
+    // m_autonomousCommand.cancel();
   }
 
   @Override
@@ -262,10 +268,6 @@ public class Robot extends TimedRobot {
 
     // secondary_a_Button.onTrue(new RunIntake(mIntake, mShooter));
 
-  }
-
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
   }
 
 

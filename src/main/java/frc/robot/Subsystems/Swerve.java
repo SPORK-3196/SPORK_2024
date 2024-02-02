@@ -2,9 +2,11 @@ package frc.robot.Subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -12,6 +14,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -55,6 +58,7 @@ public class Swerve extends SubsystemBase {
         },
         new Pose2d(4, 4, new Rotation2d()));
         speeds = new ChassisSpeeds();
+        ConfigureBuilder();
     }
 
     public Rotation2d gyroAngle(){
@@ -76,17 +80,20 @@ public class Swerve extends SubsystemBase {
     }
 
     public void Drive(ChassisSpeeds dSpeeds){
-
         // TODO discretize speeds
         //dSpeeds.discretize(dSpeeds,null);
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(dSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
-
         setStates(targetStates);
-
     }
 
-    public ChassisSpeeds getChassisSpeeds(){
+    public void DriveRR(ChassisSpeeds speeds){
+        var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
+        setStates(targetStates);
+    }
+
+    public ChassisSpeeds getChassisSpeedsRR(){
         return speeds;
     }
 
@@ -127,6 +134,27 @@ public class Swerve extends SubsystemBase {
 
     public Pose2d getPose(){
         return Pose.getEstimatedPosition();
+    }
+
+    public void resetPose(Pose2d pose){
+        Pose.resetPosition(gyroAngle(), getPositions(), getPose());
+    }
+
+    public void ConfigureBuilder(){
+        AutoBuilder.configureHolonomic(
+        this::getPose,
+        this::resetPose,
+        this::getChassisSpeedsRR,
+        this::DriveRR,
+        kAuto.AutoConfig,
+        () -> {
+            var All = DriverStation.getAlliance();
+            if (All.isPresent()) {
+                return All.get() == DriverStation.Alliance.Red;
+            }
+            return false;
+        },
+        this);
     }
 
     public SwerveModuleState[] getStates(){
