@@ -7,9 +7,13 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -89,6 +93,11 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_RJSD = new JoystickButton(secondary, XboxController.Button.kRightStick.value);
   public JoystickButton secondary_LJSD = new JoystickButton(secondary, XboxController.Button.kLeftStick.value);
 
+  public UsbCamera camera1;
+  public UsbCamera camera2;
+
+  public NetworkTableEntry cameraSelection;
+
   @Override
   public void robotInit() {
     mSwerve.setDefaultCommand(
@@ -98,11 +107,13 @@ public class Robot extends TimedRobot {
       () -> driver.getRightX()));
     configureBindings();
 
-    kVision.PrimaryCamFeed = new HttpCamera("Primary Camera", "http://10.31.96.11:5800");
+    camera1 = CameraServer.startAutomaticCapture(0);
+    camera2 = CameraServer.startAutomaticCapture(1);
 
-    PortForwarder.add(5800, "10.31.96.11", 5800);
+    cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
 
-    //m_autonomousCommand = GetAuto();
+    
+    // m_autonomousCommand = GetAuto();
   }
 
   public Command GetAuto(){
@@ -230,6 +241,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+
+    if (driver.getAButton()) {
+      System.out.println("Setting camera 2");
+      cameraSelection.setString(camera2.getName());
+  } else{
+      System.out.println("Setting camera 1");
+      cameraSelection.setString(camera1.getName());
+  }
 
     // if(secondary.getPOV() == 90){
     //   mIntake.ShooterPos();

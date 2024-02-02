@@ -5,6 +5,8 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -17,13 +19,7 @@ public class Constants {
     //TODO get others to work on this
 
     public static class kVision{
-        
-
-
-
-
-
-
+        public static UsbCamera PrimaryCam;
 
     }
 
