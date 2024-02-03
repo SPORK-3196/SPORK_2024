@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.controllers.PathFollowingController;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -7,6 +9,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -20,18 +23,18 @@ public class Constants {
 
     public static class kVision{
         public static UsbCamera PrimaryCam = new UsbCamera("front", 0);
-        public static UsbCamera SecondaryCam = new UsbCamera("Back", 1);
+        public static VideoSource SecondaryCam = new UsbCamera("Shooter", 1);
         
     }
 
 
     public static class kAuto {
-      public static HolonomicPathFollowerConfig AutoConfig = new HolonomicPathFollowerConfig(
-        new PIDConstants(2,0,0.1),
-        new PIDConstants(2, 0, 0.1),
-        kSwerve.MaxSpeed,
-        Units.inchesToMeters(12),
-        new ReplanningConfig(false, false)
+        public static HolonomicPathFollowerConfig AutoConfig = new HolonomicPathFollowerConfig(
+            new PIDConstants(2,0,0.1),
+            new PIDConstants(2, 0, 0.1),
+            kSwerve.MaxSpeed,
+            Units.inchesToMeters(12),
+            new ReplanningConfig(false, false)
         );
     }
 

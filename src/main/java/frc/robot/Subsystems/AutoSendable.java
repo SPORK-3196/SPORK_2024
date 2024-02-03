@@ -1,7 +1,10 @@
 package frc.robot.Subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.controllers.PathFollowingController;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -11,30 +14,36 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kAuto;
 
-public class AutoSendable extends SubsystemBase {
-    private final Swerve swerve;
+public class AutoSendable extends SubsystemBase{
+    public Swerve swerve;
 
-    public SendableChooser<Command> PathChooser = new SendableChooser<>();
-    public SendableChooser<Command> Auto = new SendableChooser<>();
+    public SendableChooser<Command> PathChooser = new SendableChooser<Command>();
+    public SendableChooser<Command> AutoChooser = new SendableChooser<Command>();
 
 
     public AutoSendable(Swerve swerve){
         this.swerve = swerve;
+        SetUpPaths();
 
-        SmartDashboard.putData("Auto Chooser", Auto);
+        SmartDashboard.putData("Auto Chooser", AutoChooser);
         SmartDashboard.putData("path Chooser", PathChooser);
         SmartDashboard.putBoolean("Auto Builder Config", AutoBuilder.isConfigured());
         SmartDashboard.putBoolean("is pathfinding config", AutoBuilder.isPathfindingConfigured());
-        SetUpPaths();
+    }
+
+    public void SetUpAutos(){
+        AutoChooser.setDefaultOption("Nothing", Commands.waitSeconds(0));
     }
 
     public void SetUpPaths(){
         PathChooser.setDefaultOption("Nothing", Commands.waitSeconds(0));
-        PathChooser.addOption("Simple Forward Turn", Commands.runOnce(() -> {RunPath(PathPlannerPath.fromPathFile("path"), false);}));
+        
+        PathChooser.addOption("Simple Forward", Commands.runOnce(
+        () -> {RunPath(PathPlannerPath.fromPathFile("Path"), false);}, swerve));
     }
 
     public Command getpath(){
-        return PathChooser.getSelected();
+        return this.PathChooser.getSelected();
     }
 
     public Command RunPath(PathPlannerPath Path, boolean Allience){
@@ -47,9 +56,5 @@ public class AutoSendable extends SubsystemBase {
         kAuto.AutoConfig,
         () -> Allience,
         swerve));
-    }
-
-    public Command getChosenCommand(){
-        return Auto.getSelected();
     }
 }

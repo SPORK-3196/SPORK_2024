@@ -10,10 +10,13 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.PixelFormat;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -93,11 +96,6 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_RJSD = new JoystickButton(secondary, XboxController.Button.kRightStick.value);
   public JoystickButton secondary_LJSD = new JoystickButton(secondary, XboxController.Button.kLeftStick.value);
 
-  public UsbCamera camera1;
-  public UsbCamera camera2;
-
-  public NetworkTableEntry cameraSelection;
-
   @Override
   public void robotInit() {
     mSwerve.setDefaultCommand(
@@ -108,15 +106,17 @@ public class Robot extends TimedRobot {
     configureBindings();
 
 
-    CameraServer.startAutomaticCapture(kVision.PrimaryCam);
-    CameraServer.startAutomaticCapture(kVision.SecondaryCam);
-    
-    m_autonomousCommand = Autos.getpath();
+    CameraServer.startAutomaticCapture(0);
+    //CameraServer.addCamera(kVision.SecondaryCam);
+  // CameraServer.startAutomaticCapture("Intake", 1);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    m_autonomousCommand = Autos.getpath();
+
+
 
     // Driver SmartDashboard output
     if(driver.isConnected()){
@@ -197,7 +197,6 @@ public class Robot extends TimedRobot {
 
     // shows both outside and durring a game 
 
-
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
     SmartDashboard.putNumber("FR angle",Swerve.FR.getCANforshuffle().getRotations());
     SmartDashboard.putNumber("BR angle",Swerve.BR.getCANforshuffle().getRotations());
@@ -215,8 +214,8 @@ public class Robot extends TimedRobot {
   public void disabledExit() {}
 
   @Override
-  public void autonomousInit() {
-    m_autonomousCommand = Autos.getpath();
+  public void autonomousInit() { 
+
     m_autonomousCommand.schedule();
   }
 
@@ -233,14 +232,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-
-    if (driver.getAButton()) {
-      System.out.println("Setting camera 2");
-      cameraSelection.setString(camera2.getName());
-  } else{
-      System.out.println("Setting camera 1");
-      cameraSelection.setString(camera1.getName());
-  }
 
     // if(secondary.getPOV() == 90){
     //   mIntake.ShooterPos();
