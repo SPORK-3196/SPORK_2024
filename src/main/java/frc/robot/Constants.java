@@ -19,8 +19,9 @@ public class Constants {
     //TODO get others to work on this
 
     public static class kVision{
-        public static UsbCamera PrimaryCam;
-
+        public static UsbCamera PrimaryCam = new UsbCamera("front", 0);
+        public static UsbCamera SecondaryCam = new UsbCamera("Back", 1);
+        
     }
 
 

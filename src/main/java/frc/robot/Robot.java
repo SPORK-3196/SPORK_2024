@@ -107,11 +107,9 @@ public class Robot extends TimedRobot {
       () -> driver.getRightX()));
     configureBindings();
 
-    camera1 = CameraServer.startAutomaticCapture(0);
-    camera2 = CameraServer.startAutomaticCapture(1);
 
-    cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
-
+    CameraServer.startAutomaticCapture(kVision.PrimaryCam);
+    CameraServer.startAutomaticCapture(kVision.SecondaryCam);
     
     m_autonomousCommand = Autos.getpath();
   }
