@@ -4,12 +4,19 @@
 
 package frc.robot;
 
+import java.io.OutputStream;
+
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.net.PortForwarder;
@@ -105,18 +112,20 @@ public class Robot extends TimedRobot {
       () -> driver.getRightX()));
     configureBindings();
 
+    new Thread(() -> {
+    UsbCamera Cam = CameraServer.startAutomaticCapture(0);
+    Cam.setResolution(144, 144);
+    Cam.setFPS(28);
 
-    CameraServer.startAutomaticCapture(0);
-    //CameraServer.addCamera(kVision.SecondaryCam);
-  // CameraServer.startAutomaticCapture("Intake", 1);
+    UsbCamera Cam2 = CameraServer.startAutomaticCapture(1);
+    Cam2.setResolution(144, 144);
+    Cam2.setFPS(28);
+    });
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    m_autonomousCommand = Autos.getpath();
-
-
 
     // Driver SmartDashboard output
     if(driver.isConnected()){
@@ -214,7 +223,8 @@ public class Robot extends TimedRobot {
   public void disabledExit() {}
 
   @Override
-  public void autonomousInit() { 
+  public void autonomousInit() {
+    m_autonomousCommand = Autos.getpath();
 
     m_autonomousCommand.schedule();
   }
@@ -227,7 +237,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    if(!(m_autonomousCommand == null)){
     m_autonomousCommand.cancel();
+  }
   }
 
   @Override
