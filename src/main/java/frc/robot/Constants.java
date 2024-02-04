@@ -5,8 +5,6 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
 
-import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -19,8 +17,6 @@ public class Constants {
     //TODO get others to work on this
 
     public static class kVision{
-        public static UsbCamera PrimaryCam = new UsbCamera("front", 0);
-        public static VideoSource SecondaryCam = new UsbCamera("Shooter", 1);
         
     }
 
@@ -73,13 +69,13 @@ public class Constants {
     }
 
 
-    public static class kRollerBars {
-        public static int RollerNeoPort = 9; // TODO change 
-        public static double RollerSpeed = 0.5; // test rollers
-        public static boolean RollerInvert = false;
-        public static IdleMode RollerIdle = IdleMode.kBrake;
+    // public static class kRollerBars {
+    //     public static int RollerNeoPort = 9;
+    //     public static double RollerSpeed = 0.5; // test rollers
+    //     public static boolean RollerInvert = false;
+    //     public static IdleMode RollerIdle = IdleMode.kBrake;
         
-    }
+    // }
     
 
     public static class kClimber {
