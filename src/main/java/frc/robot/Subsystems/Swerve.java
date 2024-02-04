@@ -76,14 +76,14 @@ public class Swerve extends SubsystemBase {
     }
 
     public void Drive(ChassisSpeeds dSpeeds){
-        // TODO discretize speeds
-        //dSpeeds.discretize(dSpeeds,null);
+        dSpeeds = ChassisSpeeds.discretize(dSpeeds, 0.02);
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(dSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
     }
 
     public void DriveRR(ChassisSpeeds speeds){
+        speeds = ChassisSpeeds.discretize(speeds, 0.02);
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
