@@ -190,6 +190,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("BR angle",Swerve.BR.getCANforshuffle().getRotations());
     SmartDashboard.putNumber("FL angle",Swerve.FL.getCANforshuffle().getRotations());
     SmartDashboard.putNumber("BL angle",Swerve.BL.getCANforshuffle().getRotations());
+
+    // if (mIntake.SpeakerLimit.isPressed()) {
+    //   mIntake.IntakeEncoder.setPosition(0);
+    // }
+
+    // if (mIntake.SoftStopLimit.isPressed()) {
+    //   mIntake.Stop();
+    // }
   }
 
   @Override

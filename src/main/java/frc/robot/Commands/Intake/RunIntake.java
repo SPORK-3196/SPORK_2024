@@ -1,7 +1,5 @@
 package frc.robot.Commands.Intake;
 
-import com.revrobotics.SparkLimitSwitch;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Shooter;

@@ -21,7 +21,10 @@ public RelativeEncoder IntakeEncoder = IntakeAxis.getEncoder();
 
 private SparkPIDController IntakePID;
 
+// Limit switches
 public SparkLimitSwitch NoteIn = IntakeNeo.getForwardLimitSwitch(Type.kNormallyOpen);
+public SparkLimitSwitch SpeakerLimit = IntakeAxis.getForwardLimitSwitch(Type.kNormallyOpen);
+public SparkLimitSwitch SoftStopLimit = IntakeAxis.getReverseLimitSwitch(Type.kNormallyOpen);
 
     public Intake(){
     IntakeNeo.setIdleMode(kIntake.IntakeIdle);
@@ -62,6 +65,11 @@ public SparkLimitSwitch NoteIn = IntakeNeo.getForwardLimitSwitch(Type.kNormallyO
     // To the wall
     public Command ShooterPos(){
         return this.runOnce(() -> IntakePID.setReference(kIntake.ShooterFeed, ControlType.kPosition));
+    }
+
+    // Honestly this seems kinda stupid but it might be better than seting the motor to 0
+    public Command Stop(){
+        return this.runOnce(() -> IntakePID.setReference(IntakeEncoder.getPosition(), ControlType.kPosition));
     }
 
     // TODO add avalibility for old intake design
