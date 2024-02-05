@@ -76,14 +76,14 @@ public class Swerve extends SubsystemBase {
     }
 
     public void Drive(ChassisSpeeds dSpeeds){
-        dSpeeds = ChassisSpeeds.discretize(dSpeeds, 0.02);
+        // dSpeeds = ChassisSpeeds.discretize(dSpeeds, 0.02);
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(dSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
     }
 
     public void DriveRR(ChassisSpeeds speeds){
-        speeds = ChassisSpeeds.discretize(speeds, 0.02);
+        // speeds = ChassisSpeeds.discretize(speeds, 0.02);
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
@@ -141,7 +141,7 @@ public class Swerve extends SubsystemBase {
         this::getPose,
         this::resetPose,
         this::getChassisSpeedsRR,
-        this::DriveRR,
+        (speeds) -> DriveRR(speeds),
         kAuto.AutoConfig,
         () -> {
             var All = DriverStation.getAlliance();

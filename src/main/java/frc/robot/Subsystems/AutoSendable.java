@@ -13,14 +13,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kSwerve;
 
 public class AutoSendable extends SubsystemBase{
     public Swerve swerve;
 
-    public SendableChooser<Command> PathChooser = new SendableChooser<Command>();
-    public SendableChooser<Command> AutoChooser = new SendableChooser<Command>();
+    public SendableChooser<PathPlannerPath> PathChooser = new SendableChooser<>();
+    public SendableChooser<PathPlannerPath> AutoChooser = new SendableChooser<>();
+
+    public PathPlannerPath path;
 
 
     public AutoSendable(Swerve swerve){
@@ -34,22 +37,22 @@ public class AutoSendable extends SubsystemBase{
     }
 
     public void SetUpAutos(){
-        AutoChooser.setDefaultOption("Nothing", Commands.waitSeconds(0));
+        // AutoChooser.setDefaultOption("Nothing", null);
     }
 
     public void SetUpPaths(){
-        PathChooser.setDefaultOption("Nothing", Commands.waitSeconds(0));
-        
-        PathChooser.addOption("Simple Forward", Commands.runOnce(
-        () -> {RunPath(PathPlannerPath.fromPathFile("Path"));}, swerve));
+        PathChooser.addOption("Forward", PathPlannerPath.fromPathFile("Forward"));
+        PathChooser.addOption("2_note", PathPlannerPath.fromPathFile("2_note"));
+        PathChooser.addOption("Simple arc", PathPlannerPath.fromPathFile("simple arc"));
     }
 
     public Command getpath(){
-        return this.PathChooser.getSelected();
+
+        return AutoBuilder.followPath(PathChooser.getSelected());
     }
 
     public Command RunPath(PathPlannerPath Path){
-        return this.runOnce(() -> 
+        return this.runOnce(() ->
         new FollowPathHolonomic(
         Path,
         swerve::getPose,
@@ -62,10 +65,6 @@ public class AutoSendable extends SubsystemBase{
             Units.inchesToMeters(12),
             new ReplanningConfig(false, false)),
         () -> {
-        // Boolean supplier that controls when the path will be mirrored for the red alliance
-        // This will flip the path being followed to the red side of the field.
-        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
             return alliance.get() == DriverStation.Alliance.Red;

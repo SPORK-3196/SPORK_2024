@@ -31,6 +31,8 @@ import frc.robot.Subsystems.Swerve;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+  public static AHRS gyro = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
+
   // Subsystem Initalising 
   public Swerve mSwerve = new Swerve();
   // public Climb mClimb = new Climb();
@@ -38,9 +40,6 @@ public class Robot extends TimedRobot {
   // public Roller mRoller = new Roller();
   // public Shooter mShooter = new Shooter();
   private AutoSendable Autos = new AutoSendable(mSwerve);
-
-  
-  public static AHRS gyro = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
   
   // Controllers 
   public XboxController driver = new XboxController(0);
@@ -81,6 +80,10 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_RJSD = new JoystickButton(secondary, XboxController.Button.kRightStick.value);
   public JoystickButton secondary_LJSD = new JoystickButton(secondary, XboxController.Button.kLeftStick.value);
 
+  // Camera
+  UsbCamera Cam = CameraServer.startAutomaticCapture(1);
+  UsbCamera Cam2 = CameraServer.startAutomaticCapture(0);
+
   @Override
   public void robotInit() {
     mSwerve.setDefaultCommand(
@@ -88,18 +91,14 @@ public class Robot extends TimedRobot {
       () -> driver.getLeftY(), 
       () -> driver.getLeftX(), 
       () -> driver.getRightX()));
+    
     configureBindings();
 
-    new Thread(() -> {
-      UsbCamera Cam = CameraServer.startAutomaticCapture(0);
-      Cam.setResolution(144, 144);
-      Cam.setFPS(28);
+    Cam.setFPS(10);
+    Cam.setResolution(144, 144);
 
-      UsbCamera Cam2 = CameraServer.startAutomaticCapture(1);
-      Cam2.setResolution(144, 144);
-      Cam2.setFPS(28);
-    });
-
+    Cam2.setFPS(10);
+    Cam2.setResolution(80, 80);
   }
 
   @Override
@@ -207,13 +206,16 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {}
 
   @Override
-  public void disabledExit() {}
+  public void disabledExit() {
+  }
 
   @Override
   public void autonomousInit() {
     m_autonomousCommand = Autos.getpath();
 
+    if(!(m_autonomousCommand == null)){
     m_autonomousCommand.schedule();
+    }
   }
 
   @Override
@@ -225,8 +227,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     if(!(m_autonomousCommand == null)){
-    m_autonomousCommand.cancel();
-  }
+      m_autonomousCommand.cancel();
+    }
   }
 
   @Override
