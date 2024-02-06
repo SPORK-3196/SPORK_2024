@@ -43,34 +43,11 @@ public class AutoSendable extends SubsystemBase{
     public void SetUpPaths(){
         PathChooser.addOption("Forward", PathPlannerPath.fromPathFile("Forward"));
         PathChooser.addOption("2_note", PathPlannerPath.fromPathFile("2_note"));
-        PathChooser.addOption("Simple arc", PathPlannerPath.fromPathFile("simple arc"));
+        // PathChooser.addOption("Simple arc", PathPlannerPath.fromPathFile("simple arc"));
     }
 
     public Command getpath(){
 
         return AutoBuilder.followPath(PathChooser.getSelected());
-    }
-
-    public Command RunPath(PathPlannerPath Path){
-        return this.runOnce(() ->
-        new FollowPathHolonomic(
-        Path,
-        swerve::getPose,
-        swerve::getChassisSpeedsRR,
-        (speeds) -> swerve.DriveRR(speeds),
-        new HolonomicPathFollowerConfig(
-            new PIDConstants(2,0,0.1),
-            new PIDConstants(2, 0, 0.1),
-            kSwerve.MaxSpeed,
-            Units.inchesToMeters(12),
-            new ReplanningConfig(false, false)),
-        () -> {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-        }
-            return false;
-        },
-        swerve));
     }
 }

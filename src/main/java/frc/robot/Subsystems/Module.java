@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kSwerve;
 
@@ -88,12 +89,7 @@ public class Module extends SubsystemBase{
     }
 
     public SwerveModuleState getstate(){
-        return new SwerveModuleState(RPM_TO_M_per_S(DriveEncoder.getVelocity()), getCANangle());
-    }
-
-    private double RPM_TO_M_per_S(double RPM){
-        var velocity = (((2 * Math.PI) * (kSwerve.wheelDiameter /2 )) / 60) * RPM;
-        return velocity;
+        return new SwerveModuleState(DriveEncoder.getVelocity(), getCANangle());
     }
 
 }

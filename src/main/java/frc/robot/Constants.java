@@ -23,10 +23,10 @@ public class Constants {
 
     public static class kAuto {
         public static HolonomicPathFollowerConfig AutoConfig = new HolonomicPathFollowerConfig(
-            new PIDConstants(2,0,0.1),
-            new PIDConstants(2, 0, 0.1),
+            new PIDConstants(2,0,0),
+            new PIDConstants(2, 0, 0),
             kSwerve.MaxSpeed,
-            Units.inchesToMeters(12),
+            kSwerve.DRIVETRAIN_WHEELBASE_METERS/2,
             new ReplanningConfig(false, false)
         );
     }

@@ -52,7 +52,7 @@ public class Swerve extends SubsystemBase {
             BL.getPosition(),
             BR.getPosition()
         },
-        new Pose2d(4, 4, new Rotation2d()));
+        new Pose2d(0, 0, new Rotation2d()));
         speeds = new ChassisSpeeds();
         ConfigureBuilder();
     }
