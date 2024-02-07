@@ -10,16 +10,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class AutoSendable extends SubsystemBase{
     public Swerve swerve;
 
-    public SendableChooser<Command> PathChooser = AutoBuilder.buildAutoChooser();
+    public SendableChooser<Command> AutoChooser = AutoBuilder.buildAutoChooser();
 
 
     public AutoSendable(Swerve swerve){
         this.swerve = swerve;
-        // SetUpNamedCommands();
+        SetUpNamedCommands();
         SetUpPaths();
 
-        //SmartDashboard.putData("Auto Chooser", AutoChooser);
-        SmartDashboard.putData("path Chooser", PathChooser);
+        SmartDashboard.putData("path Chooser", AutoChooser);
         SmartDashboard.putBoolean("Auto Builder Config", AutoBuilder.isConfigured());
         SmartDashboard.putBoolean("is pathfinding config", AutoBuilder.isPathfindingConfigured());
     }
@@ -29,13 +28,13 @@ public class AutoSendable extends SubsystemBase{
     }
 
     public void SetUpPaths(){
-        PathChooser.addOption("Forward", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Forward")));
-        PathChooser.addOption("2_note", AutoBuilder.followPath(PathPlannerPath.fromPathFile("2_note")));
-        PathChooser.addOption("Square", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Square")));
-        // PathChooser.addOption("Foretold", PathPlannerPath.fromPathFile("ForeTold"));
+        AutoChooser.addOption("Forward", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Forward")));
+        AutoChooser.addOption("2_note", AutoBuilder.followPath(PathPlannerPath.fromPathFile("2_note")));
+        AutoChooser.addOption("Square", AutoBuilder.followPath(PathPlannerPath.fromPathFile("Square")));
+        // AutoChooser.addOption("Foretold", PathPlannerPath.fromPathFile("ForeTold"));
     }
 
     public Command getpath(){
-        return PathChooser.getSelected();
+        return AutoChooser.getSelected();
     }
 }

@@ -3,6 +3,11 @@ package frc.robot.Subsystems;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -137,19 +142,22 @@ public class Swerve extends SubsystemBase {
 
     public void ConfigureBuilder(){
         AutoBuilder.configureHolonomic(
-        this::getPose,
-        this::resetPose,
-        this::getChassisSpeedsRR,
-        this::DriveRR,
-        kAuto.AutoConfig,
-        () -> {
-            var All = DriverStation.getAlliance();
-            if (All.isPresent()) {
-                return All.get() == DriverStation.Alliance.Red;
-            }
-            return false;
-        },
-        this);
+            this::getPose,
+            this::resetPose,
+            this::getChassisSpeedsRR,
+            this::DriveRR,
+            new HolonomicPathFollowerConfig(
+            kSwerve.MaxSpeed, 
+            kSwerve.DRIVETRAIN_WHEELBASE_METERS/2,
+            new ReplanningConfig()),
+            () -> {
+                var All = DriverStation.getAlliance();
+                if (All.isPresent()) {
+                    return All.get() == DriverStation.Alliance.Red;
+                }
+                return false;
+            },
+            this);
     }
 
     public SwerveModuleState[] getStates(){

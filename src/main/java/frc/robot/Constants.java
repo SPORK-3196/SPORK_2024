@@ -22,13 +22,7 @@ public class Constants {
 
 
     public static class kAuto {
-        public static HolonomicPathFollowerConfig AutoConfig = new HolonomicPathFollowerConfig(
-            new PIDConstants(2,0,0),
-            new PIDConstants(2, 0, 0),
-            kSwerve.MaxSpeed,
-            kSwerve.DRIVETRAIN_WHEELBASE_METERS/2,
-            new ReplanningConfig()
-        );
+        
     }
 
     public static class kShooter {
@@ -93,8 +87,8 @@ public class Constants {
     }
 
     public static class kSwerve {
-        private static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(24);
-        private static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(24);
+        public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(24);
+        public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(24);
         
         public static final double kDeadband = 0.1;
         
