@@ -94,10 +94,10 @@ public class Robot extends TimedRobot {
     
     configureBindings();
 
-    Cam.setFPS(10);
+    Cam.setFPS(15);
     Cam.setResolution(144, 144);
 
-    Cam2.setFPS(10);
+    Cam2.setFPS(15);
     Cam2.setResolution(80, 80);
   }
 

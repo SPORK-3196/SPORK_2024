@@ -36,6 +36,7 @@ public class Constants {
 
         // Targets
         public static double IdleSpeed = 0.2; // can change
+        public static double ShootingSpeed = 0.5;
         public static double TargetVelocity = 0.5; // M/s
 
     }
