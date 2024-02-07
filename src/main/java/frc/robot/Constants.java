@@ -27,7 +27,7 @@ public class Constants {
             new PIDConstants(2, 0, 0),
             kSwerve.MaxSpeed,
             kSwerve.DRIVETRAIN_WHEELBASE_METERS/2,
-            new ReplanningConfig(false, false)
+            new ReplanningConfig()
         );
     }
 
