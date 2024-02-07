@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -76,14 +77,12 @@ public class Swerve extends SubsystemBase {
     }
 
     public void Drive(ChassisSpeeds dSpeeds){
-        // dSpeeds = ChassisSpeeds.discretize(dSpeeds, 0.02);
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(dSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
     }
 
     public void DriveRR(ChassisSpeeds speeds){
-        // speeds = ChassisSpeeds.discretize(speeds, 0.02);
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
@@ -133,7 +132,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void resetPose(Pose2d pose){
-        Pose.resetPosition(gyroAngle(), getPositions(), getPose());
+        Pose.resetPosition(gyroAngle(), getPositions(), Pose.getEstimatedPosition());
     }
 
     public void ConfigureBuilder(){
@@ -141,7 +140,7 @@ public class Swerve extends SubsystemBase {
         this::getPose,
         this::resetPose,
         this::getChassisSpeedsRR,
-        (speeds) -> DriveRR(speeds),
+        this::DriveRR,
         kAuto.AutoConfig,
         () -> {
             var All = DriverStation.getAlliance();

@@ -71,8 +71,4 @@ public SparkLimitSwitch SoftStopLimit = IntakeAxis.getReverseLimitSwitch(Type.kN
     public Command Stop(){
         return this.runOnce(() -> IntakePID.setReference(IntakeEncoder.getPosition(), ControlType.kPosition));
     }
-
-    // TODO add avalibility for old intake design
-
-    
 }
