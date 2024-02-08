@@ -54,7 +54,7 @@ public class Module extends SubsystemBase{
         
         DriveEncoder = DriveNEO.getEncoder();
         DriveEncoder.setPosition(0);
-        DriveEncoder.setPositionConversionFactor(8.75);
+        // DriveEncoder.setPositionConversionFactor(8.75);
         
         absoluteEncoder = new CANcoder(absoluteEncoderID);
         var absoluteEncoderConfigu = absoluteEncoder.getConfigurator();

@@ -7,6 +7,7 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -21,7 +22,6 @@ import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Constants.kClimber;
 import frc.robot.OI.kDriver;
 import frc.robot.OI.kSecondary;
-import frc.robot.Subsystems.AutoSendable;
 import frc.robot.Subsystems.Climb;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Roller;
@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   // public Intake mIntake = new Intake();
   // public Roller mRoller = new Roller();
   // public Shooter mShooter = new Shooter();
-  private AutoSendable Autos = new AutoSendable(mSwerve);
+
   
   // Controllers 
   public XboxController driver = new XboxController(0);
@@ -211,7 +211,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = Autos.getpath();
 
     if(!(m_autonomousCommand == null)){
     m_autonomousCommand.schedule();
