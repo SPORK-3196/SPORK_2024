@@ -5,12 +5,15 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -34,6 +37,7 @@ public class Robot extends TimedRobot {
   public static AHRS gyro = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
 
   // Subsystem Initalising 
+  public SendableChooser<Command> autoChooser;
   public Swerve mSwerve = new Swerve();
   // public Climb mClimb = new Climb();
   // public Intake mIntake = new Intake();
@@ -94,11 +98,16 @@ public class Robot extends TimedRobot {
     
     configureBindings();
 
+    autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
+
+
     Cam.setFPS(15);
     Cam.setResolution(144, 144);
 
     Cam2.setFPS(15);
     Cam2.setResolution(80, 80);
+
+
   }
 
   @Override
@@ -211,6 +220,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    m_autonomousCommand = autoChooser.getSelected();
 
     if(!(m_autonomousCommand == null)){
     m_autonomousCommand.schedule();
