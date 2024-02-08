@@ -100,6 +100,8 @@ public class Robot extends TimedRobot {
 
     autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
 
+    SmartDashboard.putData("Auto", autoChooser);
+
 
     Cam.setFPS(15);
     Cam.setResolution(144, 144);
@@ -107,12 +109,13 @@ public class Robot extends TimedRobot {
     Cam2.setFPS(15);
     Cam2.setResolution(80, 80);
 
-
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
+    mSwerve.updatePose();
 
     // Driver SmartDashboard output
     if(driver.isConnected()){

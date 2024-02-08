@@ -12,6 +12,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -46,21 +47,13 @@ public class Swerve extends SubsystemBase {
     kSwerve.kBackRightDriveAbsoluteEncoderPort,
     kSwerve.BrOffset);
 
-    private SwerveDrivePoseEstimator Pose;
-    private ChassisSpeeds speeds;
+    private SwerveDriveOdometry Pose;
     private ChassisSpeeds chassisSpeedsRR;
 
     public Swerve(){
-        Pose = new SwerveDrivePoseEstimator(kSwerve.kinematics,
-        new Rotation2d(gyroAngle().getDegrees()),
-        new SwerveModulePosition[]{
-            FL.getPosition(),
-            FR.getPosition(),
-            BL.getPosition(),
-            BR.getPosition()
-        },
-        new Pose2d(4, 4, new Rotation2d()));
-        speeds = new ChassisSpeeds();
+        Pose = new SwerveDriveOdometry(kSwerve.kinematics,
+        gyroAngle(), 
+        getPositions());
         chassisSpeedsRR = new ChassisSpeeds();
         ConfigureBuilder();
     }
@@ -83,8 +76,8 @@ public class Swerve extends SubsystemBase {
         // Degrees/sec
     }
 
-    public void Drive(ChassisSpeeds dSpeeds){
-        var targetStates = kSwerve.kinematics.toSwerveModuleStates(dSpeeds);
+    public void Drive(ChassisSpeeds Speeds){
+        var targetStates = kSwerve.kinematics.toSwerveModuleStates(Speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
     }
@@ -127,19 +120,23 @@ public class Swerve extends SubsystemBase {
         Y = Math.copySign(Y*Y, Y);
         z = Math.copySign(z*z, z);
 
-        var ROspeeds = new ChassisSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxAngularSpeed);
+        chassisSpeedsRR = ChassisSpeeds.fromFieldRelativeSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxSpeed, gyroAngle());
 
-        chassisSpeedsRR = ChassisSpeeds.fromRobotRelativeSpeeds(ROspeeds, gyroAngle());
+        var ROspeeds = new ChassisSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxSpeed);
         
         return ChassisSpeeds.fromFieldRelativeSpeeds(ROspeeds, gyroAngle());
     }
 
     public Pose2d getPose(){
-        return Pose.getEstimatedPosition();
+        return Pose.getPoseMeters();
     }
 
-    public void resetPose(Pose2d pose){
-        Pose.resetPosition(gyroAngle(), getPositions(), new Pose2d());
+    public void updatePose(){
+        Pose.update(gyroAngle(), getPositions());
+    }
+
+    public void resetPose(Pose2d pose2d){
+        Pose.resetPosition(gyroAngle(), getPositions(), pose2d);
     }
 
     public void ConfigureBuilder(){
@@ -147,20 +144,21 @@ public class Swerve extends SubsystemBase {
             this::getPose,
             this::resetPose,
             this::getChassisSpeedsRR,
-            (chassisSpeedsRR) -> DriveRR(chassisSpeedsRR),
+            this::DriveRR,
             new HolonomicPathFollowerConfig(
-                new PIDConstants(2), 
-                new PIDConstants(2), 
+                new PIDConstants(5), 
+                new PIDConstants(5), 
                 kSwerve.MaxSpeed, 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
-                new ReplanningConfig()),
-            () -> {
-                var All = DriverStation.getAlliance();
-                if (All.isPresent()) {
-                    return All.get() == DriverStation.Alliance.Red;
-                }
-                return false;
-            },
+                new ReplanningConfig(false, false)),
+                () -> false,
+            // () -> {
+            //     var All = DriverStation.getAlliance();
+            //     if (All.isPresent()) {
+            //         return All.get() == DriverStation.Alliance.Red;
+            //     }
+            //     return false;
+            // },
             this);
     }
 
