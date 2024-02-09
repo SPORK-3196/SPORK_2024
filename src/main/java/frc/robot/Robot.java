@@ -115,8 +115,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-    mSwerve.updatePose();
-
     // Driver SmartDashboard output
     if(driver.isConnected()){
       kDriver.a_Button = driver.getAButton();

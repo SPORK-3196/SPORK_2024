@@ -51,9 +51,11 @@ public class Swerve extends SubsystemBase {
     private ChassisSpeeds chassisSpeedsRR;
 
     public Swerve(){
-        Pose = new SwerveDriveOdometry(kSwerve.kinematics,
+        Pose = new SwerveDriveOdometry(
+        kSwerve.kinematics,
         gyroAngle(), 
-        getPositions());
+        getPositions(),
+        new Pose2d(2,4, gyroAngle()));
         chassisSpeedsRR = new ChassisSpeeds();
         ConfigureBuilder();
     }
@@ -64,7 +66,8 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
-        Pose.update(gyroAngle(), getPositions());
+        updatePose();   
+        chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
     }  
 
     public void ZeroGyro(){
@@ -84,14 +87,8 @@ public class Swerve extends SubsystemBase {
 
     public void DriveRR(ChassisSpeeds speeds){
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
     }
-
-    public ChassisSpeeds getChassisSpeedsRR(){
-        return chassisSpeedsRR;
-    }
-
 
     public Command teleDrive(
     DoubleSupplier translation,
@@ -120,10 +117,8 @@ public class Swerve extends SubsystemBase {
         Y = Math.copySign(Y*Y, Y);
         z = Math.copySign(z*z, z);
 
-        chassisSpeedsRR = ChassisSpeeds.fromFieldRelativeSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxSpeed, gyroAngle());
-
         var ROspeeds = new ChassisSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxSpeed);
-        
+
         return ChassisSpeeds.fromFieldRelativeSpeeds(ROspeeds, gyroAngle());
     }
 
@@ -143,14 +138,14 @@ public class Swerve extends SubsystemBase {
         AutoBuilder.configureHolonomic(
             this::getPose,
             this::resetPose,
-            this::getChassisSpeedsRR,
+            () -> chassisSpeedsRR,
             this::DriveRR,
             new HolonomicPathFollowerConfig(
                 new PIDConstants(5), 
                 new PIDConstants(5), 
                 kSwerve.MaxSpeed, 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
-                new ReplanningConfig(false, false)),
+                new ReplanningConfig()),
                 () -> false,
             // () -> {
             //     var All = DriverStation.getAlliance();
