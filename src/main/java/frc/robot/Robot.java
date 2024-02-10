@@ -29,6 +29,7 @@ import frc.robot.OI.kDriver;
 import frc.robot.OI.kSecondary;
 import frc.robot.Subsystems.Climb;
 import frc.robot.Subsystems.Intake;
+import frc.robot.Subsystems.Lighting;
 import frc.robot.Subsystems.Roller;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
   public Climb mClimb = new Climb();
   public Intake mIntake = new Intake();
   public Shooter mShooter = new Shooter();
+  public Lighting mLighting = new Lighting();
 
   
   // Controllers 
@@ -100,6 +102,15 @@ public class Robot extends TimedRobot {
   
 
     configureBindings();
+    
+    var Alliance = DriverStation.getAlliance();
+    if (Alliance.isPresent()) {
+      if(Alliance.get() ==  DriverStation.Alliance.Red){
+        mLighting.setRed();
+      }else{
+        mLighting.setBlue();
+      }
+    }
 
     autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
 
