@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -143,7 +144,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Command resetPoseManual(){
-        return this.runOnce(() -> resetPose(new Pose2d(2, 4, gyroAngle())));
+        return this.runOnce(() -> Pose.resetPosition(gyroAngle(), getPositions(), new Pose2d(2, 4, gyroAngle())));
     }
 
     public void ConfigureBuilder(){
@@ -158,7 +159,13 @@ public class Swerve extends SubsystemBase {
                 kSwerve.MaxSpeed, 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
                 new ReplanningConfig()),
-                () -> false,
+                () -> {
+                    var ALL = DriverStation.getAlliance();
+                    if(ALL.isPresent()){
+                        return ALL.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
                 this);
     }
 

@@ -24,6 +24,7 @@ import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
 import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Constants.kClimber;
+import frc.robot.Constants.kShooter;
 import frc.robot.OI.kDriver;
 import frc.robot.OI.kSecondary;
 import frc.robot.Subsystems.Climb;
@@ -40,10 +41,10 @@ public class Robot extends TimedRobot {
   // Subsystem Initalising 
   public SendableChooser<Command> autoChooser;
   public Swerve mSwerve = new Swerve();
-  // public Climb mClimb = new Climb();
-  // public Intake mIntake = new Intake();
   // public Roller mRoller = new Roller();
-  // public Shooter mShooter = new Shooter();
+  public Climb mClimb = new Climb();
+  public Intake mIntake = new Intake();
+  public Shooter mShooter = new Shooter();
 
   
   // Controllers 
@@ -96,7 +97,8 @@ public class Robot extends TimedRobot {
       () -> driver.getLeftY(), 
       () -> driver.getLeftX(), 
       () -> driver.getRightX()));
-    
+  
+
     configureBindings();
 
     autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
@@ -278,6 +280,7 @@ public class Robot extends TimedRobot {
     
 
     // Secondary Button Bindings
+    // secondary_b_Button.onTrue(new InstantCommand(() -> mShooter.setShooterSpeed(kShooter.ShootingSpeed, false), mShooter));
     // secondary_Left_Trigger.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
     // secondary_Right_Trigger.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
 

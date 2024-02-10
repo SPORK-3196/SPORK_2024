@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.kIntake;
 import frc.robot.Constants.kShooter;
 
 public class Shooter extends SubsystemBase {
@@ -37,8 +36,6 @@ public class Shooter extends SubsystemBase {
 
 
     public void ShooterIdle(){
-        // TODO set shooter to go to the Idle speed
-        // TODO amp??? 
         setShooterSpeed(kShooter.IdleSpeed, false);
     }
 
