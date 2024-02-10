@@ -22,13 +22,7 @@ public class Constants {
 
 
     public static class kAuto {
-        public static HolonomicPathFollowerConfig AutoConfig = new HolonomicPathFollowerConfig(
-            new PIDConstants(2,0,0.1),
-            new PIDConstants(2, 0, 0.1),
-            kSwerve.MaxSpeed,
-            Units.inchesToMeters(12),
-            new ReplanningConfig(false, false)
-        );
+        
     }
 
     public static class kShooter {
@@ -42,6 +36,7 @@ public class Constants {
 
         // Targets
         public static double IdleSpeed = 0.2; // can change
+        public static double ShootingSpeed = 0.5;
         public static double TargetVelocity = 0.5; // M/s
 
     }
@@ -93,15 +88,16 @@ public class Constants {
     }
 
     public static class kSwerve {
-        private static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(24);
-        private static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(24);
+        public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(24);
+        public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(24);
         
         public static final double kDeadband = 0.1;
         
         public static final double MaxAngularSpeed = Units.feetToMeters(5); // m/s
-        public static final double MaxSpeed = Units.feetToMeters(5);  // m/s
+        public static final double MaxSpeed = Units.feetToMeters(3);  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
+
         public static final double RotationGearRatio = (150/7)/1;
         public static final double DriveGearRatio = 8.14/1;
 

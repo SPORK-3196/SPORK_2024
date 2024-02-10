@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kSwerve;
 
@@ -53,6 +54,7 @@ public class Module extends SubsystemBase{
         
         DriveEncoder = DriveNEO.getEncoder();
         DriveEncoder.setPosition(0);
+        // DriveEncoder.setPositionConversionFactor(0);
         
         absoluteEncoder = new CANcoder(absoluteEncoderID);
         var absoluteEncoderConfigu = absoluteEncoder.getConfigurator();
@@ -83,17 +85,13 @@ public class Module extends SubsystemBase{
     public Rotation2d getCANforshuffle(){
         return Rotation2d.fromRotations(absoluteEncoder.getAbsolutePosition().getValueAsDouble() - offset.getRotations());
     }
+
     public SwerveModulePosition getPosition(){
-        return new SwerveModulePosition(DriveEncoder.getPosition(), getCANangle());
+        return new SwerveModulePosition(DriveEncoder.getPosition() / 100 , getCANangle());
     }
 
     public SwerveModuleState getstate(){
-        return new SwerveModuleState(RPM_TO_M_per_S(DriveEncoder.getVelocity()), getCANangle());
-    }
-
-    private double RPM_TO_M_per_S(double RPM){
-        var velocity = (((2 * Math.PI) * (kSwerve.wheelDiameter /2 )) / 60) * RPM;
-        return velocity;
+        return new SwerveModuleState(DriveEncoder.getVelocity(), getCANangle());
     }
 
 }

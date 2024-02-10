@@ -32,7 +32,7 @@ public class Climb extends SubsystemBase{
         // Left Limit Switches
         LeftArmBottom = LeftArm.getForwardLimitSwitch(Type.kNormallyOpen);
         LeftArmTop = LeftArm.getReverseLimitSwitch(Type.kNormallyOpen);
-
+        
     }
 
     public void LeftUp(double speed){

@@ -3,14 +3,23 @@ package frc.robot.Subsystems;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -40,21 +49,22 @@ public class Swerve extends SubsystemBase {
     kSwerve.kBackRightDriveAbsoluteEncoderPort,
     kSwerve.BrOffset);
 
-    private SwerveDrivePoseEstimator Pose;
-    private ChassisSpeeds speeds;
+    private SwerveDriveOdometry Pose;
+    private ChassisSpeeds chassisSpeedsRR;
+    public Field2d field2d;
 
     public Swerve(){
-        Pose = new SwerveDrivePoseEstimator(kSwerve.kinematics,
-        new Rotation2d(gyroAngle().getDegrees()),
-        new SwerveModulePosition[]{
-            FL.getPosition(),
-            FR.getPosition(),
-            BL.getPosition(),
-            BR.getPosition()
-        },
-        new Pose2d(4, 4, new Rotation2d()));
-        speeds = new ChassisSpeeds();
+        Pose = new SwerveDriveOdometry(
+        kSwerve.kinematics,
+        gyroAngle(), 
+        getPositions(),
+        new Pose2d(2,4, gyroAngle()));
+        chassisSpeedsRR = new ChassisSpeeds();
         ConfigureBuilder();
+        field2d = new Field2d();
+        SmartDashboard.putData(field2d);
+        resetPose(new Pose2d(2, 5, gyroAngle()));
+        field2d.setRobotPose(getPose());
     }
 
     public Rotation2d gyroAngle(){
@@ -63,7 +73,9 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
-        Pose.update(gyroAngle(), getPositions());
+        updatePose();   
+        field2d.setRobotPose(getPose());
+        chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
     }  
 
     public void ZeroGyro(){
@@ -75,24 +87,16 @@ public class Swerve extends SubsystemBase {
         // Degrees/sec
     }
 
-    public void Drive(ChassisSpeeds dSpeeds){
-        // dSpeeds = ChassisSpeeds.discretize(dSpeeds, 0.02);
-        var targetStates = kSwerve.kinematics.toSwerveModuleStates(dSpeeds);
+    public void Drive(ChassisSpeeds Speeds){
+        var targetStates = kSwerve.kinematics.toSwerveModuleStates(Speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
     }
 
     public void DriveRR(ChassisSpeeds speeds){
-        // speeds = ChassisSpeeds.discretize(speeds, 0.02);
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
     }
-
-    public ChassisSpeeds getChassisSpeedsRR(){
-        return speeds;
-    }
-
 
     public Command teleDrive(
     DoubleSupplier translation,
@@ -121,36 +125,43 @@ public class Swerve extends SubsystemBase {
         Y = Math.copySign(Y*Y, Y);
         z = Math.copySign(z*z, z);
 
-        var ROspeeds = new ChassisSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxAngularSpeed);
+        var ROspeeds = new ChassisSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxSpeed);
 
-        speeds = ROspeeds;
-        
         return ChassisSpeeds.fromFieldRelativeSpeeds(ROspeeds, gyroAngle());
     }
 
     public Pose2d getPose(){
-        return Pose.getEstimatedPosition();
+        return Pose.getPoseMeters();
     }
 
-    public void resetPose(Pose2d pose){
-        Pose.resetPosition(gyroAngle(), getPositions(), getPose());
+    public void updatePose(){
+        Pose.update(gyroAngle(), getPositions());
+    }
+
+    public void resetPose(Pose2d pose2d){
+        Pose.resetPosition(gyroAngle(), getPositions(), pose2d);
     }
 
     public void ConfigureBuilder(){
         AutoBuilder.configureHolonomic(
-        this::getPose,
-        this::resetPose,
-        this::getChassisSpeedsRR,
-        (speeds) -> DriveRR(speeds),
-        kAuto.AutoConfig,
-        () -> {
-            var All = DriverStation.getAlliance();
-            if (All.isPresent()) {
-                return All.get() == DriverStation.Alliance.Red;
-            }
-            return false;
-        },
-        this);
+            this::getPose,
+            this::resetPose,
+            () -> chassisSpeedsRR,
+            this::DriveRR,
+            new HolonomicPathFollowerConfig(
+                new PIDConstants(5), 
+                new PIDConstants(5), 
+                kSwerve.MaxSpeed, 
+                kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
+                new ReplanningConfig()),
+                () -> {
+                var All = DriverStation.getAlliance();
+                if (All.isPresent()) {
+                    return All.get() == DriverStation.Alliance.Red;
+                }
+                return false;
+                },
+                this);
     }
 
     public SwerveModuleState[] getStates(){
