@@ -17,6 +17,7 @@ public class ArmsUp extends Command {
 
     @Override
     public void execute() {
+        
         Climb.LeftUp(speed);
         Climb.RightUp(speed);
     }

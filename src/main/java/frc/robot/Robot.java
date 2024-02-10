@@ -222,7 +222,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = AutoBuilder.followPath(PathPlannerPath.fromPathFile("forward"));
+    m_autonomousCommand = AutoBuilder.followPath(PathPlannerPath.fromPathFile("Forward"));
 
     if(!(m_autonomousCommand == null)){
     m_autonomousCommand.schedule();
@@ -273,6 +273,7 @@ public class Robot extends TimedRobot {
 
     // Driver Button Bindings
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
+    driver_b_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.resetPoseManual(), mSwerve));
 
     
 

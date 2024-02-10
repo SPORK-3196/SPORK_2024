@@ -142,6 +142,10 @@ public class Swerve extends SubsystemBase {
         Pose.resetPosition(gyroAngle(), getPositions(), pose2d);
     }
 
+    public Command resetPoseManual(){
+        return this.runOnce(() -> resetPose(new Pose2d(2, 4, gyroAngle())));
+    }
+
     public void ConfigureBuilder(){
         AutoBuilder.configureHolonomic(
             this::getPose,
@@ -149,18 +153,12 @@ public class Swerve extends SubsystemBase {
             () -> chassisSpeedsRR,
             this::DriveRR,
             new HolonomicPathFollowerConfig(
-                new PIDConstants(5), 
-                new PIDConstants(5), 
+                new PIDConstants(1,0,0.1), 
+                new PIDConstants(1,0,0.01), 
                 kSwerve.MaxSpeed, 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
                 new ReplanningConfig()),
-                () -> {
-                var All = DriverStation.getAlliance();
-                if (All.isPresent()) {
-                    return All.get() == DriverStation.Alliance.Red;
-                }
-                return false;
-                },
+                () -> false,
                 this);
     }
 
