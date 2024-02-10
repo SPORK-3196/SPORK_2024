@@ -5,6 +5,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.kIntake;
 import frc.robot.Constants.kShooter;
 
 public class Shooter extends SubsystemBase {
@@ -22,14 +23,22 @@ public class Shooter extends SubsystemBase {
     }
 
     // set shooter to a speed
-    public void setShooterSpeed(double speed){
-        RightNEO.set(speed);
-        LeftNEO.set(speed);
+    public void setShooterSpeed(double speed,boolean Amp){
+        if(Amp){
+            RightNEO.set(kShooter.ampSpeed);
+            LeftNEO.set(kShooter.ampSpeed);
+        }
+        else{
+            RightNEO.set(speed);
+            LeftNEO.set(speed);
+    }
     }
 
+
     public void ShooterIdle(){
-        // TODO set shooter to go to the Idle speed 
-        setShooterSpeed(kShooter.IdleSpeed);
+        // TODO set shooter to go to the Idle speed
+        // TODO amp??? 
+        setShooterSpeed(kShooter.IdleSpeed, false);
     }
 
     public boolean isShooterToSpeed(){
@@ -39,10 +48,5 @@ public class Shooter extends SubsystemBase {
             return false;
         }
     }
-
-    // TODO set shooters to move constanly to reduce shoot time 
-
-    // TODO AMP vs Shooting speed change
-
     
 }
