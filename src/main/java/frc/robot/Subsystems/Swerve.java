@@ -18,6 +18,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -49,6 +51,7 @@ public class Swerve extends SubsystemBase {
 
     private SwerveDriveOdometry Pose;
     private ChassisSpeeds chassisSpeedsRR;
+    public Field2d field2d;
 
     public Swerve(){
         Pose = new SwerveDriveOdometry(
@@ -58,6 +61,10 @@ public class Swerve extends SubsystemBase {
         new Pose2d(2,4, gyroAngle()));
         chassisSpeedsRR = new ChassisSpeeds();
         ConfigureBuilder();
+        field2d = new Field2d();
+        SmartDashboard.putData(field2d);
+        resetPose(new Pose2d(2, 5, gyroAngle()));
+        field2d.setRobotPose(getPose());
     }
 
     public Rotation2d gyroAngle(){
@@ -67,6 +74,7 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic(){
         updatePose();   
+        field2d.setRobotPose(getPose());
         chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
     }  
 
@@ -146,15 +154,14 @@ public class Swerve extends SubsystemBase {
                 kSwerve.MaxSpeed, 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
                 new ReplanningConfig()),
-                () -> false,
-            // () -> {
-            //     var All = DriverStation.getAlliance();
-            //     if (All.isPresent()) {
-            //         return All.get() == DriverStation.Alliance.Red;
-            //     }
-            //     return false;
-            // },
-            this);
+                () -> {
+                var All = DriverStation.getAlliance();
+                if (All.isPresent()) {
+                    return All.get() == DriverStation.Alliance.Red;
+                }
+                return false;
+                },
+                this);
     }
 
     public SwerveModuleState[] getStates(){

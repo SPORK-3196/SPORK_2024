@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -221,7 +222,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = autoChooser.getSelected();
+    m_autonomousCommand = AutoBuilder.followPath(PathPlannerPath.fromPathFile("forward"));
 
     if(!(m_autonomousCommand == null)){
     m_autonomousCommand.schedule();
