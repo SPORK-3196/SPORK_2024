@@ -26,8 +26,8 @@ public class Shooter extends SubsystemBase {
     // set shooter to a speed
     public void setShooterSpeed(double speed,boolean Amp){
         if(Amp){
-            RightNEO.set(kShooter.ampSpeed);
-            LeftNEO.set(kShooter.ampSpeed);
+            RightNEO.set(kShooter.IdleSpeed);
+            LeftNEO.set(kShooter.IdleSpeed);
         }
         else{
             RightNEO.set(speed);
