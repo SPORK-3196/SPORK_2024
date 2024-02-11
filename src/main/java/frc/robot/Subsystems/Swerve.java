@@ -17,6 +17,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -64,7 +66,8 @@ public class Swerve extends SubsystemBase {
         ConfigureBuilder();
         field2d = new Field2d();
         SmartDashboard.putData(field2d);
-        resetPose(new Pose2d(2, 5, gyroAngle()));
+        // 1.4  5.5
+        resetPose(new Pose2d(15.2, 5.5, gyroAngle()));
         field2d.setRobotPose(getPose());
     }
 
@@ -154,17 +157,18 @@ public class Swerve extends SubsystemBase {
             () -> chassisSpeedsRR,
             this::DriveRR,
             new HolonomicPathFollowerConfig(
-                new PIDConstants(1,0,0.1), 
-                new PIDConstants(1,0,0.01), 
-                kSwerve.MaxSpeed, 
+                new PIDConstants(5,0,0), 
+                new PIDConstants(0,0,0), 
+                Units.feetToMeters(2), 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
                 new ReplanningConfig()),
                 () -> {
-                    var ALL = DriverStation.getAlliance();
-                    if(ALL.isPresent()){
-                        return ALL.get() == DriverStation.Alliance.Red;
+                    var Alliance = DriverStation.getAlliance();
+                    if(Alliance.isPresent()){
+                        return true;
+                        // return Alliance.get() == DriverStation.Alliance.Red;
                     }
-                    return false;
+                        return true;
                 },
                 this);
     }

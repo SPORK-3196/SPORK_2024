@@ -96,8 +96,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     mSwerve.setDefaultCommand(
       mSwerve.teleDrive(
-      () -> driver.getLeftY(), 
-      () -> driver.getLeftX(), 
+      () -> -driver.getLeftY(), 
+      () -> -driver.getLeftX(), 
       () -> driver.getRightX()));
   
 
@@ -235,7 +235,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = AutoBuilder.followPath(PathPlannerPath.fromPathFile("Forward"));
+    m_autonomousCommand = autoChooser.getSelected();
 
     if(!(m_autonomousCommand == null)){
     m_autonomousCommand.schedule();
