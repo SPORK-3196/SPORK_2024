@@ -5,8 +5,9 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Lighting{
+public class Lighting extends SubsystemBase{
   public Spark Lighting = new Spark(9);
 
 // Using REV Blinkin (Such a fun name)
