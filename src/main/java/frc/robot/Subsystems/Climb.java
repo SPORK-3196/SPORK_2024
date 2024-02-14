@@ -1,6 +1,7 @@
 package frc.robot.Subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkLimitSwitch.Type;
@@ -18,6 +19,9 @@ public class Climb extends SubsystemBase{
 
     private SparkLimitSwitch LeftArmBottom;
     private SparkLimitSwitch LeftArmTop;
+
+    public RelativeEncoder RightArmEncoder;
+    public RelativeEncoder LeftArmEncoder;
     
     public Climb(){
         RightArm.setIdleMode(kClimber.ClimberIdle);
@@ -32,6 +36,10 @@ public class Climb extends SubsystemBase{
         // Left Limit Switches
         LeftArmBottom = LeftArm.getForwardLimitSwitch(Type.kNormallyOpen);
         LeftArmTop = LeftArm.getReverseLimitSwitch(Type.kNormallyOpen);
+
+        // Encoders
+        LeftArmEncoder = LeftArm.getEncoder();
+        RightArmEncoder = RightArm.getEncoder();
         
     }
 

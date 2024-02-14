@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SpeakerToLeftNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftToSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ToMiddlePiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleToScore"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SpeakerToRightNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightToSpeaker"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

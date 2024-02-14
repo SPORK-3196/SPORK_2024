@@ -94,7 +94,7 @@ public class Constants {
         public static final double kDeadband = 0.1;
         
         public static final double MaxAngularSpeed = Units.feetToMeters(5); // m/s
-        public static final double MaxSpeed = Units.feetToMeters(3);  // m/s
+        public static final double MaxSpeed = Units.feetToMeters(5);  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
 

@@ -17,7 +17,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -63,7 +66,8 @@ public class Swerve extends SubsystemBase {
         ConfigureBuilder();
         field2d = new Field2d();
         SmartDashboard.putData(field2d);
-        resetPose(new Pose2d(2, 5, gyroAngle()));
+        // 1.4  5.5
+        resetPose(new Pose2d(15.2, 5.5, gyroAngle()));
         field2d.setRobotPose(getPose());
     }
 
@@ -142,6 +146,10 @@ public class Swerve extends SubsystemBase {
         Pose.resetPosition(gyroAngle(), getPositions(), pose2d);
     }
 
+    public Command resetPoseManual(){
+        return this.runOnce(() -> Pose.resetPosition(gyroAngle(), getPositions(), new Pose2d(2, 4, gyroAngle())));
+    }
+
     public void ConfigureBuilder(){
         AutoBuilder.configureHolonomic(
             this::getPose,
@@ -149,17 +157,18 @@ public class Swerve extends SubsystemBase {
             () -> chassisSpeedsRR,
             this::DriveRR,
             new HolonomicPathFollowerConfig(
-                new PIDConstants(5), 
-                new PIDConstants(5), 
-                kSwerve.MaxSpeed, 
+                new PIDConstants(5,0,0), 
+                new PIDConstants(0,0,0), 
+                Units.feetToMeters(2), 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
                 new ReplanningConfig()),
                 () -> {
-                var All = DriverStation.getAlliance();
-                if (All.isPresent()) {
-                    return All.get() == DriverStation.Alliance.Red;
-                }
-                return false;
+                    var Alliance = DriverStation.getAlliance();
+                    if(Alliance.isPresent()){
+                        return true;
+                        // return Alliance.get() == DriverStation.Alliance.Red;
+                    }
+                        return true;
                 },
                 this);
     }

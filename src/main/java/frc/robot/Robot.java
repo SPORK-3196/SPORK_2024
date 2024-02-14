@@ -24,10 +24,12 @@ import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
 import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Constants.kClimber;
+import frc.robot.Constants.kShooter;
 import frc.robot.OI.kDriver;
 import frc.robot.OI.kSecondary;
 import frc.robot.Subsystems.Climb;
 import frc.robot.Subsystems.Intake;
+import frc.robot.Subsystems.Lighting;
 import frc.robot.Subsystems.Roller;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
@@ -40,10 +42,11 @@ public class Robot extends TimedRobot {
   // Subsystem Initalising 
   public SendableChooser<Command> autoChooser;
   public Swerve mSwerve = new Swerve();
-  // public Climb mClimb = new Climb();
-  // public Intake mIntake = new Intake();
   // public Roller mRoller = new Roller();
-  // public Shooter mShooter = new Shooter();
+  public Climb mClimb = new Climb();
+  public Intake mIntake = new Intake();
+  public Shooter mShooter = new Shooter();
+  public Lighting mLighting = new Lighting();
 
   
   // Controllers 
@@ -93,11 +96,21 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     mSwerve.setDefaultCommand(
       mSwerve.teleDrive(
-      () -> driver.getLeftY(), 
-      () -> driver.getLeftX(), 
+      () -> -driver.getLeftY(), 
+      () -> -driver.getLeftX(), 
       () -> driver.getRightX()));
-    
+  
+
     configureBindings();
+    
+    var Alliance = DriverStation.getAlliance();
+    if (Alliance.isPresent()) {
+      if(Alliance.get() ==  DriverStation.Alliance.Red){
+        mLighting.setRed();
+      }else{
+        mLighting.setBlue();
+      }
+    }
 
     autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
 
@@ -222,7 +235,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = AutoBuilder.followPath(PathPlannerPath.fromPathFile("forward"));
+    m_autonomousCommand = autoChooser.getSelected();
 
     if(!(m_autonomousCommand == null)){
     m_autonomousCommand.schedule();
@@ -273,10 +286,12 @@ public class Robot extends TimedRobot {
 
     // Driver Button Bindings
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
+    driver_b_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.resetPoseManual(), mSwerve));
 
     
 
     // Secondary Button Bindings
+    // secondary_b_Button.onTrue(new InstantCommand(() -> mShooter.setShooterSpeed(kShooter.ShootingSpeed, false), mShooter));
     // secondary_Left_Trigger.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
     // secondary_Right_Trigger.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
 

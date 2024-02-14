@@ -54,7 +54,7 @@ public class Module extends SubsystemBase{
         
         DriveEncoder = DriveNEO.getEncoder();
         DriveEncoder.setPosition(0);
-        // DriveEncoder.setPositionConversionFactor(0);
+        
         
         absoluteEncoder = new CANcoder(absoluteEncoderID);
         var absoluteEncoderConfigu = absoluteEncoder.getConfigurator();
@@ -87,7 +87,7 @@ public class Module extends SubsystemBase{
     }
 
     public SwerveModulePosition getPosition(){
-        return new SwerveModulePosition(DriveEncoder.getPosition() / 100 , getCANangle());
+        return new SwerveModulePosition(DriveEncoder.getPosition(), getCANangle());
     }
 
     public SwerveModuleState getstate(){
