@@ -17,8 +17,21 @@ public class ArmsUp extends Command {
 
     @Override
     public void execute() {
-        Climb.LeftUp(speed);
-        Climb.RightUp(speed);
+        if(Climb.LeftArmEncoder.getPosition() > Climb.RightArmEncoder.getPosition()){
+
+             Climb.LeftStop();
+             Climb.RightUp(speed);
+        } 
+        else if (Climb.RightArmEncoder.getPosition() > Climb.LeftArmEncoder.getPosition()){
+
+            Climb.RightStop();
+            Climb.LeftUp(speed);
+         }
+         else {
+            Climb.LeftUp(speed);
+            Climb.RightUp(speed);
+        }
+
     }
     
     @Override
