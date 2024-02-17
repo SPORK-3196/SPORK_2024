@@ -23,20 +23,20 @@ public class Shooter extends SubsystemBase {
     }
 
     // set shooter to a speed
-    public void setShooterSpeed(double speed,boolean Amp){
-        if(Amp){
-            RightNEO.set(kShooter.IdleSpeed);
-            LeftNEO.set(kShooter.IdleSpeed);
-        }
-        else{
+    public void setShooterSpeed(double speed/* , boolean Amp */){
+        // if(Amp){
+        //     RightNEO.set(kShooter.IdleSpeed);
+        //     LeftNEO.set(kShooter.IdleSpeed);
+        // }
+        // else{
             RightNEO.set(speed);
             LeftNEO.set(speed);
-    }
+        // }
     }
 
 
     public void ShooterIdle(){
-        setShooterSpeed(kShooter.IdleSpeed, false);
+        setShooterSpeed(kShooter.IdleSpeed);
     }
 
     public boolean isShooterToSpeed(){

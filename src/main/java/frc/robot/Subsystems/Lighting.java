@@ -7,12 +7,12 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 public class Lighting{
-  public Spark Lighting = new Spark(9);
+  public Spark Lighting;
 
 // Using REV Blinkin (Such a fun name)
 
   public Lighting(){
-    Lighting.set(0.87);
+    Lighting = new Spark(9);
   }
 
   public void setRed(){

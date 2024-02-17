@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3458891115313096,
-        "y": 5.543357259554025
+        "x": 1.4048307100172925,
+        "y": 5.5410316277334815
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.596502946092312,
-        "y": 6.165250849020216
+        "x": 1.4437834806867724,
+        "y": 7.3328590785295455
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.3576264436479493,
-        "y": 6.972784315939003
+        "x": 2.534461059432202,
+        "y": 7.021236913173707
       },
       "prevControl": {
-        "x": 1.6998862626894662,
-        "y": 6.955788785566154
+        "x": 1.580118178029951,
+        "y": 7.060189683843188
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,12 +30,30 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Zero Gyro"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0
+    "maxAngularVelocity": 0.0,
+    "maxAngularAcceleration": 0.0
   },
   "goalEndState": {
     "velocity": 0,

@@ -14,8 +14,8 @@ public class Climb extends SubsystemBase{
     private CANSparkMax RightArm = new CANSparkMax(kClimber.RightArmPort, MotorType.kBrushless);
     private CANSparkMax LeftArm = new CANSparkMax(kClimber.LeftArmPort, MotorType.kBrushless);
 
-    private SparkLimitSwitch rightArmBottom;
-    private SparkLimitSwitch rightArmTop;
+    private SparkLimitSwitch RightArmBottom;
+    private SparkLimitSwitch RightArmTop;
 
     private SparkLimitSwitch LeftArmBottom;
     private SparkLimitSwitch LeftArmTop;
@@ -29,13 +29,13 @@ public class Climb extends SubsystemBase{
         RightArm.setInverted(kClimber.RightArmInvert);
         LeftArm.setInverted(kClimber.LeftArmInvert);
 
-        // Right Limit Switches
-        rightArmBottom = RightArm.getForwardLimitSwitch(Type.kNormallyOpen);
-        rightArmTop = RightArm.getReverseLimitSwitch(Type.kNormallyOpen);
+        // Right Limit Switchs
+        RightArmBottom = RightArm.getForwardLimitSwitch(Type.kNormallyClosed);
+        RightArmTop = RightArm.getReverseLimitSwitch(Type.kNormallyClosed);
 
-        // Left Limit Switches
+        // Left Limit Switch
         LeftArmBottom = LeftArm.getForwardLimitSwitch(Type.kNormallyOpen);
-        LeftArmTop = LeftArm.getReverseLimitSwitch(Type.kNormallyOpen);
+        LeftArmTop = RightArm.getReverseLimitSwitch(Type.kNormallyClosed);
 
         // Encoders
         LeftArmEncoder = LeftArm.getEncoder();
@@ -44,7 +44,7 @@ public class Climb extends SubsystemBase{
     }
 
     public void LeftUp(double speed){
-        if(!LeftArmTop.isPressed()){
+        if(LeftArmTop.isPressed()){
             LeftArm.set(speed);
         }else{
             LeftStop();
@@ -52,7 +52,7 @@ public class Climb extends SubsystemBase{
     }
 
     public void LeftDown(double speed){
-        if (!LeftArmBottom.isPressed()) {
+        if (LeftArmBottom.isPressed()) {
             LeftArm.set(-speed);
         }else{
             LeftStop();
@@ -64,7 +64,7 @@ public class Climb extends SubsystemBase{
     }
 
     public void RightUp(double speed){
-        if (!rightArmTop.isPressed()) {
+        if (RightArmTop.isPressed()) {
             RightArm.set(-speed);
         }else{
             RightStop();
@@ -72,7 +72,7 @@ public class Climb extends SubsystemBase{
     }
 
     public void RightDown(double speed){
-        if (!rightArmBottom.isPressed()) {
+        if (RightArmBottom.isPressed()) {
             RightArm.set(-speed);
         }else{
             RightStop();

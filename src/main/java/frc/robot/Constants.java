@@ -42,6 +42,7 @@ public class Constants {
     }
 
     public static class kIntake {
+
         // Setup
         public static int IntakePort = 9;
         public static int IntakeAxisPort = 14;
@@ -53,10 +54,12 @@ public class Constants {
         // Positions
         public static double FloorPickup = 0.0;  //TODO change these values
         public static double ShooterFeed = 0.0; 
+        public static double spitPos = 0.0; 
 
         // Speeds
         public static double IntakeSpeed = 0.5;
         public static double FeedSpeed = 0.2;
+        
         // PID Values
         public static double kP = 0;
         public static double KI = 0;
@@ -94,7 +97,7 @@ public class Constants {
         public static final double kDeadband = 0.1;
         
         public static final double MaxAngularSpeed = Units.feetToMeters(5); // m/s
-        public static final double MaxSpeed = Units.feetToMeters(5);  // m/s
+        public static final double MaxSpeed = Units.feetToMeters(10);  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
 

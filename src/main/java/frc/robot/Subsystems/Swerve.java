@@ -3,6 +3,7 @@ package frc.robot.Subsystems;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Constants.kAuto;
@@ -66,8 +68,6 @@ public class Swerve extends SubsystemBase {
         ConfigureBuilder();
         field2d = new Field2d();
         SmartDashboard.putData(field2d);
-        // 1.4  5.5
-        resetPose(new Pose2d(15.2, 5.5, gyroAngle()));
         field2d.setRobotPose(getPose());
     }
 
@@ -151,6 +151,12 @@ public class Swerve extends SubsystemBase {
     }
 
     public void ConfigureBuilder(){
+        NamedCommands.registerCommand("Zero Gyro",new InstantCommand(() -> this.ZeroGyro()));
+        // NamedCommands.registerCommand(getName(), null);
+        // NamedCommands.registerCommand(getName(), null);
+        // NamedCommands.registerCommand(getName(), null);
+
+        // TODO Rotation
         AutoBuilder.configureHolonomic(
             this::getPose,
             this::resetPose,
@@ -165,8 +171,7 @@ public class Swerve extends SubsystemBase {
                 () -> {
                     var Alliance = DriverStation.getAlliance();
                     if(Alliance.isPresent()){
-                        return true;
-                        // return Alliance.get() == DriverStation.Alliance.Red;
+                        return Alliance.get() == DriverStation.Alliance.Red;
                     }
                         return true;
                 },

@@ -43,9 +43,9 @@ public class Robot extends TimedRobot {
   public SendableChooser<Command> autoChooser;
   public Swerve mSwerve = new Swerve();
   // public Roller mRoller = new Roller();
-  public Climb mClimb = new Climb();
-  public Intake mIntake = new Intake();
-  public Shooter mShooter = new Shooter();
+  // public Climb mClimb = new Climb();
+  // public Intake mIntake = new Intake();
+  // public Shooter mShooter = new Shooter();
   public Lighting mLighting = new Lighting();
 
   
@@ -100,29 +100,23 @@ public class Robot extends TimedRobot {
       () -> -driver.getLeftX(), 
       () -> driver.getRightX()));
   
-
     configureBindings();
-    
-    var Alliance = DriverStation.getAlliance();
-    if (Alliance.isPresent()) {
-      if(Alliance.get() ==  DriverStation.Alliance.Red){
-        mLighting.setRed();
-      }else{
-        mLighting.setBlue();
-      }
+    if (isRed()) {
+      mLighting.setRed();
+      System.out.println("red");
+    }else{
+      mLighting.setBlue();
+      System.out.println("blue");
     }
 
     autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
-
     SmartDashboard.putData("Auto", autoChooser);
-
 
     Cam.setFPS(15);
     Cam.setResolution(144, 144);
 
     Cam2.setFPS(15);
     Cam2.setResolution(80, 80);
-
   }
 
   @Override
@@ -297,6 +291,14 @@ public class Robot extends TimedRobot {
 
     // secondary_a_Button.onTrue(new RunIntake(mIntake, mShooter));
 
+  }
+
+  public boolean isRed(){
+    var Alliance = DriverStation.getAlliance();
+    if(Alliance.isPresent()){
+        return Alliance.get() == DriverStation.Alliance.Red;
+    }
+        return false;
   }
 
 
