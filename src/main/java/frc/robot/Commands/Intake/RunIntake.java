@@ -26,9 +26,9 @@ public class RunIntake extends Command{
         // TODO only feed when the shooter is up to speed - could be driver controlled?
 
         // TODO 10 is a stand in number must change
-        if(!mIntake.NoteIn.isPressed() && mIntake.IntakeEncoder.getPosition() < 10 ){
+        if(!mIntake.NoteIn.get() && mIntake.IntakeEncoder.getPosition() < 10 ){
             mIntake.grab();
-        }else if(mIntake.NoteIn.isPressed() && mIntake.IntakeEncoder.getPosition() > 10 && mShooter.isShooterToSpeed()){
+        }else if(mIntake.NoteIn.get() && mIntake.IntakeEncoder.getPosition() > 10 && mShooter.isShooterToSpeed()){
             mIntake.feed();
         }else{
             mIntake.Keep();

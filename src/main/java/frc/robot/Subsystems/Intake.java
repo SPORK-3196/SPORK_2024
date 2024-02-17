@@ -5,9 +5,11 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkLimitSwitch.Type;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kIntake;
@@ -22,9 +24,9 @@ public RelativeEncoder IntakeEncoder = IntakeAxis.getEncoder();
 private SparkPIDController IntakePID;
 
 // Limit switches
-public SparkLimitSwitch NoteIn = IntakeNeo.getForwardLimitSwitch(Type.kNormallyOpen);
+public DigitalInput NoteIn = new DigitalInput(0);
 public SparkLimitSwitch SpeakerLimit = IntakeAxis.getForwardLimitSwitch(Type.kNormallyOpen);
-public SparkLimitSwitch SoftStopLimit = IntakeAxis.getReverseLimitSwitch(Type.kNormallyOpen);
+public SparkLimitSwitch FloorStop = IntakeAxis.getReverseLimitSwitch(Type.kNormallyOpen);
 
     public Intake(){
     IntakeNeo.setIdleMode(kIntake.IntakeIdle);
@@ -40,15 +42,27 @@ public SparkLimitSwitch SoftStopLimit = IntakeAxis.getReverseLimitSwitch(Type.kN
 
     // Intake game pieces
     public void grab(){
-        IntakeNeo.set(kIntake.IntakeSpeed);
-    }
+        IntakeNeo.setIdleMode(kIntake.IntakeIdle);
+        if (!NoteIn.get()) {
+            IntakeNeo.set(kIntake.IntakeSpeed);
+        }else{
+            Keep();
+            this.runOnce(() -> ShooterPos());
+        }
+
+    } 
 
     public void Keep(){
         IntakeNeo.set(0);
     }
 
+    public double getPos(){
+        return IntakeEncoder.getPosition();
+    }
+
     // Feed pieces into the shooter
     public void feed(){
+        IntakeNeo.setIdleMode(IdleMode.kCoast);
         IntakeNeo.set(-kIntake.FeedSpeed);
     }
 
@@ -70,5 +84,9 @@ public SparkLimitSwitch SoftStopLimit = IntakeAxis.getReverseLimitSwitch(Type.kN
     // Honestly this seems kinda stupid but it might be better than seting the motor to 0
     public Command Stop(){
         return this.runOnce(() -> IntakePID.setReference(IntakeEncoder.getPosition(), ControlType.kPosition));
+    }
+
+    public Command spitPos() {
+        return this.runOnce(() -> IntakePID.setReference(kIntake.spitPos + 20, ControlType.kPosition));
     }
 }
