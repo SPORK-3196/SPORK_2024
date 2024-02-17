@@ -17,12 +17,20 @@ public class Constants {
     //TODO get others to work on this
 
     public static class kVision{
-        
+
+
+
     }
 
 
     public static class kAuto {
-        
+      public static HolonomicPathFollowerConfig AutoConfig = new HolonomicPathFollowerConfig(
+        new PIDConstants(2,0,0.1),
+        new PIDConstants(2, 0, 0.1),
+        kSwerve.MaxSpeed,
+        Units.inchesToMeters(12),
+        new ReplanningConfig(false, false)
+        );
     }
 
     public static class kShooter {
@@ -34,10 +42,14 @@ public class Constants {
         public static boolean LeftInvert = false;
         public static IdleMode ShooterIdleMode = IdleMode.kBrake; // may change
 
+
+
         // Targets
-        public static double IdleSpeed = 0.2; // can change
-        public static double ShootingSpeed = 0.5;
+        public static double ampSpeed = 0.4; // will change
+        public static double IdleSpeed = 0.2; // will change
         public static double TargetVelocity = 0.5; // M/s
+         
+
 
     }
 
@@ -67,13 +79,13 @@ public class Constants {
     }
 
 
-    // public static class kRollerBars {
-    //     public static int RollerNeoPort = 9;
-    //     public static double RollerSpeed = 0.5; // test rollers
-    //     public static boolean RollerInvert = false;
-    //     public static IdleMode RollerIdle = IdleMode.kBrake;
+    public static class kRollerBars {
+        public static int RollerNeoPort = 9; // TODO change 
+        public static double RollerSpeed = 0.5; // test rollers
+        public static boolean RollerInvert = false;
+        public static IdleMode RollerIdle = IdleMode.kBrake;
         
-    // }
+    }
     
 
     public static class kClimber {
@@ -91,7 +103,7 @@ public class Constants {
     }
 
     public static class kSwerve {
-        public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(24);
+        private static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(24);
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(24);
         
         public static final double kDeadband = 0.1;
@@ -100,13 +112,12 @@ public class Constants {
         public static final double MaxSpeed = Units.feetToMeters(10);  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
-
         public static final double RotationGearRatio = (150/7)/1;
         public static final double DriveGearRatio = 8.14/1;
 
         //Spark Max IDs 
         public static final int frontLeftDrive = 1;
-        public static final int frontLeftSteer = 5;
+        public static final int frontLeftSteer =5;
         public static final int backLeftDrive = 2;
         public static final int backLeftSteer = 6;
         public static final int backRightDrive = 4;

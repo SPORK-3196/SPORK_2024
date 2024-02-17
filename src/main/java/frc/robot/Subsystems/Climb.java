@@ -21,30 +21,31 @@ public class Climb extends SubsystemBase{
     private SparkLimitSwitch LeftArmTop;
 
     public RelativeEncoder RightArmEncoder;
-    public RelativeEncoder LeftArmEncoder;
-    
+    public RelativeEncoder LeftArmEncoder; 
+
+
     public Climb(){
         RightArm.setIdleMode(kClimber.ClimberIdle);
         LeftArm.setIdleMode(kClimber.ClimberIdle);
         RightArm.setInverted(kClimber.RightArmInvert);
         LeftArm.setInverted(kClimber.LeftArmInvert);
 
-        // Right Limit Switchs
-        RightArmBottom = RightArm.getForwardLimitSwitch(Type.kNormallyClosed);
-        RightArmTop = RightArm.getReverseLimitSwitch(Type.kNormallyClosed);
+        // Right Limit Switches
+        RightArmBottom = RightArm.getForwardLimitSwitch(Type.kNormallyOpen);
+        RightArmTop = RightArm.getReverseLimitSwitch(Type.kNormallyOpen);
 
-        // Left Limit Switch
+        // Left Limit Switches
         LeftArmBottom = LeftArm.getForwardLimitSwitch(Type.kNormallyOpen);
-        LeftArmTop = RightArm.getReverseLimitSwitch(Type.kNormallyClosed);
+        LeftArmTop = LeftArm.getReverseLimitSwitch(Type.kNormallyOpen);
 
         // Encoders
         LeftArmEncoder = LeftArm.getEncoder();
         RightArmEncoder = RightArm.getEncoder();
-        
+        LeftArmEncoder = LeftArm.getEncoder();
     }
 
     public void LeftUp(double speed){
-        if(LeftArmTop.isPressed()){
+        if(!LeftArmTop.isPressed()){
             LeftArm.set(speed);
         }else{
             LeftStop();
@@ -52,7 +53,7 @@ public class Climb extends SubsystemBase{
     }
 
     public void LeftDown(double speed){
-        if (LeftArmBottom.isPressed()) {
+        if (!LeftArmBottom.isPressed()) {
             LeftArm.set(-speed);
         }else{
             LeftStop();
@@ -64,7 +65,7 @@ public class Climb extends SubsystemBase{
     }
 
     public void RightUp(double speed){
-        if (RightArmTop.isPressed()) {
+        if (!RightArmTop.isPressed()) {
             RightArm.set(-speed);
         }else{
             RightStop();
@@ -72,7 +73,7 @@ public class Climb extends SubsystemBase{
     }
 
     public void RightDown(double speed){
-        if (RightArmBottom.isPressed()) {
+        if (!RightArmBottom.isPressed()) {
             RightArm.set(-speed);
         }else{
             RightStop();
@@ -82,6 +83,6 @@ public class Climb extends SubsystemBase{
     public void RightStop(){
         RightArm.set(0);
     }
-
-    // TODO get driver input
+    
+    // get driver input
 }
