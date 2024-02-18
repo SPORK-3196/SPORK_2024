@@ -1,8 +1,5 @@
 package frc.robot;
 
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -24,13 +21,7 @@ public class Constants {
 
 
     public static class kAuto {
-      public static HolonomicPathFollowerConfig AutoConfig = new HolonomicPathFollowerConfig(
-        new PIDConstants(2,0,0.1),
-        new PIDConstants(2, 0, 0.1),
-        kSwerve.MaxSpeed,
-        Units.inchesToMeters(12),
-        new ReplanningConfig(false, false)
-        );
+
     }
 
     public static class kShooter {
@@ -66,7 +57,7 @@ public class Constants {
 
         // Positions
         public static double FloorPickup = 0.0;  //TODO change these values
-        public static double ShooterFeed = 0.0; 
+        public static double ShooterPos = 0.0; 
         public static double spitPos = 0.0; 
 
         // Speeds

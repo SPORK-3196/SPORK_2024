@@ -86,15 +86,15 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getReverseLimitSwitch(Type.kNorma
 
     // To the wall
     public Command ShooterPos(){
-        return this.runOnce(() -> IntakePID.setReference(kIntake.ShooterFeed, ControlType.kPosition));
+        return this.runOnce(() -> IntakePID.setReference(kIntake.ShooterPos, ControlType.kPosition));
+    }
+
+    public Command spitPos() {
+        return this.runOnce(() -> IntakePID.setReference(kIntake.spitPos, ControlType.kPosition));
     }
 
     // Honestly this seems kinda stupid but it might be better than seting the motor to 0
     public Command Stop(){
         return this.runOnce(() -> IntakePID.setReference(IntakeEncoder.getPosition(), ControlType.kPosition));
-    }
-
-    public Command spitPos() {
-        return this.runOnce(() -> IntakePID.setReference(kIntake.spitPos, ControlType.kPosition));
     }
 }
