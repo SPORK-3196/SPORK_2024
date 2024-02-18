@@ -95,6 +95,6 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getReverseLimitSwitch(Type.kNorma
     }
 
     public Command spitPos() {
-        return this.runOnce(() -> IntakePID.setReference(kIntake.spitPos + 20, ControlType.kPosition));
+        return this.runOnce(() -> IntakePID.setReference(kIntake.spitPos, ControlType.kPosition));
     }
 }

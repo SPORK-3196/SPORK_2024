@@ -74,9 +74,9 @@ public class Constants {
         public static double FeedSpeed = 0.2;
         
         // PID Values
-        public static double kP = 0;
+        public static double kP = 0.1;
         public static double KI = 0;
-        public static double kD = 0;
+        public static double kD = 0.0;
     }
 
 

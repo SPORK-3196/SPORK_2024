@@ -5,7 +5,6 @@ import frc.robot.Constants.kShooter;
 import frc.robot.Subsystems.Shooter;
 
 public class RunShooter extends Command {
-    
 
     public Shooter shooter;
 
@@ -17,7 +16,7 @@ public class RunShooter extends Command {
 
     @Override
     public void initialize() {
-        shooter.setShooterSpeed(kShooter.IdleSpeed);
+        shooter.setShooterSpeed(kShooter.ShootSpeed);
     }
 
 

@@ -20,8 +20,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
 import frc.robot.Commands.Intake.RunIntake;
+import frc.robot.Commands.Intake.Vomit;
+import frc.robot.Commands.Shooter.RunShooter;
 import frc.robot.Constants.kClimber;
-import frc.robot.Constants.kShooter;
 import frc.robot.OI.kDriver;
 import frc.robot.OI.kIntake;
 import frc.robot.OI.kSecondary;
@@ -257,11 +258,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+
+      // Intake position 
     if(secondary.getPOV() == 90){
       mIntake.ShooterPos();
     }
     if (secondary.getPOV() == 180) {
       mIntake.FloorPos();
+    }
+    if (secondary.getPOV() == 0) {
+      new Vomit(mIntake);
     }
 
 
@@ -287,11 +293,14 @@ public class Robot extends TimedRobot {
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
  
     // Secondary Button Bindings
-    secondary_b_Button.onTrue(new InstantCommand(() -> mShooter.setShooterSpeed(kShooter.ShootSpeed), mShooter));
+
+      // Scoring
+    secondary_b_Button.whileTrue(new RunShooter(mShooter));
+    secondary_a_Button.whileTrue(new RunIntake(mIntake, mShooter));
+
+      // Climber
     secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
     secondary_Right_Bumper.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
-
-    secondary_a_Button.onTrue(new RunIntake(mIntake, mShooter));
 
   }
 
