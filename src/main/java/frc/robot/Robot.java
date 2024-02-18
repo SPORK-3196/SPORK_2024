@@ -6,11 +6,8 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.PathPlannerPath;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -26,11 +23,11 @@ import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Constants.kClimber;
 import frc.robot.Constants.kShooter;
 import frc.robot.OI.kDriver;
+import frc.robot.OI.kIntake;
 import frc.robot.OI.kSecondary;
 import frc.robot.Subsystems.Climb;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Lighting;
-import frc.robot.Subsystems.Roller;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
 
@@ -43,9 +40,9 @@ public class Robot extends TimedRobot {
   public SendableChooser<Command> autoChooser;
   public Swerve mSwerve = new Swerve();
   // public Roller mRoller = new Roller();
-  // public Climb mClimb = new Climb();
-  // public Intake mIntake = new Intake();
-  // public Shooter mShooter = new Shooter();
+  public Climb mClimb = new Climb();
+  public Intake mIntake = new Intake();
+  public Shooter mShooter = new Shooter();
   public Lighting mLighting = new Lighting();
 
   
@@ -101,13 +98,6 @@ public class Robot extends TimedRobot {
       () -> driver.getRightX()));
   
     configureBindings();
-    if (isRed()) {
-      mLighting.setRed();
-      System.out.println("red");
-    }else{
-      mLighting.setBlue();
-      System.out.println("blue");
-    }
 
     autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
     SmartDashboard.putData("Auto", autoChooser);
@@ -199,29 +189,45 @@ public class Robot extends TimedRobot {
       kSecondary.kPOV_Entry.setDouble(kSecondary.kPOV);
     }
 
+    if (!DriverStation.isFMSAttached()) {
+      kIntake.IntakePos = mIntake.getPos();
+      kIntake.IntakeRun = !mIntake.isRunning();
+      kIntake.IntakeSpeed = mIntake.getSpeed();
+
+      frc.robot.OI.kShooter.ShooterSpeed = mShooter.getShooterSpeed();
+
+      kIntake.kIntakePos_Entry.setDouble(kIntake.IntakePos);
+      kIntake.kIntakeRun_Entry.setBoolean(kIntake.IntakeRun);
+      kIntake.kIntakeSpeed_Entry.setDouble(kIntake.IntakeSpeed);
+
+      frc.robot.OI.kShooter.kShooterSpeed_Entry.setDouble(frc.robot.OI.kShooter.ShooterSpeed);
+    }
+
 
     // shows both outside and durring a game 
 
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
-    SmartDashboard.putNumber("FR angle",Swerve.FR.getCANforshuffle().getRotations());
-    SmartDashboard.putNumber("BR angle",Swerve.BR.getCANforshuffle().getRotations());
-    SmartDashboard.putNumber("FL angle",Swerve.FL.getCANforshuffle().getRotations());
-    SmartDashboard.putNumber("BL angle",Swerve.BL.getCANforshuffle().getRotations());
 
-    // if (mIntake.SpeakerLimit.isPressed()) {
-    //   mIntake.IntakeEncoder.setPosition(0);
-    // }
+    if (mIntake.SpeakerLimit.isPressed()) {
+      mIntake.IntakeEncoder.setPosition(0);
+    }
 
-    // if (mIntake.SoftStopLimit.isPressed()) {
-    //   mIntake.Stop();
-    // }
+    if (mIntake.FloorStop.isPressed()) {
+      mIntake.Stop();
+    }
   }
 
   @Override
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    if (isRed()) {
+      mLighting.setRed();
+    }else{
+      mLighting.setBlue();
+    }
+  }
 
   @Override
   public void disabledExit() {
@@ -251,15 +257,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    if(secondary.getPOV() == 90){
+      mIntake.ShooterPos();
+    }
+    if (secondary.getPOV() == 180) {
+      mIntake.FloorPos();
+    }
 
-    // if(secondary.getPOV() == 90){
-    //   mIntake.ShooterPos();
-    // }
-    // if (secondary.getPOV() == 180) {
-    //   mIntake.FloorPos();
-    // }
 
-    
   }
 
   @Override
@@ -280,16 +285,13 @@ public class Robot extends TimedRobot {
 
     // Driver Button Bindings
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
-    driver_b_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.resetPoseManual(), mSwerve));
-
-    
-
+ 
     // Secondary Button Bindings
-    // secondary_b_Button.onTrue(new InstantCommand(() -> mShooter.setShooterSpeed(kShooter.ShootingSpeed, false), mShooter));
-    // secondary_Left_Trigger.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
-    // secondary_Right_Trigger.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
+    secondary_b_Button.onTrue(new InstantCommand(() -> mShooter.setShooterSpeed(kShooter.ShootSpeed), mShooter));
+    secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
+    secondary_Right_Bumper.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
 
-    // secondary_a_Button.onTrue(new RunIntake(mIntake, mShooter));
+    secondary_a_Button.onTrue(new RunIntake(mIntake, mShooter));
 
   }
 
@@ -300,6 +302,5 @@ public class Robot extends TimedRobot {
     }
         return false;
   }
-
 
 }

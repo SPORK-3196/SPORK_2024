@@ -71,6 +71,14 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getReverseLimitSwitch(Type.kNorma
         IntakeNeo.set(-kIntake.IntakeSpeed);
     }
 
+    public boolean isRunning(){
+        return IntakeNeo.get() == 0;
+    }
+
+    public double getSpeed(){
+        return IntakeNeo.get();
+    }
+
     // To the window
     public Command FloorPos(){
         return this.runOnce(() -> IntakePID.setReference(kIntake.FloorPickup, ControlType.kPosition));

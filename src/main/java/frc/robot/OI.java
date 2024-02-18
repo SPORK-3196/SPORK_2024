@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 public class OI {
     public static ShuffleboardTab X1_Tab = Shuffleboard.getTab("Driver");
     public static ShuffleboardTab X2_Tab = Shuffleboard.getTab("Secondary");
-    
+    public static ShuffleboardTab Intake_Tab = Shuffleboard.getTab("Intake");
+    public static ShuffleboardTab Shooter_Tab = Shuffleboard.getTab("Shooter");
     
     
     public class kDriver{
@@ -80,5 +81,21 @@ public class OI {
         public static GenericEntry kLeftTrigger_Entry = X2_Tab.add("Left trigger", 0.0).getEntry();
 
         public static GenericEntry kPOV_Entry = X2_Tab.add("D-Pad Value", 0.0).getEntry();
+    }
+
+    public static class kShooter{
+        public static double ShooterSpeed = 0.0;
+
+        public static GenericEntry kShooterSpeed_Entry = Shooter_Tab.add("Shooter speed", 0.0).getEntry();
+    }
+
+    public static class kIntake{
+        public static double IntakePos = 0;
+        public static double IntakeSpeed = 0;
+        public static boolean IntakeRun = false;
+
+        public static GenericEntry kIntakePos_Entry = Intake_Tab.add("Intake Pos", 0.0).getEntry();
+        public static GenericEntry kIntakeSpeed_Entry = Intake_Tab.add("Intake Speed", 0.0).getEntry();
+        public static GenericEntry kIntakeRun_Entry = Intake_Tab.add("Intake Run", false).getEntry();
     }
 }
