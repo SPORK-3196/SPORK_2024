@@ -4,25 +4,20 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.kRollerBars;
 
 public class Roller extends SubsystemBase {
     
-    //private CANSparkMax RollerNeo = new CANSparkMax(kRollerBars.RollerNeoPort, MotorType.kBrushless);
-
-    // Removed from design could come back tho
+    private CANSparkMax RollerNeo = new CANSparkMax(kRollerBars.RollerNeoPort, MotorType.kBrushless);
 
     public Roller(){
-        // RollerNeo.setIdleMode(kRollerBars.RollerIdle);
-        // RollerNeo.setInverted(kRollerBars.RollerInvert);
-        
+        RollerNeo.setIdleMode(kRollerBars.RollerIdle);
+        RollerNeo.setInverted(kRollerBars.RollerInvert);
     }
 
     public void RunRoller(){
-        
+        RollerNeo.set(kRollerBars.RollerSpeed);
     }
-
-
-    
 
     
 
