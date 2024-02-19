@@ -94,8 +94,16 @@ public class OI {
         public static double IntakeSpeed = 0;
         public static boolean IntakeRun = false;
 
+        public static boolean LimitDown = false;
+        public static boolean LimitUp = false;
+        public static boolean NoteIn = false;
+
         public static GenericEntry kIntakePos_Entry = Intake_Tab.add("Intake Pos", 0.0).getEntry();
         public static GenericEntry kIntakeSpeed_Entry = Intake_Tab.add("Intake Speed", 0.0).getEntry();
         public static GenericEntry kIntakeRun_Entry = Intake_Tab.add("Intake Run", false).getEntry();
+
+        public static GenericEntry kLimitDown = Intake_Tab.add("Intake Down", false).getEntry();
+        public static GenericEntry kLimitUp = Intake_Tab.add("Intake Up", false).getEntry();
+        public static GenericEntry kNoteIn = Intake_Tab.add("Note In", false).getEntry();
     }
 }
