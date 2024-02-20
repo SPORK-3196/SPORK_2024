@@ -83,13 +83,13 @@ public class OI {
         public static GenericEntry kPOV_Entry = X2_Tab.add("D-Pad Value", 0.0).getEntry();
     }
 
-    public static class kShooter{
+    public static class oShooter{
         public static double ShooterSpeed = 0.0;
 
         public static GenericEntry kShooterSpeed_Entry = Shooter_Tab.add("Shooter speed", 0.0).getEntry();
     }
 
-    public static class kIntake{
+    public static class oIntake{
         public static double IntakePos = 0;
         public static double IntakeSpeed = 0;
         public static boolean IntakeRun = false;

@@ -24,8 +24,9 @@ import frc.robot.Commands.Intake.Vomit;
 import frc.robot.Commands.Shooter.RunShooter;
 import frc.robot.Constants.kClimber;
 import frc.robot.OI.kDriver;
-import frc.robot.OI.kIntake;
+import frc.robot.OI.oIntake;
 import frc.robot.OI.kSecondary;
+import frc.robot.OI.oShooter;
 import frc.robot.Subsystems.Climb;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Lighting;
@@ -220,17 +221,23 @@ public class Robot extends TimedRobot {
     }
 
     if (!DriverStation.isFMSAttached()) {
-      kIntake.IntakePos = mIntake.getPos();
-      kIntake.IntakeRun = !mIntake.isRunning();
-      kIntake.IntakeSpeed = mIntake.getSpeed();
+      oIntake.IntakePos = mIntake.getPos();
+      oIntake.IntakeRun = !mIntake.isRunning();
+      oIntake.IntakeSpeed = mIntake.getSpeed();
+      oIntake.LimitDown = mIntake.FloorStop.isPressed();
+      oIntake.LimitUp = mIntake.SpeakerLimit.isPressed();
+      oIntake.NoteIn = mIntake.NoteIn.get();
 
-      frc.robot.OI.kShooter.ShooterSpeed = mShooter.getShooterSpeed();
+      oShooter.ShooterSpeed = mShooter.getShooterSpeed();
 
-      kIntake.kIntakePos_Entry.setDouble(kIntake.IntakePos);
-      kIntake.kIntakeRun_Entry.setBoolean(kIntake.IntakeRun);
-      kIntake.kIntakeSpeed_Entry.setDouble(kIntake.IntakeSpeed);
+      oIntake.kIntakePos_Entry.setDouble(oIntake.IntakePos);
+      oIntake.kIntakeRun_Entry.setBoolean(oIntake.IntakeRun);
+      oIntake.kIntakeSpeed_Entry.setDouble(oIntake.IntakeSpeed);
+      oIntake.kLimitDown.setBoolean(oIntake.LimitDown);
+      oIntake.kLimitUp.setBoolean(oIntake.LimitUp);
+      oIntake.kNoteIn.setBoolean(oIntake.NoteIn);
 
-      frc.robot.OI.kShooter.kShooterSpeed_Entry.setDouble(frc.robot.OI.kShooter.ShooterSpeed);
+      oShooter.kShooterSpeed_Entry.setDouble(oShooter.ShooterSpeed);
     }
 
 
@@ -301,7 +308,6 @@ public class Robot extends TimedRobot {
     if (secondary.getPOV() == 0  || TEST.getPOV() == 0) {
       new Vomit(mIntake);
     }
-
 
   }
 
