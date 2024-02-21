@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
+import frc.robot.Commands.Intake.IntakeFeed;
+import frc.robot.Commands.Intake.IntakeGrab;
 import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Commands.Intake.Vomit;
 import frc.robot.Commands.Shooter.RunShooter;
@@ -30,7 +32,7 @@ import frc.robot.OI.oShooter;
 import frc.robot.Subsystems.Climb;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Lighting;
-// import frc.robot.Subsystems.Roller;
+import frc.robot.Subsystems.Roller;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Swerve;
 
@@ -252,9 +254,9 @@ public class Robot extends TimedRobot {
       mIntake.IntakeEncoder.setPosition(0);
     }
 
-    if (mIntake.FloorStop.isPressed()) {
-      mIntake.Stop();
-    }
+    // if (mIntake.FloorStop.isPressed()) {
+    //   mIntake.Stop();
+    // }
   }
 
   @Override
@@ -342,6 +344,10 @@ public class Robot extends TimedRobot {
 
     TEST_b_Button.whileTrue(new RunShooter(mShooter));
     TEST_a_Button.whileTrue(new RunIntake(mIntake, mShooter));
+
+      //  Test Intake movement 
+    TEST_Left_Trigger.whileTrue(new IntakeFeed(mIntake));
+    TEST_Right_Trigger.whileTrue(new IntakeGrab(mIntake));
 
       // Climber
     secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
