@@ -2,9 +2,7 @@ package frc.robot.Subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kClimber;
@@ -13,12 +11,6 @@ public class Climb extends SubsystemBase{
 
     private CANSparkMax RightArm = new CANSparkMax(kClimber.RightArmPort, MotorType.kBrushless);
     private CANSparkMax LeftArm = new CANSparkMax(kClimber.LeftArmPort, MotorType.kBrushless);
-
-    private SparkLimitSwitch RightArmBottom;
-    private SparkLimitSwitch RightArmTop;
-
-    private SparkLimitSwitch LeftArmBottom;
-    private SparkLimitSwitch LeftArmTop;
 
     public RelativeEncoder RightArmEncoder;
     public RelativeEncoder LeftArmEncoder; 
@@ -30,14 +22,6 @@ public class Climb extends SubsystemBase{
         RightArm.setInverted(kClimber.RightArmInvert);
         LeftArm.setInverted(kClimber.LeftArmInvert);
 
-        // Right Limit Switches
-        RightArmBottom = RightArm.getForwardLimitSwitch(Type.kNormallyOpen);
-        RightArmTop = RightArm.getReverseLimitSwitch(Type.kNormallyOpen);
-
-        // Left Limit Switches
-        LeftArmBottom = LeftArm.getForwardLimitSwitch(Type.kNormallyOpen);
-        LeftArmTop = LeftArm.getReverseLimitSwitch(Type.kNormallyOpen);
-
         // Encoders
         LeftArmEncoder = LeftArm.getEncoder();
         RightArmEncoder = RightArm.getEncoder();
@@ -45,19 +29,11 @@ public class Climb extends SubsystemBase{
     }
 
     public void LeftUp(double speed){
-        if(!LeftArmTop.isPressed()){
-            LeftArm.set(speed);
-        }else{
-            LeftStop();
-        }
+        LeftArm.set(speed);
     }
 
     public void LeftDown(double speed){
-        if (!LeftArmBottom.isPressed()) {
-            LeftArm.set(-speed);
-        }else{
-            LeftStop();
-        }
+        LeftArm.set(-speed);
     }
 
     public void LeftStop(){
@@ -65,24 +41,15 @@ public class Climb extends SubsystemBase{
     }
 
     public void RightUp(double speed){
-        if (!RightArmTop.isPressed()) {
-            RightArm.set(-speed);
-        }else{
-            RightStop();
-        }
+        RightArm.set(speed);
     }
 
     public void RightDown(double speed){
-        if (!RightArmBottom.isPressed()) {
-            RightArm.set(-speed);
-        }else{
-            RightStop();
-        }
+        RightArm.set(-speed);
     }
 
     public void RightStop(){
         RightArm.set(0);
     }
-    
-    // get driver input
+
 }
