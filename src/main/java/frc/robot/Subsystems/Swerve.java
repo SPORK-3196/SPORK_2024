@@ -140,8 +140,11 @@ public class Swerve extends SubsystemBase {
         Pose.resetPosition(gyroAngle(), getPositions(), pose2d);
     }
 
-    public Command resetPoseManual(){
-        return this.runOnce(() -> Pose.resetPosition(gyroAngle(), getPositions(), new Pose2d(2, 4, gyroAngle())));
+    public void Xconfig(){
+        FL.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.FlOffset.getRadians())));
+        FR.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.FrOffset.getRadians())));
+        BL.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.BlOffset.getRadians())));
+        BR.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.BrOffset.getRadians())));
     }
 
     public void ConfigureBuilder(){

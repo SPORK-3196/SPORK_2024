@@ -24,8 +24,9 @@ import frc.robot.Commands.Intake.Vomit;
 import frc.robot.Commands.Shooter.RunShooter;
 import frc.robot.Constants.kClimber;
 import frc.robot.OI.kDriver;
-import frc.robot.OI.kIntake;
+import frc.robot.OI.oIntake;
 import frc.robot.OI.kSecondary;
+import frc.robot.OI.oShooter;
 import frc.robot.Subsystems.Climb;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Lighting;
@@ -51,6 +52,7 @@ public class Robot extends TimedRobot {
   // Controllers 
   public XboxController driver = new XboxController(0);
   public XboxController secondary = new XboxController(1);
+  public XboxController TEST = new XboxController(4); // Test controller so I dont need to use two controllers
 
   // Driver buttons
   public JoystickButton driver_a_Button = new JoystickButton(driver, XboxController.Button.kA.value);
@@ -87,18 +89,45 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_RJSD = new JoystickButton(secondary, XboxController.Button.kRightStick.value);
   public JoystickButton secondary_LJSD = new JoystickButton(secondary, XboxController.Button.kLeftStick.value);
 
+  // TEST buttons
+  public JoystickButton TEST_a_Button = new JoystickButton(TEST, XboxController.Button.kA.value);
+  public JoystickButton TEST_b_Button = new JoystickButton(TEST, XboxController.Button.kB.value);
+  public JoystickButton TEST_x_Button = new JoystickButton(TEST, XboxController.Button.kX.value);
+  public JoystickButton TEST_y_Button = new JoystickButton(TEST, XboxController.Button.kY.value);
+
+  // TEST bumpers and triggers
+  public JoystickButton TEST_left_Bumper = new JoystickButton(TEST, XboxController.Button.kLeftBumper.value);
+  public JoystickButton TEST_Right_Bumper = new JoystickButton(TEST, XboxController.Button.kRightBumper.value);
+  public JoystickButton TEST_Left_Trigger = new JoystickButton(TEST, XboxController.Axis.kLeftTrigger.value);
+  public JoystickButton TEST_Right_Trigger = new JoystickButton(TEST, XboxController.Axis.kRightTrigger.value);
+
+  // TEST misc buttons
+  public JoystickButton TEST_Start = new JoystickButton(TEST, XboxController.Button.kStart.value);
+  public JoystickButton TEST_Back = new JoystickButton(TEST, XboxController.Button.kBack.value);
+
+  public JoystickButton TEST_RJSD = new JoystickButton(TEST, XboxController.Button.kRightStick.value);
+  public JoystickButton TEST_LJSD = new JoystickButton(TEST, XboxController.Button.kLeftStick.value);
+
   // Camera
   UsbCamera Cam = CameraServer.startAutomaticCapture(1);
   UsbCamera Cam2 = CameraServer.startAutomaticCapture(0);
 
   @Override
   public void robotInit() {
+    if (driver.isConnected()) {
     mSwerve.setDefaultCommand(
       mSwerve.teleDrive(
       () -> -driver.getLeftY(), 
       () -> -driver.getLeftX(), 
       () -> driver.getRightX()));
-  
+    }else{
+    mSwerve.setDefaultCommand(
+      mSwerve.teleDrive(
+      () -> -TEST.getLeftY(), 
+      () -> -TEST.getLeftX(), 
+      () -> TEST.getRightX()));
+    }
+
     configureBindings();
 
     autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
@@ -192,23 +221,32 @@ public class Robot extends TimedRobot {
     }
 
     if (!DriverStation.isFMSAttached()) {
-      kIntake.IntakePos = mIntake.getPos();
-      kIntake.IntakeRun = !mIntake.isRunning();
-      kIntake.IntakeSpeed = mIntake.getSpeed();
+      oIntake.IntakePos = mIntake.getPos();
+      oIntake.IntakeRun = !mIntake.isRunning();
+      oIntake.IntakeSpeed = mIntake.getSpeed();
+      oIntake.LimitDown = mIntake.FloorStop.isPressed();
+      oIntake.LimitUp = mIntake.SpeakerLimit.isPressed();
+      oIntake.NoteIn = mIntake.NoteIn.get();
 
-      frc.robot.OI.kShooter.ShooterSpeed = mShooter.getShooterSpeed();
+      oShooter.ShooterSpeed = mShooter.getShooterSpeed();
 
-      kIntake.kIntakePos_Entry.setDouble(kIntake.IntakePos);
-      kIntake.kIntakeRun_Entry.setBoolean(kIntake.IntakeRun);
-      kIntake.kIntakeSpeed_Entry.setDouble(kIntake.IntakeSpeed);
+      oIntake.kIntakePos_Entry.setDouble(oIntake.IntakePos);
+      oIntake.kIntakeRun_Entry.setBoolean(oIntake.IntakeRun);
+      oIntake.kIntakeSpeed_Entry.setDouble(oIntake.IntakeSpeed);
+      oIntake.kLimitDown.setBoolean(oIntake.LimitDown);
+      oIntake.kLimitUp.setBoolean(oIntake.LimitUp);
+      oIntake.kNoteIn.setBoolean(oIntake.NoteIn);
 
-      frc.robot.OI.kShooter.kShooterSpeed_Entry.setDouble(frc.robot.OI.kShooter.ShooterSpeed);
+      oShooter.kShooterSpeed_Entry.setDouble(oShooter.ShooterSpeed);
     }
 
 
-    // shows both outside and durring a game 
-
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
+    SmartDashboard.putNumber("FL angle", Swerve.FL.getCANforshuffle().getRotations());
+    SmartDashboard.putNumber("FR angle", Swerve.FR.getCANforshuffle().getRotations());
+    SmartDashboard.putNumber("BL angle", Swerve.BL.getCANforshuffle().getRotations());
+    SmartDashboard.putNumber("BR angle", Swerve.BR.getCANforshuffle().getRotations());
+
 
     if (mIntake.SpeakerLimit.isPressed()) {
       mIntake.IntakeEncoder.setPosition(0);
@@ -261,16 +299,15 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
       // Intake position 
-    if(secondary.getPOV() == 90){
+    if(secondary.getPOV() == 90 || TEST.getPOV() == 90){
       mIntake.ShooterPos();
     }
-    if (secondary.getPOV() == 180) {
+    if (secondary.getPOV() == 180  || TEST.getPOV() == 180) {
       mIntake.FloorPos();
     }
-    if (secondary.getPOV() == 0) {
+    if (secondary.getPOV() == 0  || TEST.getPOV() == 0) {
       new Vomit(mIntake);
     }
-
 
   }
 
@@ -292,6 +329,10 @@ public class Robot extends TimedRobot {
 
     // Driver Button Bindings
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
+    driver_x_Button.whileTrue(new InstantCommand(() -> mSwerve.Xconfig(), mSwerve));
+
+    TEST_x_Button.whileTrue(new InstantCommand(()-> mSwerve.Xconfig(), mSwerve));
+    TEST_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
  
     // Secondary Button Bindings
 
@@ -299,9 +340,15 @@ public class Robot extends TimedRobot {
     secondary_b_Button.whileTrue(new RunShooter(mShooter));
     secondary_a_Button.whileTrue(new RunIntake(mIntake, mShooter));
 
+    TEST_b_Button.whileTrue(new RunShooter(mShooter));
+    TEST_a_Button.whileTrue(new RunIntake(mIntake, mShooter));
+
       // Climber
     secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
     secondary_Right_Bumper.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
+
+    TEST_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
+    TEST_Right_Bumper.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
 
   }
 
