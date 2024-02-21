@@ -27,19 +27,19 @@ public class Constants {
     public static class kShooter {
 
         //Setup 
-        public static int RightNeoPort = 10;
-        public static int LeftNeoPort = 11;
-        public static boolean RightInvert = true;
-        public static boolean LeftInvert = false;
+        public static int RightNeoPort = 25;
+        public static int LeftNeoPort = 26;
+        public static boolean RightInvert = false;
+        public static boolean LeftInvert = true;
         public static IdleMode ShooterIdleMode = IdleMode.kBrake; // may change
 
 
 
         // Targets
-        public static double ShootSpeed = 0.8;
-        public static double ampSpeed = 0.4; // will change
-        public static double IdleSpeed = 0.2; // will change
-        public static double TargetVelocity = 0.5; // M/s
+        public static double ShootSpeed = 0.5;
+        public static double ampSpeed = 0.2; // will change
+        public static double IdleSpeed = 0.1; // will change
+        public static double TargetVelocity = 0; // M/s
          
 
 
@@ -48,8 +48,8 @@ public class Constants {
     public static class kIntake {
 
         // Setup
-        public static int IntakePort = 9;
-        public static int IntakeAxisPort = 14;
+        public static int IntakePort = 23;
+        public static int IntakeAxisPort = 24;
         public static boolean IntakeInvert = false;
         public static boolean IntakeAxisInvert = false;
         public static IdleMode IntakeAxisIdle = IdleMode.kBrake;
@@ -82,8 +82,8 @@ public class Constants {
 
     public static class kClimber {
         //setup
-        public static int RightArmPort = 12;
-        public static int LeftArmPort = 13;
+        public static int RightArmPort = 19;
+        public static int LeftArmPort = 16;
         public static boolean RightArmInvert = false;
         public static boolean LeftArmInvert = false;
         public static IdleMode ClimberIdle = IdleMode.kBrake;
@@ -108,14 +108,14 @@ public class Constants {
         public static final double DriveGearRatio = 8.14/1;
 
         //Spark Max IDs 
-        public static final int frontLeftDrive = 1;
-        public static final int frontLeftSteer =5;
-        public static final int backLeftDrive = 2;
-        public static final int backLeftSteer = 6;
-        public static final int backRightDrive = 4;
-        public static final int backRightSteer = 8;
-        public static final int frontRightDrive = 3;
-        public static final int frontRightSteer = 7;
+        public static final int frontLeftDrive = 8;
+        public static final int frontLeftSteer = 5;
+        public static final int backLeftDrive = 10;
+        public static final int backLeftSteer = 15;
+        public static final int backRightDrive = 20;
+        public static final int backRightSteer = 21;
+        public static final int frontRightDrive = 18;
+        public static final int frontRightSteer = 17;
 
         //CRTE CANcoder IDs
         public static int kFrontLeftDriveAbsoluteEncoderPort = 2;
