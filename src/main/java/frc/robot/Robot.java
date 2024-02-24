@@ -15,9 +15,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Commands.Climber.ArmsDown;
+import frc.robot.Commands.Climber.LeftDown;
+import frc.robot.Commands.Climber.LeftUp;
+import frc.robot.Commands.Climber.RightDown;
 import frc.robot.Commands.Climber.ArmsUp;
 import frc.robot.Commands.Intake.IntakeFeed;
 import frc.robot.Commands.Intake.IntakeGrab;
@@ -49,7 +52,6 @@ public class Robot extends TimedRobot {
   public Intake mIntake = new Intake();
   public Shooter mShooter = new Shooter();
   public Lighting mLighting = new Lighting();
-
   
   // Controllers 
   public XboxController driver = new XboxController(0);
@@ -83,7 +85,7 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_Right_Bumper = new JoystickButton(secondary, XboxController.Button.kRightBumper.value);
   public JoystickButton secondary_Left_Trigger = new JoystickButton(secondary, XboxController.Axis.kLeftTrigger.value);
   public JoystickButton secondary_Right_Trigger = new JoystickButton(secondary, XboxController.Axis.kRightTrigger.value);
-
+  
   // Secondary misc buttons
   public JoystickButton secondary_Start = new JoystickButton(secondary, XboxController.Button.kStart.value);
   public JoystickButton secondary_Back = new JoystickButton(secondary, XboxController.Button.kBack.value);
@@ -91,44 +93,17 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_RJSD = new JoystickButton(secondary, XboxController.Button.kRightStick.value);
   public JoystickButton secondary_LJSD = new JoystickButton(secondary, XboxController.Button.kLeftStick.value);
 
-  // TEST buttons
-  public JoystickButton TEST_a_Button = new JoystickButton(TEST, XboxController.Button.kA.value);
-  public JoystickButton TEST_b_Button = new JoystickButton(TEST, XboxController.Button.kB.value);
-  public JoystickButton TEST_x_Button = new JoystickButton(TEST, XboxController.Button.kX.value);
-  public JoystickButton TEST_y_Button = new JoystickButton(TEST, XboxController.Button.kY.value);
-
-  // TEST bumpers and triggers
-  public JoystickButton TEST_left_Bumper = new JoystickButton(TEST, XboxController.Button.kLeftBumper.value);
-  public JoystickButton TEST_Right_Bumper = new JoystickButton(TEST, XboxController.Button.kRightBumper.value);
-  public JoystickButton TEST_Left_Trigger = new JoystickButton(TEST, XboxController.Axis.kLeftTrigger.value);
-  public JoystickButton TEST_Right_Trigger = new JoystickButton(TEST, XboxController.Axis.kRightTrigger.value);
-
-  // TEST misc buttons
-  public JoystickButton TEST_Start = new JoystickButton(TEST, XboxController.Button.kStart.value);
-  public JoystickButton TEST_Back = new JoystickButton(TEST, XboxController.Button.kBack.value);
-
-  public JoystickButton TEST_RJSD = new JoystickButton(TEST, XboxController.Button.kRightStick.value);
-  public JoystickButton TEST_LJSD = new JoystickButton(TEST, XboxController.Button.kLeftStick.value);
-
   // Camera
   UsbCamera Cam = CameraServer.startAutomaticCapture(1);
   UsbCamera Cam2 = CameraServer.startAutomaticCapture(0);
 
   @Override
   public void robotInit() {
-    if (driver.isConnected()) {
     mSwerve.setDefaultCommand(
       mSwerve.teleDrive(
       () -> -driver.getLeftY(), 
       () -> -driver.getLeftX(), 
       () -> driver.getRightX()));
-    }else{
-    mSwerve.setDefaultCommand(
-      mSwerve.teleDrive(
-      () -> -TEST.getLeftY(), 
-      () -> -TEST.getLeftX(), 
-      () -> TEST.getRightX()));
-    }
 
     configureBindings();
 
@@ -242,7 +217,6 @@ public class Robot extends TimedRobot {
       oShooter.kShooterSpeed_Entry.setDouble(oShooter.ShooterSpeed);
     }
 
-
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
     SmartDashboard.putNumber("FL angle", Swerve.FL.getCANforshuffle().getRotations());
     SmartDashboard.putNumber("FR angle", Swerve.FR.getCANforshuffle().getRotations());
@@ -250,9 +224,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("BR angle", Swerve.BR.getCANforshuffle().getRotations());
 
 
-    if (mIntake.SpeakerLimit.isPressed()) {
-      mIntake.IntakeEncoder.setPosition(0);
-    }
+    // if (mIntake.SpeakerLimit.isPressed()) {
+    //   mIntake.IntakeEncoder.setPosition(0);
+    // }
 
     // if (mIntake.FloorStop.isPressed()) {
     //   mIntake.Stop();
@@ -264,11 +238,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    if (isRed()) {
-      mLighting.setRed();
-    }else{
-      mLighting.setBlue();
-    }
+    // if (isRed()) {
+    //   mLighting.setRed();
+    // }else{
+    //   mLighting.setBlue();
+    // }
   }
 
   @Override
@@ -300,14 +274,22 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
+    // if (kSecondary.kLeftTrigger > 0.1) {
+      
+    // }
+
+    // if (kSecondary.kRightTrigger > 0.1) {
+      
+    // }
+
       // Intake position 
-    if(secondary.getPOV() == 90 || TEST.getPOV() == 90){
+    if(secondary.getPOV() == 0){
       mIntake.ShooterPos();
     }
-    if (secondary.getPOV() == 180  || TEST.getPOV() == 180) {
+    if (secondary.getPOV() == 180) {
       mIntake.FloorPos();
     }
-    if (secondary.getPOV() == 0  || TEST.getPOV() == 0) {
+    if (secondary.getPOV() == 90) {
       new Vomit(mIntake);
     }
 
@@ -331,10 +313,8 @@ public class Robot extends TimedRobot {
 
     // Driver Button Bindings
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
-    driver_x_Button.whileTrue(new InstantCommand(() -> mSwerve.Xconfig(), mSwerve));
+    //driver_x_Button.whileTrue(new InstantCommand(() -> mSwerve.Xconfig(), mSwerve));
 
-    TEST_x_Button.whileTrue(new InstantCommand(()-> mSwerve.Xconfig(), mSwerve));
-    TEST_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
  
     // Secondary Button Bindings
 
@@ -342,28 +322,22 @@ public class Robot extends TimedRobot {
     secondary_b_Button.whileTrue(new RunShooter(mShooter));
     secondary_a_Button.whileTrue(new RunIntake(mIntake, mShooter));
 
-    TEST_b_Button.whileTrue(new RunShooter(mShooter));
-    TEST_a_Button.whileTrue(new RunIntake(mIntake, mShooter));
-
-      //  Test Intake movement 
-    TEST_Left_Trigger.whileTrue(new IntakeFeed(mIntake));
-    TEST_Right_Trigger.whileTrue(new IntakeGrab(mIntake));
+    secondary_y_Button.whileTrue(new IntakeFeed(mIntake));
+    secondary_x_Button.whileTrue(new IntakeGrab(mIntake));
 
       // Climber
-    secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
+
+    secondary_left_Bumper.whileTrue(new LeftDown(mClimb, kClimber.ClimbSpeed));
     secondary_Right_Bumper.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
 
-    TEST_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
-    TEST_Right_Bumper.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
-
   }
 
-  public boolean isRed(){
-    var Alliance = DriverStation.getAlliance();
-    if(Alliance.isPresent()){
-        return Alliance.get() == DriverStation.Alliance.Red;
-    }
-        return false;
-  }
+  // public boolean isRed(){
+  //   var Alliance = DriverStation.getAlliance();
+  //   if(Alliance.isPresent()){
+  //       return Alliance.get() == DriverStation.Alliance.Red;
+  //   }
+  //       return false;
+  // }
 
 }

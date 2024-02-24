@@ -24,8 +24,8 @@ public class OI {
         public static boolean kStart = false;
         public static boolean kBack = false;
 
-        public static double kRightTrigger = 0;
-        public static double kLeftTrigger = 0;
+        public static double kRightTrigger = 0.0;
+        public static double kLeftTrigger = 0.0;
 
         public static GenericEntry a_Button_Entry = X1_Tab.add("A_Button", false).getEntry();
         public static GenericEntry b_Button_Entry = X1_Tab.add("B_Button", false).getEntry();
@@ -58,8 +58,8 @@ public class OI {
         public static boolean kRJSD = false;
         public static boolean kLJSD = false;
 
-        public static double kRightTrigger = 0;
-        public static double kLeftTrigger = 0;
+        public static double kRightTrigger = 0.0;
+        public static double kLeftTrigger = 0.0;
 
         public static double kPOV = -1;
 

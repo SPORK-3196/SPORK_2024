@@ -25,8 +25,8 @@ private SparkPIDController IntakePID;
 
 // Limit switches
 public DigitalInput NoteIn = new DigitalInput(0);
-public SparkLimitSwitch SpeakerLimit = IntakeAxis.getForwardLimitSwitch(Type.kNormallyOpen);
-public SparkLimitSwitch FloorStop = IntakeAxis.getReverseLimitSwitch(Type.kNormallyOpen);
+public SparkLimitSwitch SpeakerLimit = IntakeAxis.getReverseLimitSwitch(Type.kNormallyClosed);
+public SparkLimitSwitch FloorStop = IntakeAxis.getForwardLimitSwitch(Type.kNormallyClosed);
 
     public Intake(){
     IntakeNeo.setIdleMode(kIntake.IntakeIdle);
@@ -43,12 +43,12 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getReverseLimitSwitch(Type.kNorma
     // Intake game pieces
     public void grab(){
         IntakeNeo.setIdleMode(kIntake.IntakeIdle);
-        if (!NoteIn.get()) {
-            IntakeNeo.set(kIntake.IntakeSpeed);
-        }else{
-            Keep();
-            this.runOnce(() -> ShooterPos());
-        }
+        // if (!NoteIn.get()) {
+        IntakeNeo.set(-kIntake.IntakeSpeed);
+        // }else{
+        //     Keep();
+        //     this.runOnce(() -> ShooterPos());
+        // }
 
     } 
 
@@ -63,12 +63,12 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getReverseLimitSwitch(Type.kNorma
     // Feed pieces into the shooter
     public void feed(){
         IntakeNeo.setIdleMode(IdleMode.kCoast);
-        IntakeNeo.set(-kIntake.FeedSpeed);
+        IntakeNeo.set(kIntake.FeedSpeed);
     }
 
     // spit pieces out of the intake
     public void spit(){
-        IntakeNeo.set(-kIntake.IntakeSpeed);
+        IntakeNeo.set(kIntake.IntakeSpeed);
     }
 
     public boolean isRunning(){
@@ -80,17 +80,17 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getReverseLimitSwitch(Type.kNorma
     }
 
     // To the window
-    public Command FloorPos(){
-        return this.runOnce(() -> IntakePID.setReference(kIntake.FloorPickup, ControlType.kPosition));
+    public void FloorPos(){
+        IntakePID.setReference(kIntake.FloorPickup, ControlType.kPosition);
     }
 
     // To the wall
-    public Command ShooterPos(){
-        return this.runOnce(() -> IntakePID.setReference(kIntake.ShooterPos, ControlType.kPosition));
+    public void ShooterPos(){
+        IntakePID.setReference(kIntake.ShooterPos, ControlType.kPosition);
     }
 
-    public Command spitPos() {
-        return this.runOnce(() -> IntakePID.setReference(kIntake.spitPos, ControlType.kPosition));
+    public void spitPos() {
+        IntakePID.setReference(kIntake.spitPos, ControlType.kPosition);
     }
 
     // Honestly this seems kinda stupid but it might be better than seting the motor to 0

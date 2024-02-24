@@ -28,17 +28,19 @@ public class Module extends SubsystemBase{
 
     private SimpleMotorFeedforward OpenLoopFF = new SimpleMotorFeedforward(
         0,
-        0.5,
-        0.02);
+        0.2,
+        0.01);
 
     public RelativeEncoder DriveEncoder;
+    private boolean DriveReversed;
 
     public CANcoder absoluteEncoder;
     private CANcoderConfiguration config;
 
-    public Module(int TurnNeoID, int DriveID, int absoluteEncoderID, Rotation2d offset){
+    public Module(int TurnNeoID, int DriveID, boolean DriveReversed, int absoluteEncoderID, Rotation2d offset){
         
         this.offset = offset;
+        this.DriveReversed = DriveReversed;
         State = new SwerveModuleState();
         config = new CANcoderConfiguration();
         
@@ -68,7 +70,11 @@ public class Module extends SubsystemBase{
 
         dState = SwerveModuleState.optimize(dState, getCANangle());
 
+        if(!DriveReversed){
+        DriveNEO.set(OpenLoopFF.calculate(-dState.speedMetersPerSecond));
+        }else{
         DriveNEO.set(OpenLoopFF.calculate(dState.speedMetersPerSecond));
+        }
 
         if(Math.abs(dState.speedMetersPerSecond) > kSwerve.MaxSpeed*0.01){
         var out = AzumuthPID.calculate(getCANangle().getRotations(), dState.angle.getRotations());

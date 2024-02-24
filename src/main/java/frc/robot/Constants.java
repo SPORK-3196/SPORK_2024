@@ -36,8 +36,8 @@ public class Constants {
 
 
         // Targets
-        public static double ShootSpeed = 0.75;
-        public static double ampSpeed = 0.2; // will change
+        public static double ShootSpeed = 1; // 0.28;
+        public static double ampSpeed = 0.28; // will change
         public static double IdleSpeed = 0.1; // will change
         public static double TargetVelocity = 0; // M/s
          
@@ -50,20 +50,20 @@ public class Constants {
         public static int IntakeAxisPort = 24;
         public static boolean IntakeInvert = false;
         public static boolean IntakeAxisInvert = false;
-        public static IdleMode IntakeAxisIdle = IdleMode.kBrake;
+        public static IdleMode IntakeAxisIdle = IdleMode.kCoast;
         public static IdleMode IntakeIdle = IdleMode.kBrake;
 
         // Positions
-        public static double FloorPickup = 0.0;  //TODO change these values
+        public static double FloorPickup = 49;  //TODO change these values
         public static double ShooterPos = 0.0; 
-        public static double spitPos = 0.0; 
+        public static double spitPos = 24.0; 
 
         // Speeds
         public static double IntakeSpeed = 0.5;
-        public static double FeedSpeed = 0.2;
+        public static double FeedSpeed = 1;
         
         // PID Values
-        public static double kP = 0.1;
+        public static double kP = 0.03;
         public static double KI = 0;
         public static double kD = 0.0;
     }
@@ -98,8 +98,8 @@ public class Constants {
         
         public static final double kDeadband = 0.1;
         
-        public static final double MaxAngularSpeed = Units.feetToMeters(5); // m/s
-        public static final double MaxSpeed = Units.feetToMeters(2);  // m/s
+        // public static final double MaxAngularSpeed = Units.feetToMeters(5); // m/s
+        public static final double MaxSpeed = Units.feetToMeters(5);  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
         public static final double RotationGearRatio = (150/7)/1;
@@ -125,7 +125,7 @@ public class Constants {
         public static Rotation2d FlOffset = Rotation2d.fromRotations(0.75);
         public static Rotation2d FrOffset = Rotation2d.fromRotations(0.98);
         public static Rotation2d BlOffset = Rotation2d.fromRotations(0.15);
-        public static Rotation2d     BrOffset = Rotation2d.fromRotations(0.41);
+        public static Rotation2d BrOffset = Rotation2d.fromRotations(0.41);
         
 
         public static final SwerveDriveKinematics kinematics =

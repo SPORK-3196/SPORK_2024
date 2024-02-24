@@ -30,21 +30,25 @@ public class Swerve extends SubsystemBase {
     public static Module FL = new Module(
     kSwerve.frontLeftSteer,
     kSwerve.frontLeftDrive,
+    true,
     kSwerve.kFrontLeftDriveAbsoluteEncoderPort,
     kSwerve.FlOffset);
     public static Module FR = new Module(
     kSwerve.frontRightSteer,
     kSwerve.frontRightDrive,
+    true,
     kSwerve.kFrontRightDriveAbsoluteEncoderPort,
     kSwerve.FrOffset);
     public static Module BL = new Module(
     kSwerve.backLeftSteer,
     kSwerve.backLeftDrive,
+    false,
     kSwerve.kBackLeftDriveAbsoluteEncoderPort,
     kSwerve.BlOffset);
     public static Module BR = new Module(
     kSwerve.backRightSteer,
     kSwerve.backRightDrive,
+    false,
     kSwerve.kBackRightDriveAbsoluteEncoderPort,
     kSwerve.BrOffset);
 
@@ -140,12 +144,12 @@ public class Swerve extends SubsystemBase {
         Pose.resetPosition(gyroAngle(), getPositions(), pose2d);
     }
 
-    public void Xconfig(){
-        FL.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.FlOffset.getRadians())));
-        FR.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.FrOffset.getRadians())));
-        BL.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.BlOffset.getRadians())));
-        BR.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.BrOffset.getRadians())));
-    }
+    // public void Xconfig(){
+    //     FL.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.FlOffset.getRadians())));
+    //     FR.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.FrOffset.getRadians())));
+    //     BL.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.BlOffset.getRadians())));
+    //     BR.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.BrOffset.getRadians())));
+    // }
 
     public void ConfigureBuilder(){
         NamedCommands.registerCommand("Zero Gyro",new InstantCommand(() -> this.ZeroGyro()));
