@@ -11,8 +11,6 @@ public class Constants {
 
     //TODO constants need to be tested and finalised
 
-    //TODO get others to work on this
-
     public static class kVision{
 
 
@@ -33,13 +31,11 @@ public class Constants {
         public static boolean LeftInvert = true;
         public static IdleMode ShooterIdleMode = IdleMode.kCoast; // may change
 
-
-
         // Targets
         public static double ShootSpeed = 1; // 0.28;
         public static double ampSpeed = 0.28; // will change
         public static double IdleSpeed = 0.1; // will change
-        public static double TargetVelocity = 0; // M/s
+        public static double TargetVelocity = 1;
          
     }
 
@@ -98,8 +94,8 @@ public class Constants {
         
         public static final double kDeadband = 0.1;
         
-        // public static final double MaxAngularSpeed = Units.feetToMeters(5); // m/s
-        public static final double MaxSpeed = Units.feetToMeters(5);  // m/s
+        public static final double MaxAngularSpeed = Units.feetToMeters(12); // m/s
+        public static final double MaxSpeed = Units.feetToMeters(10);  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
         public static final double RotationGearRatio = (150/7)/1;

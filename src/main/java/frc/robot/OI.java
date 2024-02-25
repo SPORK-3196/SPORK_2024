@@ -11,7 +11,7 @@ public class OI {
     public static ShuffleboardTab Shooter_Tab = Shuffleboard.getTab("Shooter");
     
     
-    public class kDriver{
+    public class oDriver{
 
         public static boolean a_Button = false;
         public static boolean b_Button = false;
@@ -42,7 +42,7 @@ public class OI {
         public static GenericEntry kLeftTrigger_Entry = X1_Tab.add("Left trigger", 0.0).getEntry();
     }
 
-    public class kSecondary{
+    public class oSecondary{
 
         public static boolean a_Button = false;
         public static boolean b_Button = false;

@@ -43,13 +43,12 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getForwardLimitSwitch(Type.kNorma
     // Intake game pieces
     public void grab(){
         IntakeNeo.setIdleMode(kIntake.IntakeIdle);
-        // if (!NoteIn.get()) {
+        if (!NoteIn.get()) {
         IntakeNeo.set(-kIntake.IntakeSpeed);
-        // }else{
-        //     Keep();
-        //     this.runOnce(() -> ShooterPos());
-        // }
-
+        }else{
+            Keep();
+            ShooterPos();
+        }
     } 
 
     public void Keep(){

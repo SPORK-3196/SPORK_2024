@@ -21,7 +21,7 @@ public class Vomit extends Command {
 
     @Override
     public void execute() {
-        if(intake.getPos() >= kIntake.spitPos - 20){
+        if(intake.getPos() >= kIntake.spitPos - 0.5){
             intake.spit();
         }
     }

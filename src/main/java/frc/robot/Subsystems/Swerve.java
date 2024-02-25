@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.Commands.Intake.IntakeBump;
 import frc.robot.Constants.kSwerve;
 
 public class Swerve extends SubsystemBase {
@@ -115,19 +116,19 @@ public class Swerve extends SubsystemBase {
     }
 
     private ChassisSpeeds Joystickcontrol(
-        double x,
-        double Y,
-        double z
+        double xTrans,
+        double yTrans,
+        double Rotation
     ){
-        if(Math.abs(x) <= kSwerve.kDeadband) x = 0;
-        if(Math.abs(Y) <= kSwerve.kDeadband) Y = 0;
-        if(Math.abs(z) <= kSwerve.kDeadband) z = 0;
+        if(Math.abs(xTrans) <= kSwerve.kDeadband) xTrans = 0;
+        if(Math.abs(yTrans) <= kSwerve.kDeadband) yTrans = 0;
+        if(Math.abs(Rotation) <= kSwerve.kDeadband) Rotation = 0;
         
-        x = Math.copySign(x*x, x);
-        Y = Math.copySign(Y*Y, Y);
-        z = Math.copySign(z*z, z);
+        xTrans = Math.copySign(xTrans*xTrans, xTrans);
+        yTrans = Math.copySign(yTrans*yTrans, yTrans);
+        Rotation = Math.copySign(Rotation*Rotation, Rotation);
 
-        var ROspeeds = new ChassisSpeeds(x * kSwerve.MaxSpeed, Y * kSwerve.MaxSpeed, z * kSwerve.MaxSpeed);
+        var ROspeeds = new ChassisSpeeds(xTrans * kSwerve.MaxSpeed, yTrans * kSwerve.MaxSpeed, Rotation * kSwerve.MaxAngularSpeed);
 
         return ChassisSpeeds.fromFieldRelativeSpeeds(ROspeeds, gyroAngle());
     }
@@ -153,7 +154,7 @@ public class Swerve extends SubsystemBase {
 
     public void ConfigureBuilder(){
         NamedCommands.registerCommand("Zero Gyro",new InstantCommand(() -> this.ZeroGyro()));
-        // NamedCommands.registerCommand(getName(), null);
+        NamedCommands.registerCommand("Intake Powered Bump", new IntakeBump(Robot.mIntake));
         // NamedCommands.registerCommand(getName(), null);
         // NamedCommands.registerCommand(getName(), null);
 
@@ -166,7 +167,7 @@ public class Swerve extends SubsystemBase {
             new HolonomicPathFollowerConfig(
                 new PIDConstants(5,0,0), 
                 new PIDConstants(0,0,0), 
-                Units.feetToMeters(2), 
+                Units.feetToMeters(5), 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
                 new ReplanningConfig()),
                 () -> {

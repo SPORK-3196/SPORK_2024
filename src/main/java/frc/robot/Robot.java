@@ -15,22 +15,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Commands.Climber.LeftDown;
-import frc.robot.Commands.Climber.LeftUp;
-import frc.robot.Commands.Climber.RightDown;
+import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
-import frc.robot.Commands.Intake.IntakeFeed;
-import frc.robot.Commands.Intake.IntakeGrab;
 import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Commands.Intake.Vomit;
+import frc.robot.Commands.Shooter.RunAmp;
 import frc.robot.Commands.Shooter.RunShooter;
 import frc.robot.Constants.kClimber;
-import frc.robot.OI.kDriver;
+import frc.robot.OI.oDriver;
 import frc.robot.OI.oIntake;
-import frc.robot.OI.kSecondary;
+import frc.robot.OI.oSecondary;
 import frc.robot.OI.oShooter;
 import frc.robot.Subsystems.Climb;
 import frc.robot.Subsystems.Intake;
@@ -46,17 +42,16 @@ public class Robot extends TimedRobot {
 
   // Subsystem Initalising 
   public SendableChooser<Command> autoChooser;
-  public Swerve mSwerve = new Swerve();
-  // public Roller mRoller = new Roller();
-  public Climb mClimb = new Climb();
-  public Intake mIntake = new Intake();
-  public Shooter mShooter = new Shooter();
-  public Lighting mLighting = new Lighting();
+  public static Swerve mSwerve = new Swerve();
+  public static Roller mRoller = new Roller();
+  public static Climb mClimb = new Climb();
+  public static Intake mIntake = new Intake();
+  public static Shooter mShooter = new Shooter();
+  public static Lighting mLighting = new Lighting();
   
-  // Controllers 
+  // Controllers  
   public XboxController driver = new XboxController(0);
   public XboxController secondary = new XboxController(1);
-  public XboxController TEST = new XboxController(4); // Test controller so I dont need to use two controllers
 
   // Driver buttons
   public JoystickButton driver_a_Button = new JoystickButton(driver, XboxController.Button.kA.value);
@@ -94,8 +89,7 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_LJSD = new JoystickButton(secondary, XboxController.Button.kLeftStick.value);
 
   // Camera
-  UsbCamera Cam = CameraServer.startAutomaticCapture(1);
-  UsbCamera Cam2 = CameraServer.startAutomaticCapture(0);
+  UsbCamera Cam = CameraServer.startAutomaticCapture(0);
 
   @Override
   public void robotInit() {
@@ -110,11 +104,8 @@ public class Robot extends TimedRobot {
     autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
     SmartDashboard.putData("Auto", autoChooser);
 
-    Cam.setFPS(15);
+    Cam.setFPS(28);
     Cam.setResolution(144, 144);
-
-    Cam2.setFPS(15);
-    Cam2.setResolution(80, 80);
   }
 
   @Override
@@ -123,78 +114,78 @@ public class Robot extends TimedRobot {
 
     // Driver SmartDashboard output
     if(driver.isConnected()){
-      kDriver.a_Button = driver.getAButton();
-      kDriver.b_Button = driver.getBButton();
-      kDriver.x_Button = driver.getXButton();
-      kDriver.y_Button = driver.getYButton();
+      oDriver.a_Button = driver.getAButton();
+      oDriver.b_Button = driver.getBButton();
+      oDriver.x_Button = driver.getXButton();
+      oDriver.y_Button = driver.getYButton();
 
-      kDriver.kBack = driver.getBackButton();
-      kDriver.kStart = driver.getStartButton();
+      oDriver.kBack = driver.getBackButton();
+      oDriver.kStart = driver.getStartButton();
 
-      kDriver.kRightBumper = driver.getRightBumper();
-      kDriver.kLeftBumper = driver.getLeftBumper();
+      oDriver.kRightBumper = driver.getRightBumper();
+      oDriver.kLeftBumper = driver.getLeftBumper();
 
-      kDriver.kRightTrigger = driver.getRightTriggerAxis();
-      kDriver.kLeftTrigger = driver.getLeftTriggerAxis();
+      oDriver.kRightTrigger = driver.getRightTriggerAxis();
+      oDriver.kLeftTrigger = driver.getLeftTriggerAxis();
     }
 
     // Secondary SmartDashboard output
     if(secondary.isConnected()){
-      kSecondary.a_Button = secondary.getAButton();
-      kSecondary.b_Button = secondary.getBButton();
-      kSecondary.x_Button = secondary.getXButton();
-      kSecondary.y_Button = secondary.getYButton();
+      oSecondary.a_Button = secondary.getAButton();
+      oSecondary.b_Button = secondary.getBButton();
+      oSecondary.x_Button = secondary.getXButton();
+      oSecondary.y_Button = secondary.getYButton();
 
-      kSecondary.kBack = secondary.getBackButton();
-      kSecondary.kStart = secondary.getStartButton();
+      oSecondary.kBack = secondary.getBackButton();
+      oSecondary.kStart = secondary.getStartButton();
 
-      kSecondary.kRJSD = secondary.getRightStickButton();
-      kSecondary.kLJSD = secondary.getLeftStickButton();
+      oSecondary.kRJSD = secondary.getRightStickButton();
+      oSecondary.kLJSD = secondary.getLeftStickButton();
 
-      kSecondary.kRightBumper = secondary.getRightBumper();
-      kSecondary.kLeftBumper = secondary.getLeftBumper();
+      oSecondary.kRightBumper = secondary.getRightBumper();
+      oSecondary.kLeftBumper = secondary.getLeftBumper();
 
-      kSecondary.kRightTrigger = secondary.getRightTriggerAxis();
-      kSecondary.kLeftTrigger = secondary.getLeftTriggerAxis();
+      oSecondary.kRightTrigger = secondary.getRightTriggerAxis();
+      oSecondary.kLeftTrigger = secondary.getLeftTriggerAxis();
 
-      kSecondary.kPOV = secondary.getPOV();
+      oSecondary.kPOV = secondary.getPOV();
     }
 
     // stream to SmartDashboard if DriverStation is not in game
     if (!DriverStation.isFMSAttached()) {
-      kDriver.a_Button_Entry.setBoolean(kDriver.a_Button);
-      kDriver.b_Button_Entry.setBoolean(kDriver.b_Button);
-      kDriver.x_Button_Entry.setBoolean(kDriver.x_Button);
-      kDriver.y_Button_Entry.setBoolean(kDriver.y_Button);
+      oDriver.a_Button_Entry.setBoolean(oDriver.a_Button);
+      oDriver.b_Button_Entry.setBoolean(oDriver.b_Button);
+      oDriver.x_Button_Entry.setBoolean(oDriver.x_Button);
+      oDriver.y_Button_Entry.setBoolean(oDriver.y_Button);
 
-      kDriver.kBack_Entry.setBoolean(kDriver.kBack);
-      kDriver.kStart_Entry.setBoolean(kDriver.kStart);
+      oDriver.kBack_Entry.setBoolean(oDriver.kBack);
+      oDriver.kStart_Entry.setBoolean(oDriver.kStart);
 
-      kDriver.kLeftBumper_Entry.setBoolean(kDriver.kLeftBumper);
-      kDriver.kRightBumper_Entry.setBoolean(kDriver.kRightBumper);
+      oDriver.kLeftBumper_Entry.setBoolean(oDriver.kLeftBumper);
+      oDriver.kRightBumper_Entry.setBoolean(oDriver.kRightBumper);
 
-      kDriver.kLeftTrigger_Entry.setDouble(kDriver.kLeftTrigger);
-      kDriver.kRightTrigger_Entry.setDouble(kDriver.kRightTrigger);
+      oDriver.kLeftTrigger_Entry.setDouble(oDriver.kLeftTrigger);
+      oDriver.kRightTrigger_Entry.setDouble(oDriver.kRightTrigger);
 
 
-      kSecondary.a_Button_Entry.setBoolean(kSecondary.a_Button);
-      kSecondary.b_Button_Entry.setBoolean(kSecondary.b_Button);
-      kSecondary.x_Button_Entry.setBoolean(kSecondary.x_Button);
-      kSecondary.y_Button_Entry.setBoolean(kSecondary.y_Button);
+      oSecondary.a_Button_Entry.setBoolean(oSecondary.a_Button);
+      oSecondary.b_Button_Entry.setBoolean(oSecondary.b_Button);
+      oSecondary.x_Button_Entry.setBoolean(oSecondary.x_Button);
+      oSecondary.y_Button_Entry.setBoolean(oSecondary.y_Button);
 
-      kSecondary.kBack_Entry.setBoolean(kSecondary.kBack);
-      kSecondary.kStart_Entry.setBoolean(kSecondary.kStart);
+      oSecondary.kBack_Entry.setBoolean(oSecondary.kBack);
+      oSecondary.kStart_Entry.setBoolean(oSecondary.kStart);
 
-      kSecondary.kRJSD_Entry.setBoolean(kSecondary.kRJSD);
-      kSecondary.kLJSD_Entry.setBoolean(kSecondary.kLJSD);
+      oSecondary.kRJSD_Entry.setBoolean(oSecondary.kRJSD);
+      oSecondary.kLJSD_Entry.setBoolean(oSecondary.kLJSD);
 
-      kSecondary.kLeftBumper_Entry.setBoolean(kSecondary.kLeftBumper);
-      kSecondary.kRightBumper_Entry.setBoolean(kSecondary.kRightBumper);
+      oSecondary.kLeftBumper_Entry.setBoolean(oSecondary.kLeftBumper);
+      oSecondary.kRightBumper_Entry.setBoolean(oSecondary.kRightBumper);
 
-      kSecondary.kLeftTrigger_Entry.setDouble(kSecondary.kLeftTrigger);
-      kSecondary.kRightTrigger_Entry.setDouble(kSecondary.kRightTrigger);
+      oSecondary.kLeftTrigger_Entry.setDouble(oSecondary.kLeftTrigger);
+      oSecondary.kRightTrigger_Entry.setDouble(oSecondary.kRightTrigger);
 
-      kSecondary.kPOV_Entry.setDouble(kSecondary.kPOV);
+      oSecondary.kPOV_Entry.setDouble(oSecondary.kPOV);
     }
 
     if (!DriverStation.isFMSAttached()) {
@@ -218,10 +209,6 @@ public class Robot extends TimedRobot {
     }
 
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
-    SmartDashboard.putNumber("FL angle", Swerve.FL.getCANforshuffle().getRotations());
-    SmartDashboard.putNumber("FR angle", Swerve.FR.getCANforshuffle().getRotations());
-    SmartDashboard.putNumber("BL angle", Swerve.BL.getCANforshuffle().getRotations());
-    SmartDashboard.putNumber("BR angle", Swerve.BR.getCANforshuffle().getRotations());
 
 
     // if (mIntake.SpeakerLimit.isPressed()) {
@@ -234,10 +221,15 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    // ranbow run in disabled
+  }
 
   @Override
   public void disabledPeriodic() {
+    // turn to alliance color if connected 
+
+    
     // if (isRed()) {
     //   mLighting.setRed();
     // }else{
@@ -274,25 +266,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    // if (kSecondary.kLeftTrigger > 0.1) {
-      
-    // }
-
-    // if (kSecondary.kRightTrigger > 0.1) {
-      
-    // }
-
-      // Intake position 
-    if(secondary.getPOV() == 0){
-      mIntake.ShooterPos();
-    }
+      // Intake position
     if (secondary.getPOV() == 180) {
       mIntake.FloorPos();
     }
-    if (secondary.getPOV() == 90) {
-      new Vomit(mIntake);
-    }
 
+    if(secondary.getPOV() == 0){
+      mIntake.ShooterPos();
+    }
   }
 
   @Override
@@ -315,29 +296,29 @@ public class Robot extends TimedRobot {
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
     //driver_x_Button.whileTrue(new InstantCommand(() -> mSwerve.Xconfig(), mSwerve));
 
- 
     // Secondary Button Bindings
 
       // Scoring
     secondary_b_Button.whileTrue(new RunShooter(mShooter));
+    secondary_RJSD.whileTrue(new RunAmp(mShooter));
+    secondary_x_Button.whileTrue(new Vomit(mIntake));
     secondary_a_Button.whileTrue(new RunIntake(mIntake, mShooter));
 
-    secondary_y_Button.whileTrue(new IntakeFeed(mIntake));
-    secondary_x_Button.whileTrue(new IntakeGrab(mIntake));
-
       // Climber
-
-    secondary_left_Bumper.whileTrue(new LeftDown(mClimb, kClimber.ClimbSpeed));
+    secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
     secondary_Right_Bumper.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
+
 
   }
 
-  // public boolean isRed(){
-  //   var Alliance = DriverStation.getAlliance();
-  //   if(Alliance.isPresent()){
-  //       return Alliance.get() == DriverStation.Alliance.Red;
-  //   }
-  //       return false;
-  // }
+  public boolean isRed(){
+    var Alliance = DriverStation.getAlliance();
+    if(Alliance.isPresent()){
+        return Alliance.get() == DriverStation.Alliance.Red;
+    }
+        return false;
+   }
+
+
 
 }
