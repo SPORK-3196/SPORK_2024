@@ -8,11 +8,12 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
@@ -22,9 +23,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
-import frc.robot.Commands.Intake.IntakeBump;
 import frc.robot.Constants.kSwerve;
+import frc.robot.Robot;
+import frc.robot.Robot.LimelightHelpers;
+import frc.robot.Commands.Intake.IntakeBump;
 
 public class Swerve extends SubsystemBase {
     
@@ -53,16 +55,17 @@ public class Swerve extends SubsystemBase {
     kSwerve.kBackRightDriveAbsoluteEncoderPort,
     kSwerve.BrOffset);
 
-    private SwerveDriveOdometry Pose;
+    private SwerveDrivePoseEstimator Pose;
     private ChassisSpeeds chassisSpeedsRR;
+    private LimelightHelpers.PoseEstimate LimeLightPoseMes;
     public Field2d field2d;
 
     public Swerve(){
-        Pose = new SwerveDriveOdometry(
-        kSwerve.kinematics,
-        gyroAngle(), 
-        getPositions(),
-        new Pose2d(2,4, gyroAngle()));
+        Pose = new SwerveDrivePoseEstimator(
+            kSwerve.kinematics,
+            gyroAngle(),
+            getPositions(),
+            getPose());
         chassisSpeedsRR = new ChassisSpeeds();
         ConfigureBuilder();
         field2d = new Field2d();
@@ -76,7 +79,23 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
-        updatePose();   
+        updatePose(); 
+        if(LimelightHelpers.getCurrentPipelineIndex("") == 1){  
+        var all = DriverStation.getAlliance();
+        if(all.isPresent()){
+            if (all.get() == DriverStation.Alliance.Red){
+                LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiRed("");
+            }else{
+                LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
+            }
+            if (LimeLightPoseMes.tagCount >= 2 ) {
+                Pose.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+                Pose.addVisionMeasurement(
+                    LimeLightPoseMes.pose,
+                    LimeLightPoseMes.timestampSeconds);
+            }
+        }
+    }
         field2d.setRobotPose(getPose());
         chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
     }  
@@ -99,6 +118,22 @@ public class Swerve extends SubsystemBase {
     public void DriveRR(ChassisSpeeds speeds){
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
         setStates(targetStates);
+    }
+
+
+    public Command AutoDrive(
+    DoubleSupplier translation,
+    DoubleSupplier strafe,
+    DoubleSupplier rotation
+    ){
+        return this.run(
+            () -> 
+            Drive(Joystickcontrol(
+                translation.getAsDouble(),
+                strafe.getAsDouble(),
+                rotation.getAsDouble())
+            )
+        );
     }
 
     public Command teleDrive(
@@ -134,7 +169,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Pose2d getPose(){
-        return Pose.getPoseMeters();
+        return Pose.getEstimatedPosition();
     }
 
     public void updatePose(){
