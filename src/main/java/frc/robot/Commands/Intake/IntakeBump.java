@@ -4,18 +4,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Intake;
 
 public class IntakeBump extends Command {
-    public Intake intake;
+    private Intake mintake;
 
-    public IntakeBump(Intake intake){
-        this.intake = intake;
+    public IntakeBump(Intake mintake){
+        this.mintake = mintake;
 
-        addRequirements(intake);
+        addRequirements(mintake);
     }
 
     @Override
     public void initialize() {
-        intake.FloorPos();
-        intake.feed();
+        mintake.FloorPos();
+        mintake.feed();
     }
 
     @Override
@@ -25,7 +25,7 @@ public class IntakeBump extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.ShooterPos();
-        intake.Keep();
+        mintake.ShooterPos();
+        mintake.Keep();
     }
 }

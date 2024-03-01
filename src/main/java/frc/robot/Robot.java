@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Commands.AutoMove.AutoNoteTrack;
 import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
 import frc.robot.Commands.Intake.RunIntake;
@@ -69,10 +70,10 @@ public class Robot extends TimedRobot {
 
   // Subsystem Initalising 
   public SendableChooser<Command> autoChooser;
-  public static Swerve mSwerve = new Swerve();
-  public static Roller mRoller = new Roller();
-  public static Climb mClimb = new Climb();
   public static Intake mIntake = new Intake();
+  public static Swerve mSwerve = new Swerve();
+  //public static Roller mRoller = new Roller();
+  public static Climb mClimb = new Climb();
   public static Shooter mShooter = new Shooter();
   public static Lighting mLighting = new Lighting();
   
@@ -95,6 +96,8 @@ public class Robot extends TimedRobot {
   // Driver misc buttons
   public JoystickButton driver_Start = new JoystickButton(driver, XboxController.Button.kStart.value);
   public JoystickButton driver_Back = new JoystickButton(driver, XboxController.Button.kBack.value); 
+  public JoystickButton driver_RJSD = new JoystickButton(driver, XboxController.Button.kRightStick.value);
+  public JoystickButton driver_LJSD = new JoystickButton(driver, XboxController.Button.kLeftStick.value);
 
   // Secondary buttons
   public JoystickButton secondary_a_Button = new JoystickButton(secondary, XboxController.Button.kA.value);
@@ -125,6 +128,7 @@ public class Robot extends TimedRobot {
       () -> -driver.getLeftY(), 
       () -> -driver.getLeftX(), 
       () -> driver.getRightX()));
+
 
     configureBindings();
 
@@ -223,7 +227,7 @@ public class Robot extends TimedRobot {
       oIntake.LimitUp = mIntake.SpeakerLimit.isPressed();
       oIntake.NoteIn = mIntake.NoteIn.get();
 
-      oShooter.ShooterSpeed = mShooter.getShooterSpeed();
+      // oShooter.ShooterSpeed = mShooter.getShooterSpeed();
 
       oIntake.kIntakePos_Entry.setDouble(oIntake.IntakePos);
       oIntake.kIntakeRun_Entry.setBoolean(oIntake.IntakeRun);
@@ -323,18 +327,20 @@ public class Robot extends TimedRobot {
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
     //driver_x_Button.whileTrue(new InstantCommand(() -> mSwerve.Xconfig(), mSwerve));
 
+    // Auto Zero
+    driver_RJSD.whileTrue(new AutoNoteTrack(mSwerve));
+
     // Secondary Button Bindings
 
       // Scoring
     secondary_b_Button.whileTrue(new RunShooter(mShooter));
     secondary_RJSD.whileTrue(new RunAmp(mShooter));
     secondary_x_Button.whileTrue(new Vomit(mIntake));
-    secondary_a_Button.whileTrue(new RunIntake(mIntake, mShooter));
+    secondary_a_Button.whileTrue(new RunIntake(mIntake));
 
       // Climber
     secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
     secondary_Right_Bumper.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
-
 
   }
 

@@ -65,7 +65,7 @@ public class Swerve extends SubsystemBase {
             kSwerve.kinematics,
             gyroAngle(),
             getPositions(),
-            getPose());
+            new Pose2d(0,0, new Rotation2d(0)));
         chassisSpeedsRR = new ChassisSpeeds();
         ConfigureBuilder();
         field2d = new Field2d();
@@ -189,7 +189,7 @@ public class Swerve extends SubsystemBase {
 
     public void ConfigureBuilder(){
         NamedCommands.registerCommand("Zero Gyro",new InstantCommand(() -> this.ZeroGyro()));
-        NamedCommands.registerCommand("Intake Powered Bump", new IntakeBump(Robot.mIntake));
+        //NamedCommands.registerCommand("Intake Powered Bump", new IntakeBump(Robot.mIntake));
         // NamedCommands.registerCommand(getName(), null);
         // NamedCommands.registerCommand(getName(), null);
 

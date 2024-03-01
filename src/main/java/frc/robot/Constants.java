@@ -35,7 +35,7 @@ public class Constants {
         public static double ShootSpeed = 1; // 0.28;
         public static double ampSpeed = 0.28; // will change
         public static double IdleSpeed = 0.1; // will change
-        public static double TargetVelocity = 1;
+        public static double TargetVelocity = 0.5;
          
     }
 
@@ -50,7 +50,7 @@ public class Constants {
         public static IdleMode IntakeIdle = IdleMode.kBrake;
 
         // Positions
-        public static double FloorPickup = 49;  //TODO change these values
+        public static double FloorPickup = 48;  //TODO change these values
         public static double ShooterPos = 0.0; 
         public static double spitPos = 24.0; 
 
@@ -94,8 +94,8 @@ public class Constants {
         
         public static final double kDeadband = 0.1;
         
-        public static final double MaxAngularSpeed = Units.feetToMeters(12); // m/s
-        public static final double MaxSpeed = Units.feetToMeters(10);  // m/s
+        public static final double MaxAngularSpeed = Units.feetToMeters(6); // m/s
+        public static final double MaxSpeed = Units.feetToMeters(5);  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
         public static final double RotationGearRatio = (150/7)/1;

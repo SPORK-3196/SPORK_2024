@@ -5,7 +5,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Robot.LimelightHelpers;
-import frc.robot.Robot.LimelightHelpers.LimelightResults;
 import frc.robot.Subsystems.Swerve;
 
 public class AutoNoteTrack extends Command{
@@ -25,7 +24,7 @@ public class AutoNoteTrack extends Command{
         kd = 0;
         ki = 0;
 
-        addRequirements(mSwerve);
+        //addRequirements(mSwerve);
     }
 
     @Override
@@ -41,19 +40,25 @@ public class AutoNoteTrack extends Command{
     public void execute() {
         if(LimelightHelpers.getTV("")){
             double angle = LimelightHelpers.getTX("");
-            double speed = PIDController.calculate(angle,0);
+            double speed = PIDController.calculate(angle);
 
-            mSwerve.AutoDrive(
-                () -> -Robot.driver.getLeftY(),
-                () -> -
-                Robot.driver.getLeftX(),
-                () -> speed);
+            mSwerve.setDefaultCommand(
+                mSwerve.AutoDrive(
+                    () -> -Robot.driver.getLeftY(),
+                    () -> -Robot.driver.getLeftX(),
+                    () -> speed)
+            );
         }
     }
 
     @Override
     public void end(boolean interrupted) {
         LimelightHelpers.setPipelineIndex("", 1);
+        mSwerve.setDefaultCommand(
+            mSwerve.teleDrive(
+            () -> -Robot.driver.getLeftY(), 
+            () -> -Robot.driver.getLeftX(), 
+            () -> Robot.driver.getRightX()));
     }
 
 }

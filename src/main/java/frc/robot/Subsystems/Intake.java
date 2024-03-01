@@ -42,13 +42,7 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getForwardLimitSwitch(Type.kNorma
 
     // Intake game pieces
     public void grab(){
-        IntakeNeo.setIdleMode(kIntake.IntakeIdle);
-        if (!NoteIn.get()) {
         IntakeNeo.set(-kIntake.IntakeSpeed);
-        }else{
-            Keep();
-            ShooterPos();
-        }
     } 
 
     public void Keep(){
@@ -67,7 +61,7 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getForwardLimitSwitch(Type.kNorma
 
     // spit pieces out of the intake
     public void spit(){
-        IntakeNeo.set(kIntake.IntakeSpeed);
+        IntakeNeo.set(0.1);
     }
 
     public boolean isRunning(){

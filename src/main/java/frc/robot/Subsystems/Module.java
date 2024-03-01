@@ -28,8 +28,8 @@ public class Module extends SubsystemBase{
 
     private SimpleMotorFeedforward OpenLoopFF = new SimpleMotorFeedforward(
         0,
-        0.2,
-        0.01);
+        2,
+        0.5);
 
     public RelativeEncoder DriveEncoder;
     private boolean DriveReversed;

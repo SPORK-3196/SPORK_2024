@@ -1,19 +1,18 @@
 package frc.robot.Commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.kIntake;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Shooter;
 
 public class RunIntake extends Command{
     
-    public Intake mIntake;
-    public Shooter mShooter;
+    private Intake mIntake;
 
-    public RunIntake(Intake intake, Shooter shooter){
+    public RunIntake(Intake intake){
         mIntake = intake;
-        mShooter = shooter;
 
-        addRequirements(mIntake, mShooter);
+        addRequirements(mIntake);
     }
 
     @Override
@@ -23,12 +22,10 @@ public class RunIntake extends Command{
 
     @Override
     public void execute() {
-        // TODO only feed when the shooter is up to speed - could be driver controlled?
-
         // TODO 10 is a stand in number must change
-        if(!mIntake.NoteIn.get() && mIntake.IntakeEncoder.getPosition() < 30 ){
+        if(mIntake.IntakeEncoder.getPosition() > kIntake.FloorPickup - 5 ){
             mIntake.grab();
-        }else if(mIntake.NoteIn.get() && mIntake.IntakeEncoder.getPosition() > 2 && mShooter.isShooterToSpeed()){
+        }else if(mIntake.IntakeEncoder.getPosition() < kIntake.ShooterPos + 6){
             mIntake.feed();
         }else{
             mIntake.Keep();
@@ -37,7 +34,7 @@ public class RunIntake extends Command{
 
     @Override
     public void end(boolean interrupted) {
-        
+        mIntake.Keep();
     }
 
 }
