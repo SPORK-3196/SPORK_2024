@@ -21,7 +21,7 @@ private CANSparkMax IntakeNeo = new CANSparkMax(kIntake.IntakePort, MotorType.kB
 
 public RelativeEncoder IntakeEncoder = IntakeAxis.getEncoder();
 
-private SparkPIDController IntakePID;
+public SparkPIDController IntakePID;
 
 // Limit switches
 public DigitalInput NoteIn = new DigitalInput(0);
@@ -40,9 +40,9 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getForwardLimitSwitch(Type.kNorma
     IntakePID.setD(kIntake.kD);
     }
 
-    // Intake game pieces
+    // Intake Notes
     public void grab(){
-        IntakeNeo.set(-kIntake.IntakeSpeed);
+        IntakeNeo.set(kIntake.IntakeSpeed);
     } 
 
     public void Keep(){
@@ -53,15 +53,15 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getForwardLimitSwitch(Type.kNorma
         return IntakeEncoder.getPosition();
     }
 
-    // Feed pieces into the shooter
+    // Feed Notes into the shooter
     public void feed(){
         IntakeNeo.setIdleMode(IdleMode.kCoast);
         IntakeNeo.set(kIntake.FeedSpeed);
     }
 
-    // spit pieces out of the intake
+    // spit Notes out of the intake
     public void spit(){
-        IntakeNeo.set(0.1);
+        IntakeNeo.set(-kIntake.IntakeSpeed);
     }
 
     public boolean isRunning(){

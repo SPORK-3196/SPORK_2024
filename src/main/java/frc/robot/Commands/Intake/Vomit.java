@@ -16,6 +16,7 @@ public class Vomit extends Command {
 
     @Override
     public void initialize() {
+        intake.IntakePID.setP(0.1);
         intake.spitPos();
     }
 
@@ -29,6 +30,7 @@ public class Vomit extends Command {
     @Override
     public void end(boolean interrupted) {
         intake.Keep();
+        intake.IntakePID.setP(kIntake.kP);
         intake.ShooterPos();
     }
 

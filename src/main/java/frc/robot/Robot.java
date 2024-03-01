@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.AutoMove.AutoNoteTrack;
 import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
+import frc.robot.Commands.Intake.IntakeGrab;
 import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Commands.Intake.Vomit;
 import frc.robot.Commands.Shooter.RunAmp;
@@ -71,12 +72,11 @@ public class Robot extends TimedRobot {
   // Subsystem Initalising 
   public SendableChooser<Command> autoChooser;
   public static Intake mIntake = new Intake();
-  public static Swerve mSwerve = new Swerve();
-  //public static Roller mRoller = new Roller();
   public static Climb mClimb = new Climb();
   public static Shooter mShooter = new Shooter();
   public static Lighting mLighting = new Lighting();
-  
+  //  public static Roller mRoller = new Roller();
+  public static Swerve mSwerve = new Swerve();
   // Controllers  
   public static XboxController driver = new XboxController(0);
   public static XboxController secondary = new XboxController(1);
@@ -119,7 +119,7 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_LJSD = new JoystickButton(secondary, XboxController.Button.kLeftStick.value);
 
   // Camera
-  UsbCamera Cam = CameraServer.startAutomaticCapture(0);
+  //UsbCamera Cam = CameraServer.startAutomaticCapture(0);
 
   @Override
   public void robotInit() {
@@ -132,11 +132,13 @@ public class Robot extends TimedRobot {
 
     configureBindings();
 
+    LimelightHelpers.setLEDMode_PipelineControl("");
+
     autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
     SmartDashboard.putData("Auto", autoChooser);
 
-    Cam.setFPS(28);
-    Cam.setResolution(144, 144);
+    // Cam.setFPS(28);
+    // Cam.setResolution(144, 144);
   }
 
   @Override
@@ -333,8 +335,13 @@ public class Robot extends TimedRobot {
     // Secondary Button Bindings
 
       // Scoring
+
+        // Shooter
     secondary_b_Button.whileTrue(new RunShooter(mShooter));
     secondary_RJSD.whileTrue(new RunAmp(mShooter));
+
+        // Intake
+    secondary_LJSD.whileTrue(new IntakeGrab(mIntake));
     secondary_x_Button.whileTrue(new Vomit(mIntake));
     secondary_a_Button.whileTrue(new RunIntake(mIntake));
 

@@ -27,6 +27,7 @@ import frc.robot.Constants.kSwerve;
 import frc.robot.Robot;
 import frc.robot.Robot.LimelightHelpers;
 import frc.robot.Commands.Intake.IntakeBump;
+import frc.robot.Commands.Intake.RunIntake;
 
 public class Swerve extends SubsystemBase {
     
@@ -117,23 +118,8 @@ public class Swerve extends SubsystemBase {
 
     public void DriveRR(ChassisSpeeds speeds){
         var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
         setStates(targetStates);
-    }
-
-
-    public Command AutoDrive(
-    DoubleSupplier translation,
-    DoubleSupplier strafe,
-    DoubleSupplier rotation
-    ){
-        return this.run(
-            () -> 
-            Drive(Joystickcontrol(
-                translation.getAsDouble(),
-                strafe.getAsDouble(),
-                rotation.getAsDouble())
-            )
-        );
     }
 
     public Command teleDrive(
@@ -189,9 +175,10 @@ public class Swerve extends SubsystemBase {
 
     public void ConfigureBuilder(){
         NamedCommands.registerCommand("Zero Gyro",new InstantCommand(() -> this.ZeroGyro()));
-        //NamedCommands.registerCommand("Intake Powered Bump", new IntakeBump(Robot.mIntake));
-        // NamedCommands.registerCommand(getName(), null);
-        // NamedCommands.registerCommand(getName(), null);
+        NamedCommands.registerCommand("Intake Bump", new IntakeBump(Robot.mIntake));
+        NamedCommands.registerCommand("Intake Down", new InstantCommand(() -> Robot.mIntake.FloorPos()));
+        NamedCommands.registerCommand("Intake Up", new InstantCommand(() -> Robot.mIntake.ShooterPos()));
+        NamedCommands.registerCommand("Run Intake", new RunIntake(Robot.mIntake));
 
         // TODO Rotation
         AutoBuilder.configureHolonomic(
