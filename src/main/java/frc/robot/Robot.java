@@ -129,6 +129,9 @@ public class Robot extends TimedRobot {
       () -> -driver.getLeftX(), 
       () -> driver.getRightX()));
 
+    mShooter.setDefaultCommand(
+        mShooter.RunShooter(() -> secondary.getLeftTriggerAxis())
+    );
 
     configureBindings();
 
@@ -139,6 +142,7 @@ public class Robot extends TimedRobot {
 
     // Cam.setFPS(28);
     // Cam.setResolution(144, 144);
+
   }
 
   @Override
@@ -229,7 +233,7 @@ public class Robot extends TimedRobot {
       oIntake.LimitUp = mIntake.SpeakerLimit.isPressed();
       oIntake.NoteIn = mIntake.NoteIn.get();
 
-      // oShooter.ShooterSpeed = mShooter.getShooterSpeed();
+      oShooter.ShooterSpeed = mShooter.getShooterSpeed();
 
       oIntake.kIntakePos_Entry.setDouble(oIntake.IntakePos);
       oIntake.kIntakeRun_Entry.setBoolean(oIntake.IntakeRun);
@@ -276,6 +280,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    mShooter.ShooterIdle();
     m_autonomousCommand = autoChooser.getSelected();
 
     if(!(m_autonomousCommand == null)){
@@ -298,7 +303,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-
       // Intake position
     if (secondary.getPOV() == 180) {
       mIntake.FloorPos();
@@ -327,7 +331,7 @@ public class Robot extends TimedRobot {
 
     // Driver Button Bindings
     driver_a_Button.toggleOnTrue(new InstantCommand(() -> mSwerve.ZeroGyro(), mSwerve));
-    //driver_x_Button.whileTrue(new InstantCommand(() -> mSwerve.Xconfig(), mSwerve));
+    driver_x_Button.whileTrue(new InstantCommand(() -> mSwerve.Xconfig(), mSwerve));
 
     // Auto Zero
     driver_RJSD.whileTrue(new AutoNoteTrack(mSwerve));
@@ -337,12 +341,13 @@ public class Robot extends TimedRobot {
       // Scoring
 
         // Shooter
-    secondary_b_Button.whileTrue(new RunShooter(mShooter));
-    secondary_RJSD.whileTrue(new RunAmp(mShooter));
+                    // secondary_b_Button.whileTrue(new RunShooter(mShooter)); save for later ig
+    secondary_LJSD.whileTrue(new RunAmp(mShooter));
 
         // Intake
     secondary_LJSD.whileTrue(new IntakeGrab(mIntake));
     secondary_x_Button.whileTrue(new Vomit(mIntake));
+    secondary_RJSD.whileTrue(new IntakeGrab(mIntake));
     secondary_a_Button.whileTrue(new RunIntake(mIntake));
 
       // Climber

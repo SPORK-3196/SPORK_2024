@@ -44,17 +44,11 @@ public class AutoNoteTrack extends Command{
             () -> -Robot.driver.getLeftY(),
             () -> -Robot.driver.getLeftX(),
             () -> speed);
-
     }
 
     @Override
     public void end(boolean interrupted) {
         LimelightHelpers.setPipelineIndex("", 1);
-        mSwerve.setDefaultCommand(
-            mSwerve.teleDrive(
-            () -> -Robot.driver.getLeftY(), 
-            () -> -Robot.driver.getLeftX(), 
-            () -> Robot.driver.getRightX()));
     }
 
 }
