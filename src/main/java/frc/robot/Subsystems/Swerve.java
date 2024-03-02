@@ -179,6 +179,8 @@ public class Swerve extends SubsystemBase {
         NamedCommands.registerCommand("Intake Down", new InstantCommand(() -> Robot.mIntake.FloorPos()));
         NamedCommands.registerCommand("Intake Up", new InstantCommand(() -> Robot.mIntake.ShooterPos()));
         NamedCommands.registerCommand("Run Intake", new RunIntake(Robot.mIntake));
+        NamedCommands.registerCommand("Shooter 80%", new InstantCommand(() -> Robot.mShooter.setShooterSpeed(0.8)));
+        NamedCommands.registerCommand("Shooter 100%", new InstantCommand(() -> Robot.mShooter.setShooterSpeed(1)));
 
         // TODO Rotation
         AutoBuilder.configureHolonomic(

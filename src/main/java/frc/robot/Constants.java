@@ -50,12 +50,12 @@ public class Constants {
         public static IdleMode IntakeIdle = IdleMode.kBrake;
 
         // Positions
-        public static double FloorPickup = 48;
+        public static double FloorPickup = 45;  //TODO change these values
         public static double ShooterPos = 0.0; 
         public static double spitPos = 24.0; 
 
         // Speeds
-        public static double IntakeSpeed = -0.5;
+        public static double IntakeSpeed = 0.5;
         public static double FeedSpeed = 1;
         
         // PID Values
