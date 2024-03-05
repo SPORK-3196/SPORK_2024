@@ -13,7 +13,9 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
@@ -34,39 +36,34 @@ public class Swerve extends SubsystemBase {
     public static Module FL = new Module(
     kSwerve.frontLeftSteer,
     kSwerve.frontLeftDrive,
-    true,
     kSwerve.kFrontLeftDriveAbsoluteEncoderPort,
     kSwerve.FlOffset);
     public static Module FR = new Module(
     kSwerve.frontRightSteer,
     kSwerve.frontRightDrive,
-    true,
     kSwerve.kFrontRightDriveAbsoluteEncoderPort,
     kSwerve.FrOffset);
     public static Module BL = new Module(
     kSwerve.backLeftSteer,
     kSwerve.backLeftDrive,
-    false,
     kSwerve.kBackLeftDriveAbsoluteEncoderPort,
     kSwerve.BlOffset);
     public static Module BR = new Module(
     kSwerve.backRightSteer,
     kSwerve.backRightDrive,
-    false,
     kSwerve.kBackRightDriveAbsoluteEncoderPort,
     kSwerve.BrOffset);
 
-    private SwerveDrivePoseEstimator Pose;
+    private SwerveDriveOdometry Pose;
     private ChassisSpeeds chassisSpeedsRR;
-    private LimelightHelpers.PoseEstimate LimeLightPoseMes;
+    //private LimelightHelpers.PoseEstimate LimeLightPoseMes;
     public Field2d field2d;
 
     public Swerve(){
-        Pose = new SwerveDrivePoseEstimator(
+        Pose = new SwerveDriveOdometry(
             kSwerve.kinematics,
             gyroAngle(),
-            getPositions(),
-            new Pose2d(0,0, new Rotation2d(0)));
+            getPositions());
         chassisSpeedsRR = new ChassisSpeeds();
         ConfigureBuilder();
         field2d = new Field2d();
@@ -78,25 +75,28 @@ public class Swerve extends SubsystemBase {
         return Robot.gyro.getRotation2d();
     }
 
+
+            // if(LimelightHelpers.getCurrentPipelineIndex("") == 1){  
+        // var all = DriverStation.getAlliance();
+        // if(all.isPresent()){
+        //     if (all.get() == DriverStation.Alliance.Red){
+        //         LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiRed("");
+        //     }else{
+        //         LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
+        //     }
+        //     if (LimeLightPoseMes.tagCount >= 2 ) {
+        //         Pose.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        //         Pose.addVisionMeasurement(
+        //             LimeLightPoseMes.pose,
+        //             LimeLightPoseMes.timestampSeconds);
+        //     }
+        //     }
+        // }
+
+        
     @Override
     public void periodic(){
         updatePose(); 
-        if(LimelightHelpers.getCurrentPipelineIndex("") == 1){  
-        var all = DriverStation.getAlliance();
-        if(all.isPresent()){
-            if (all.get() == DriverStation.Alliance.Red){
-                LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiRed("");
-            }else{
-                LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
-            }
-            if (LimeLightPoseMes.tagCount >= 2 ) {
-                Pose.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-                Pose.addVisionMeasurement(
-                    LimeLightPoseMes.pose,
-                    LimeLightPoseMes.timestampSeconds);
-            }
-        }
-    }
         field2d.setRobotPose(getPose());
         chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
     }  
@@ -155,7 +155,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Pose2d getPose(){
-        return Pose.getEstimatedPosition();
+        return Pose.getPoseMeters();
     }
 
     public void updatePose(){
@@ -189,9 +189,9 @@ public class Swerve extends SubsystemBase {
             () -> chassisSpeedsRR,
             this::DriveRR,
             new HolonomicPathFollowerConfig(
-                new PIDConstants(5,0,0), 
+                new PIDConstants(3,0,0), 
                 new PIDConstants(0,0,0), 
-                Units.feetToMeters(5), 
+                Units.feetToMeters(2), 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
                 new ReplanningConfig()),
                 () -> {

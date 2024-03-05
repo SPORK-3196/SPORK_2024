@@ -127,7 +127,7 @@ public class Robot extends TimedRobot {
       mSwerve.teleDrive(
       () -> -driver.getLeftY(), 
       () -> -driver.getLeftX(), 
-      () -> driver.getRightX()));
+      () -> -driver.getRightX()));
 
     mShooter.setDefaultCommand(
         mShooter.RunShooter(() -> secondary.getLeftTriggerAxis())
@@ -246,15 +246,6 @@ public class Robot extends TimedRobot {
     }
 
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
-
-
-    // if (mIntake.SpeakerLimit.isPressed()) {
-    //   mIntake.IntakeEncoder.setPosition(0);
-    // }
-
-    // if (mIntake.FloorStop.isPressed()) {
-    //   mIntake.Stop();
-    // }
   }
 
   @Override
@@ -311,6 +302,10 @@ public class Robot extends TimedRobot {
     if(secondary.getPOV() == 0){
       mIntake.ShooterPos();
     }
+
+    if (secondary.getLeftTriggerAxis() > 0.01) {
+        mShooter.RunShooter(() -> secondary.getLeftTriggerAxis());
+    }
   }
 
   @Override
@@ -341,11 +336,10 @@ public class Robot extends TimedRobot {
       // Scoring
 
         // Shooter
-                    // secondary_b_Button.whileTrue(new RunShooter(mShooter)); save for later ig
+    secondary_b_Button.whileTrue(new RunShooter(mShooter)); // save for later ig
     secondary_LJSD.whileTrue(new RunAmp(mShooter));
 
         // Intake
-    secondary_LJSD.whileTrue(new IntakeGrab(mIntake));
     secondary_x_Button.whileTrue(new Vomit(mIntake));
     secondary_RJSD.whileTrue(new IntakeGrab(mIntake));
     secondary_a_Button.whileTrue(new RunIntake(mIntake));

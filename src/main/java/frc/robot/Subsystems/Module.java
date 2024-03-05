@@ -32,15 +32,13 @@ public class Module extends SubsystemBase{
         0.5);
 
     public RelativeEncoder DriveEncoder;
-    private boolean DriveReversed;
 
     public CANcoder absoluteEncoder;
     private CANcoderConfiguration config;
 
-    public Module(int TurnNeoID, int DriveID, boolean DriveReversed, int absoluteEncoderID, Rotation2d offset){
+    public Module(int TurnNeoID, int DriveID, int absoluteEncoderID, Rotation2d offset){
         
         this.offset = offset;
-        this.DriveReversed = DriveReversed;
         State = new SwerveModuleState();
         config = new CANcoderConfiguration();
         
@@ -50,10 +48,12 @@ public class Module extends SubsystemBase{
 
         DriveNEO = new CANSparkMax(DriveID, MotorType.kBrushless);
         DriveNEO.setIdleMode(IdleMode.kBrake);
+        DriveNEO.setInverted(true);
         DriveNEO.setSmartCurrentLimit(15);
         DriveNEO.enableVoltageCompensation(12);
         
         DriveEncoder = DriveNEO.getEncoder();
+        DriveEncoder.setPositionConversionFactor(1/8);
         DriveEncoder.setPosition(0);
         
         
@@ -62,7 +62,7 @@ public class Module extends SubsystemBase{
         config.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
         absoluteEncoderConfigu.apply(config);
     
-        AzumuthPID = new PIDController(2, 0, 0);
+        AzumuthPID = new PIDController(2, 0, 0.01);
         AzumuthPID.enableContinuousInput(0, 1);
     }
 
@@ -70,11 +70,7 @@ public class Module extends SubsystemBase{
 
         dState = SwerveModuleState.optimize(dState, getCANangle());
 
-        if(!DriveReversed){
-        DriveNEO.set(OpenLoopFF.calculate(-dState.speedMetersPerSecond));
-        }else{
         DriveNEO.set(OpenLoopFF.calculate(dState.speedMetersPerSecond));
-        }
 
         if(Math.abs(dState.speedMetersPerSecond) > kSwerve.MaxSpeed*0.01){
         var out = AzumuthPID.calculate(getCANangle().getRotations(), dState.angle.getRotations());
@@ -87,9 +83,6 @@ public class Module extends SubsystemBase{
     public Rotation2d getCANangle(){
         return Rotation2d.fromRotations(absoluteEncoder.getAbsolutePosition().getValueAsDouble() - offset.getRotations());
     }
-    public Rotation2d getCANforshuffle(){
-        return Rotation2d.fromRotations(absoluteEncoder.getAbsolutePosition().getValueAsDouble() - offset.getRotations());
-    }
 
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(DriveEncoder.getPosition(), getCANangle());
@@ -97,6 +90,5 @@ public class Module extends SubsystemBase{
 
     public SwerveModuleState getstate(){
         return new SwerveModuleState(DriveEncoder.getVelocity(), getCANangle());
-    }
-
+}
 }
