@@ -62,7 +62,7 @@ public class Module extends SubsystemBase{
         config.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
         absoluteEncoderConfigu.apply(config);
     
-        AzumuthPID = new PIDController(2, 0, 0.01);
+        AzumuthPID = new PIDController(2, 0, 0);
         AzumuthPID.enableContinuousInput(0, 1);
     }
 

@@ -118,15 +118,19 @@ public class Constants {
         public static int kBackRightDriveAbsoluteEncoderPort = 3;
 
         // Swerve module Offsets
-        public static Rotation2d FlOffset = Rotation2d.fromRotations(0.75);
-        public static Rotation2d FrOffset = Rotation2d.fromRotations(0.98);
-        public static Rotation2d BlOffset = Rotation2d.fromRotations(0.15);
-        public static Rotation2d BrOffset = Rotation2d.fromRotations(0.41);
 
-        // public static Rotation2d FlOffset = Rotation2d.fromRotations(0.72);
-        // public static Rotation2d FrOffset = Rotation2d.fromRotations(0.31);
-        // public static Rotation2d BlOffset = Rotation2d.fromRotations(0.08);
-        // public static Rotation2d BrOffset = Rotation2d.fromRotations(0.96);
+        // Game bot
+        // public static Rotation2d FlOffset = Rotation2d.fromRotations(0.75);
+        // public static Rotation2d FrOffset = Rotation2d.fromRotations(0.98);
+        // public static Rotation2d BlOffset = Rotation2d.fromRotations(0.15);
+        // public static Rotation2d BrOffset = Rotation2d.fromRotations(0.41);
+
+
+        // Test Bot
+        public static Rotation2d FlOffset = Rotation2d.fromRotations(0.72);
+        public static Rotation2d FrOffset = Rotation2d.fromRotations(0.31);
+        public static Rotation2d BlOffset = Rotation2d.fromRotations(0.08);
+        public static Rotation2d BrOffset = Rotation2d.fromRotations(0.96);
         
 
         public static final SwerveDriveKinematics kinematics =

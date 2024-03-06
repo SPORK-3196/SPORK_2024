@@ -134,10 +134,8 @@ public class Robot extends TimedRobot {
     );
 
     configureBindings();
-
     LimelightHelpers.setLEDMode_PipelineControl("");
-
-    autoChooser = AutoBuilder.buildAutoChooser("simple Forward Turn");
+    autoChooser = AutoBuilder.buildAutoChooser("Nothing");
     SmartDashboard.putData("Auto", autoChooser);
 
     // Cam.setFPS(28);
@@ -203,7 +201,6 @@ public class Robot extends TimedRobot {
 
       oDriver.kLeftTrigger_Entry.setDouble(oDriver.kLeftTrigger);
       oDriver.kRightTrigger_Entry.setDouble(oDriver.kRightTrigger);
-
 
       oSecondary.a_Button_Entry.setBoolean(oSecondary.a_Button);
       oSecondary.b_Button_Entry.setBoolean(oSecondary.b_Button);
@@ -271,7 +268,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    mShooter.ShooterIdle();
     m_autonomousCommand = autoChooser.getSelected();
 
     if(!(m_autonomousCommand == null)){
@@ -287,6 +283,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    mShooter.ShooterIdle();
     if(!(m_autonomousCommand == null)){
       m_autonomousCommand.cancel();
     }

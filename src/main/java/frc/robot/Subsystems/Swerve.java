@@ -54,16 +54,17 @@ public class Swerve extends SubsystemBase {
     kSwerve.kBackRightDriveAbsoluteEncoderPort,
     kSwerve.BrOffset);
 
-    private SwerveDriveOdometry Pose;
+    private SwerveDrivePoseEstimator Pose;
     private ChassisSpeeds chassisSpeedsRR;
     //private LimelightHelpers.PoseEstimate LimeLightPoseMes;
     public Field2d field2d;
 
     public Swerve(){
-        Pose = new SwerveDriveOdometry(
-            kSwerve.kinematics,
-            gyroAngle(),
-            getPositions());
+        Pose = new SwerveDrivePoseEstimator(
+            kSwerve.kinematics, 
+            gyroAngle(), 
+            getPositions(), 
+            new Pose2d());
         chassisSpeedsRR = new ChassisSpeeds();
         ConfigureBuilder();
         field2d = new Field2d();
@@ -98,7 +99,7 @@ public class Swerve extends SubsystemBase {
     public void periodic(){
         updatePose(); 
         field2d.setRobotPose(getPose());
-        chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
+        //chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
     }  
 
     public void ZeroGyro(){
@@ -155,7 +156,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Pose2d getPose(){
-        return Pose.getPoseMeters();
+        return Pose.getEstimatedPosition();
     }
 
     public void updatePose(){
@@ -187,11 +188,11 @@ public class Swerve extends SubsystemBase {
             this::getPose,
             this::resetPose,
             () -> chassisSpeedsRR,
-            this::DriveRR,
+            (chassisSpeedsRR) -> DriveRR(chassisSpeedsRR),
             new HolonomicPathFollowerConfig(
                 new PIDConstants(3,0,0), 
                 new PIDConstants(0,0,0), 
-                Units.feetToMeters(2), 
+                Units.feetToMeters(5), 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
                 new ReplanningConfig()),
                 () -> {
