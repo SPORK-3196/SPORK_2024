@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.534461059432202,
-        "y": 7.021236913173707
+        "x": 2.6123666007711623,
+        "y": 7.128357032514777
       },
       "prevControl": {
-        "x": 1.580118178029951,
-        "y": 7.060189683843188
+        "x": 1.6580237193689111,
+        "y": 7.167309803184257
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.3,
       "command": {
         "type": "parallel",
         "data": {
@@ -53,7 +53,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Zero Gyro"
+                "name": "Intake Down"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Run Intake"
               }
             }
           ]

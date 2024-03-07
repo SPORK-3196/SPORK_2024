@@ -53,7 +53,6 @@ public class Module extends SubsystemBase{
         DriveNEO.enableVoltageCompensation(12);
         
         DriveEncoder = DriveNEO.getEncoder();
-        DriveEncoder.setPositionConversionFactor(1/8);
         DriveEncoder.setPosition(0);
         
         
@@ -85,7 +84,7 @@ public class Module extends SubsystemBase{
     }
 
     public SwerveModulePosition getPosition(){
-        return new SwerveModulePosition(DriveEncoder.getPosition(), getCANangle());
+        return new SwerveModulePosition(DriveEncoder.getPosition() / 1/14, getCANangle());
     }
 
     public SwerveModuleState getstate(){

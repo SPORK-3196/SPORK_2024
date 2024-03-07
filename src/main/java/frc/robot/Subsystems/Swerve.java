@@ -2,6 +2,7 @@ package frc.robot.Subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import com.fasterxml.jackson.core.sym.Name;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -179,9 +180,12 @@ public class Swerve extends SubsystemBase {
         NamedCommands.registerCommand("Intake Bump", new IntakeBump(Robot.mIntake));
         NamedCommands.registerCommand("Intake Down", new InstantCommand(() -> Robot.mIntake.FloorPos()));
         NamedCommands.registerCommand("Intake Up", new InstantCommand(() -> Robot.mIntake.ShooterPos()));
-        NamedCommands.registerCommand("Run Intake", new RunIntake(Robot.mIntake));
+        NamedCommands.registerCommand("Run Intake", new InstantCommand(() -> Robot.mIntake.grab()));
+        NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> Robot.mIntake.Keep()));
+        NamedCommands.registerCommand("Feed Intake", new InstantCommand(() -> Robot.mIntake.feed()));
         NamedCommands.registerCommand("Shooter 80%", new InstantCommand(() -> Robot.mShooter.setShooterSpeed(0.8)));
         NamedCommands.registerCommand("Shooter 100%", new InstantCommand(() -> Robot.mShooter.setShooterSpeed(1)));
+        NamedCommands.registerCommand("Shooter 0%", new InstantCommand(() -> Robot.mShooter.setShooterSpeed(0)));
 
         // TODO Rotation
         AutoBuilder.configureHolonomic(
@@ -190,9 +194,9 @@ public class Swerve extends SubsystemBase {
             () -> chassisSpeedsRR,
             (chassisSpeedsRR) -> DriveRR(chassisSpeedsRR),
             new HolonomicPathFollowerConfig(
-                new PIDConstants(3,0,0), 
+                new PIDConstants(3,0, 0), 
                 new PIDConstants(0,0,0), 
-                Units.feetToMeters(5), 
+                Units.feetToMeters(2), 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
                 new ReplanningConfig()),
                 () -> {

@@ -14,6 +14,18 @@
         {
           "type": "path",
           "data": {
+            "pathName": "FirstShoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "ToMiddlePiece"
           }
         },
@@ -21,6 +33,42 @@
           "type": "path",
           "data": {
             "pathName": "MiddleToScore"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Feed Intake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter 0%"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HeadOut"
           }
         }
       ]

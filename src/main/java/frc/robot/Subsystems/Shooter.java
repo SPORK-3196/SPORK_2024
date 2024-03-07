@@ -2,7 +2,6 @@ package frc.robot.Subsystems;
 
 import java.util.function.DoubleSupplier;
 
-import com.fasterxml.jackson.databind.ser.std.NumberSerializers.DoubleSerializer;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 

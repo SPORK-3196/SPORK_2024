@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3737350931491987,
+        "x": 1.8040966093794577,
         "y": 5.496947290190876
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4301952576840884,
+        "x": 1.8605567739143474,
         "y": 5.496947290190876
       },
       "isLocked": false,
@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 2.5432663211005435,
+        "x": 2.8752978027901492,
         "y": 5.496947290190876
       },
       "prevControl": {
-        "x": 2.4407433478180276,
+        "x": 2.7727748295076333,
         "y": 5.496947290190876
       },
       "nextControl": null,
@@ -42,7 +42,31 @@
       }
     }
   ],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Intake Run",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake Down"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Run Intake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
