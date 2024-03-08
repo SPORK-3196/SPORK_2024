@@ -31,7 +31,18 @@
   "rotationTargets": [],
   "constraintZones": [
     {
-      "name": "New Constraints Zone",
+      "name": "0.5 Speed",
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 0.0,
+        "maxAngularAcceleration": 0.0
+      }
+    },
+    {
+      "name": "1 Speed",
       "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
@@ -44,18 +55,12 @@
   ],
   "eventMarkers": [
     {
-      "name": "Intake Run",
-      "waypointRelativePos": 0.0,
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.55,
       "command": {
         "type": "parallel",
         "data": {
           "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake Down"
-              }
-            },
             {
               "type": "named",
               "data": {

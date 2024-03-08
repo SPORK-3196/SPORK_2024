@@ -84,10 +84,10 @@ public class Module extends SubsystemBase{
     }
 
     public SwerveModulePosition getPosition(){
-        return new SwerveModulePosition(DriveEncoder.getPosition() / 1/14, getCANangle());
+        return new SwerveModulePosition(DriveEncoder.getPosition() / 1/20, getCANangle());
     }
 
     public SwerveModuleState getstate(){
         return new SwerveModuleState(DriveEncoder.getVelocity(), getCANangle());
-}
+    }
 }
