@@ -57,7 +57,6 @@ public class Constants {
         // Speeds
         public static double IntakeSpeed = -0.5;
         public static double FeedSpeed = 1;
-        
         // PID Values
         public static double kP = 0.03;
         public static double KI = 0;
@@ -82,20 +81,18 @@ public class Constants {
         public static boolean LeftArmInvert = false;
         public static IdleMode ClimberIdle = IdleMode.kBrake;
 
-
         // Speeds
-        public static double ClimbSpeed = 0.45;
-
+        public static double ClimbSpeed = 0.70;        
     }
 
     public static class kSwerve {
-        private static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(24);
+        public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(24);
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(24);
         
         public static final double kDeadband = 0.1;
         
         public static final double MaxAngularSpeed = Units.feetToMeters(4); // m/s
-        public static final double MaxSpeed = Units.feetToMeters(5);  // m/s
+        public static final double MaxSpeed = Units.feetToMeters(11);  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
         public static final double RotationGearRatio = (150/7)/1;
@@ -125,14 +122,12 @@ public class Constants {
         public static Rotation2d BlOffset = Rotation2d.fromRotations(0.15);
         public static Rotation2d BrOffset = Rotation2d.fromRotations(0.41);
 
-
         // Test Bot
         // public static Rotation2d FlOffset = Rotation2d.fromRotations(0.72);
         // public static Rotation2d FrOffset = Rotation2d.fromRotations(0.31);
-        // public static Rotation2d BlOffset = Rotation2d.fromRotations(0.08);
-        // public static Rotation2d BrOffset = Rotation2d.fromRotations(0.96);
+        // // public static Rotation2d BlOffset = Rotation2d.fromRotations(0.08);
+        // // public static Rotation2d BrOffset = Rotation2d.fromRotations(0.96);
         
-
         public static final SwerveDriveKinematics kinematics =
         new SwerveDriveKinematics(
                 // Front left

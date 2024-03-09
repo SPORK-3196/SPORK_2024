@@ -2,21 +2,17 @@ package frc.robot.Subsystems;
 
 import java.util.function.DoubleSupplier;
 
-import com.fasterxml.jackson.core.sym.Name;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
@@ -28,9 +24,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kSwerve;
 import frc.robot.Robot;
-import frc.robot.Robot.LimelightHelpers;
 import frc.robot.Commands.Intake.IntakeBump;
-import frc.robot.Commands.Intake.RunIntake;
 
 public class Swerve extends SubsystemBase {
     
@@ -58,7 +52,7 @@ public class Swerve extends SubsystemBase {
     private SwerveDrivePoseEstimator Pose;
     private ChassisSpeeds chassisSpeedsRR;
     //private LimelightHelpers.PoseEstimate LimeLightPoseMes;
-    public Field2d field2d;
+    // public Field2d field2d;
 
     public Swerve(){
         Pose = new SwerveDrivePoseEstimator(
@@ -68,9 +62,9 @@ public class Swerve extends SubsystemBase {
             new Pose2d());
         chassisSpeedsRR = new ChassisSpeeds();
         ConfigureBuilder();
-        field2d = new Field2d();
-        SmartDashboard.putData(field2d);
-        field2d.setRobotPose(getPose());
+        // field2d = new Field2d();
+        // SmartDashboard.putData(field2d);
+        // field2d.setRobotPose(getPose());
     }
 
     public Rotation2d gyroAngle(){
@@ -99,7 +93,7 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic(){
         updatePose(); 
-        field2d.setRobotPose(getPose());
+        // field2d.setRobotPose(getPose());
         //chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
     }  
 
@@ -196,7 +190,7 @@ public class Swerve extends SubsystemBase {
             new HolonomicPathFollowerConfig(
                 new PIDConstants(4,0, 0), 
                 new PIDConstants(0.6,0,0), 
-                Units.feetToMeters(2), 
+                Units.feetToMeters(5), 
                 kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
                 new ReplanningConfig()),
                 () -> {

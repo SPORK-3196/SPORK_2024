@@ -96,7 +96,6 @@ public class OI {
 
         public static boolean LimitDown = false;
         public static boolean LimitUp = false;
-        public static boolean NoteIn = false;
 
         public static GenericEntry kIntakePos_Entry = Intake_Tab.add("Intake Pos", 0.0).getEntry();
         public static GenericEntry kIntakeSpeed_Entry = Intake_Tab.add("Intake Speed", 0.0).getEntry();
@@ -104,6 +103,5 @@ public class OI {
 
         public static GenericEntry kLimitDown = Intake_Tab.add("Intake Down", false).getEntry();
         public static GenericEntry kLimitUp = Intake_Tab.add("Intake Up", false).getEntry();
-        public static GenericEntry kNoteIn = Intake_Tab.add("Note In", false).getEntry();
     }
 }

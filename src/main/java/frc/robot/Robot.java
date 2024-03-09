@@ -26,6 +26,7 @@ import frc.robot.Commands.Intake.Vomit;
 import frc.robot.Commands.Shooter.RunAmp;
 import frc.robot.Commands.Shooter.RunShooter;
 import frc.robot.Constants.kClimber;
+import frc.robot.Constants.kIntake;
 import frc.robot.OI.oDriver;
 import frc.robot.OI.oIntake;
 import frc.robot.OI.oSecondary;
@@ -146,6 +147,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    SmartDashboard.putBoolean("Note In", mIntake.NoteIn.get());
 
     // Driver SmartDashboard output
     if(driver.isConnected()){
@@ -228,7 +230,6 @@ public class Robot extends TimedRobot {
       oIntake.IntakeSpeed = mIntake.getSpeed();
       oIntake.LimitDown = mIntake.FloorStop.isPressed();
       oIntake.LimitUp = mIntake.SpeakerLimit.isPressed();
-      oIntake.NoteIn = mIntake.NoteIn.get();
 
       oShooter.ShooterSpeed = mShooter.getShooterSpeed();
 
@@ -237,17 +238,23 @@ public class Robot extends TimedRobot {
       oIntake.kIntakeSpeed_Entry.setDouble(oIntake.IntakeSpeed);
       oIntake.kLimitDown.setBoolean(oIntake.LimitDown);
       oIntake.kLimitUp.setBoolean(oIntake.LimitUp);
-      oIntake.kNoteIn.setBoolean(oIntake.NoteIn);
 
       oShooter.kShooterSpeed_Entry.setDouble(oShooter.ShooterSpeed);
     }
 
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
+
+    if(mIntake.IntakeEncoder.getPosition() > 6 || mIntake.IntakeEncoder.getPosition() < 40){
+        mIntake.IntakePID.setP(0.1);
+    }else{
+        mIntake.IntakePID.setP(kIntake.kP);
+    }
   }
 
   @Override
   public void disabledInit() {
     // ranbow run in disabled
+
   }
 
   @Override

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4048307100172925,
-        "y": 5.5410316277334815
+        "x": 7.787592859136336,
+        "y": 2.749477103892479
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5314272146931014,
-        "y": 6.9920223351715975
+        "x": 7.24774631043924,
+        "y": 3.359676470242621
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6318429861059016,
-        "y": 7.001760527838968
+        "x": 1.3737350931491987,
+        "y": 5.543357259554025
       },
       "prevControl": {
-        "x": 1.6775001047036504,
-        "y": 7.040713298508448
+        "x": 4.158333254938116,
+        "y": 5.404127351464579
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,23 +29,11 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 1.0,
-      "maxWaypointRelativePos": 0.0,
-      "constraints": {
-        "maxVelocity": 2.0,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 0.0,
-        "maxAngularAcceleration": 0.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0.3,
       "command": {
         "type": "parallel",
         "data": {
@@ -53,13 +41,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake Down"
+                "name": "Intake Up"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Run Intake"
+                "name": "Stop Intake"
               }
             }
           ]
@@ -81,7 +69,7 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -36.11934084947968,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4048307100172925,
-        "y": 5.5410316277334815
+        "x": 0.8725074240271937,
+        "y": 6.610786554906443
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5314272146931014,
-        "y": 6.9920223351715975
+        "x": 1.4201450625123473,
+        "y": 6.907810358830593
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6318429861059016,
-        "y": 7.001760527838968
+        "x": 2.6123666007711623,
+        "y": 6.923854986500009
       },
       "prevControl": {
-        "x": 1.6775001047036504,
-        "y": 7.040713298508448
+        "x": 2.1111389316491573,
+        "y": 6.886727011009492
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
     {
       "name": "New Constraints Zone",
       "minWaypointRelativePos": 1.0,
-      "maxWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 0,
       "constraints": {
         "maxVelocity": 2.0,
         "maxAcceleration": 3.0,
@@ -42,31 +42,7 @@
       }
     }
   ],
-  "eventMarkers": [
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake Down"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Run Intake"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 7.0,
     "maxAcceleration": 3.0,
@@ -75,13 +51,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 14.841201984783995,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 54.86580694308431,
     "velocity": 0
   },
   "useDefaultConstraints": true
