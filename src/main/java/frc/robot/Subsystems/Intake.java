@@ -74,7 +74,7 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getForwardLimitSwitch(Type.kNorma
 
     // To the window
     public void FloorPos(){
-        IntakePID.setP(0.07);
+        IntakePID.setP(0.08);
         IntakePID.setReference(kIntake.FloorPickup, ControlType.kPosition);
     }
 
