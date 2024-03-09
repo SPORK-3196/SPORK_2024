@@ -243,12 +243,6 @@ public class Robot extends TimedRobot {
     }
 
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
-
-    if(mIntake.IntakeEncoder.getPosition() > 6 || mIntake.IntakeEncoder.getPosition() < 40){
-        mIntake.IntakePID.setP(0.1);
-    }else{
-        mIntake.IntakePID.setP(kIntake.kP);
-    }
   }
 
   @Override
