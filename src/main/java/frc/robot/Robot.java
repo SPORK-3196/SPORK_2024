@@ -147,6 +147,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    
     SmartDashboard.putBoolean("Note In", mIntake.NoteIn.get());
 
     // Driver SmartDashboard output
@@ -243,6 +244,7 @@ public class Robot extends TimedRobot {
     }
 
     SmartDashboard.putNumber("gyro angle", gyro.getYaw());
+
   }
 
   @Override

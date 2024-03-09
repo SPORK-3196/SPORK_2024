@@ -52,7 +52,7 @@ public class Swerve extends SubsystemBase {
     private SwerveDrivePoseEstimator Pose;
     private ChassisSpeeds chassisSpeedsRR;
     //private LimelightHelpers.PoseEstimate LimeLightPoseMes;
-    // public Field2d field2d;
+    public Field2d field2d;
 
     public Swerve(){
         Pose = new SwerveDrivePoseEstimator(
@@ -62,9 +62,9 @@ public class Swerve extends SubsystemBase {
             new Pose2d());
         chassisSpeedsRR = new ChassisSpeeds();
         ConfigureBuilder();
-        // field2d = new Field2d();
-        // SmartDashboard.putData(field2d);
-        // field2d.setRobotPose(getPose());
+        field2d = new Field2d();
+        SmartDashboard.putData(field2d);
+        field2d.setRobotPose(getPose());
     }
 
     public Rotation2d gyroAngle(){
@@ -93,8 +93,8 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic(){
         updatePose(); 
-        // field2d.setRobotPose(getPose());
-        //chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
+        field2d.setRobotPose(getPose());
+        chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
     }  
 
     public void ZeroGyro(){
