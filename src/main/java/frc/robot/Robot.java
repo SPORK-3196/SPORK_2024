@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_LJSD = new JoystickButton(secondary, XboxController.Button.kLeftStick.value);
 
   // Camera
-  //UsbCamera Cam = CameraServer.startAutomaticCapture(0);
+  UsbCamera Cam = CameraServer.startAutomaticCapture(0);
 
   @Override
   public void robotInit() {
@@ -139,15 +139,14 @@ public class Robot extends TimedRobot {
     autoChooser = AutoBuilder.buildAutoChooser("Nothing");
     SmartDashboard.putData("Auto", autoChooser);
 
-    // Cam.setFPS(28);
-    // Cam.setResolution(144, 144);
+    Cam.setFPS(28);
+    Cam.setResolution(380, 380);
 
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    
     SmartDashboard.putBoolean("Note In", mIntake.NoteIn.get());
 
     // Driver SmartDashboard output
