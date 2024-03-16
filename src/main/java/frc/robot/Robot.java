@@ -7,6 +7,7 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -17,16 +18,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Commands.RunAmp;
 import frc.robot.Commands.AutoMove.AutoNoteTrack;
 import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
+import frc.robot.Commands.Intake.AutoIntake;
+import frc.robot.Commands.Intake.IntakeFeed;
 import frc.robot.Commands.Intake.IntakeGrab;
-import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Commands.Intake.Vomit;
-import frc.robot.Commands.Shooter.RunAmp;
 import frc.robot.Commands.Shooter.RunShooter;
 import frc.robot.Constants.kClimber;
-import frc.robot.Constants.kIntake;
 import frc.robot.OI.oDriver;
 import frc.robot.OI.oIntake;
 import frc.robot.OI.oSecondary;
@@ -76,7 +77,7 @@ public class Robot extends TimedRobot {
   public static Climb mClimb = new Climb();
   public static Shooter mShooter = new Shooter();
   public static Lighting mLighting = new Lighting();
-  //  public static Roller mRoller = new Roller();
+  public static Roller mRoller = new Roller();
   public static Swerve mSwerve = new Swerve();
   // Controllers  
   public static XboxController driver = new XboxController(0);
@@ -106,6 +107,9 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_x_Button = new JoystickButton(secondary, XboxController.Button.kX.value);
   public JoystickButton secondary_y_Button = new JoystickButton(secondary, XboxController.Button.kY.value);
 
+  // Secondary POVS
+  
+
   // Secondary bumpers and triggers
   public JoystickButton secondary_left_Bumper = new JoystickButton(secondary, XboxController.Button.kLeftBumper.value);
   public JoystickButton secondary_Right_Bumper = new JoystickButton(secondary, XboxController.Button.kRightBumper.value);
@@ -119,8 +123,10 @@ public class Robot extends TimedRobot {
   public JoystickButton secondary_RJSD = new JoystickButton(secondary, XboxController.Button.kRightStick.value);
   public JoystickButton secondary_LJSD = new JoystickButton(secondary, XboxController.Button.kLeftStick.value);
 
+
   // Camera
   UsbCamera Cam = CameraServer.startAutomaticCapture(0);
+  HttpCamera LimelightStream = new HttpCamera("Limelight", "http://frcvision.local:1181/stream.mjpg");
 
   @Override
   public void robotInit() {
@@ -136,18 +142,19 @@ public class Robot extends TimedRobot {
 
     configureBindings();
     LimelightHelpers.setLEDMode_PipelineControl("");
-    autoChooser = AutoBuilder.buildAutoChooser("Nothing");
+    autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto", autoChooser);
-
+    
+    CameraServer.addCamera(LimelightStream);
     Cam.setFPS(28);
     Cam.setResolution(380, 380);
-
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putBoolean("Note In", mIntake.NoteIn.get());
+    
+    SmartDashboard.putBoolean("Note", !mIntake.NoteIn.get());
 
     // Driver SmartDashboard output
     if(driver.isConnected()){
@@ -242,7 +249,7 @@ public class Robot extends TimedRobot {
       oShooter.kShooterSpeed_Entry.setDouble(oShooter.ShooterSpeed);
     }
 
-    SmartDashboard.putNumber("gyro angle", gyro.getYaw());
+    // SmartDashboard.putNumber("gyro angle", gyro.getYaw());
 
   }
 
@@ -270,6 +277,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    mClimb.LeftDown(kClimber.ClimbSpeed);
+    mClimb.RightDown(kClimber.ClimbSpeed);
     m_autonomousCommand = autoChooser.getSelected();
 
     if(!(m_autonomousCommand == null)){
@@ -293,15 +302,26 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-      // Intake position
+        // one button intake
     if (secondary.getPOV() == 180) {
-      mIntake.FloorPos();
+        new AutoIntake(mIntake);
     }
-
+        // Run Amp Config
     if(secondary.getPOV() == 0){
-      mIntake.ShooterPos();
+        mRoller.RollerBrake();
+        //new RunAmp(mShooter, mIntake, mRoller);
+    }else{
+        mRoller.RollerCoast();
     }
-
+        // Rollers up
+    if (secondary.getPOV() == 90) {
+        new RunAmp(mShooter, mIntake, mRoller);
+    }
+        // Rollers Down
+    if (secondary.getPOV() == 270) {
+        mRoller.RollerDown();
+    }
+        // Shooting :/  
     if (secondary.getLeftTriggerAxis() > 0.01) {
         mShooter.RunShooter(() -> secondary.getLeftTriggerAxis());
     }
@@ -336,12 +356,12 @@ public class Robot extends TimedRobot {
 
         // Shooter
     secondary_b_Button.whileTrue(new RunShooter(mShooter)); // save for later ig
-    secondary_LJSD.whileTrue(new RunAmp(mShooter));
+    // secondary_LJSD.whileTrue(new RunAmp(mShooter));
 
         // Intake
     secondary_x_Button.whileTrue(new Vomit(mIntake));
     secondary_RJSD.whileTrue(new IntakeGrab(mIntake));
-    secondary_a_Button.whileTrue(new RunIntake(mIntake));
+    secondary_a_Button.whileTrue(new IntakeFeed(mIntake));
 
       // Climber
     secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));

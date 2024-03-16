@@ -27,9 +27,9 @@ public class Module extends SubsystemBase{
     public CANSparkMax DriveNEO;
 
     private SimpleMotorFeedforward OpenLoopFF = new SimpleMotorFeedforward(
-        0,
-        2,
-        0.5);
+        0.046,
+        2.67,
+        0.113);
 
     public RelativeEncoder DriveEncoder;
 
@@ -55,7 +55,6 @@ public class Module extends SubsystemBase{
         DriveEncoder = DriveNEO.getEncoder();
         DriveEncoder.setPosition(0);
         
-        
         absoluteEncoder = new CANcoder(absoluteEncoderID);
         var absoluteEncoderConfigu = absoluteEncoder.getConfigurator();
         config.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
@@ -69,7 +68,8 @@ public class Module extends SubsystemBase{
 
         dState = SwerveModuleState.optimize(dState, getCANangle());
 
-        DriveNEO.set(OpenLoopFF.calculate(dState.speedMetersPerSecond));
+        // DriveNEO.set(OpenLoopFF.calculate(dState.speedMetersPerSecond));
+        DriveNEO.setVoltage(OpenLoopFF.calculate(DriveEncoder.getVelocity() ,dState.speedMetersPerSecond));
 
         if(Math.abs(dState.speedMetersPerSecond) > kSwerve.MaxSpeed*0.01){
         var out = AzumuthPID.calculate(getCANangle().getRotations(), dState.angle.getRotations());
@@ -84,7 +84,7 @@ public class Module extends SubsystemBase{
     }
 
     public SwerveModulePosition getPosition(){
-        return new SwerveModulePosition(DriveEncoder.getPosition() / 1/20, getCANangle());
+        return new SwerveModulePosition(DriveEncoder.getPosition() * 1/20, getCANangle());
     }
 
     public SwerveModuleState getstate(){

@@ -1,6 +1,9 @@
 package frc.robot.Subsystems;
 
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -8,22 +11,39 @@ import frc.robot.Constants.kRollerBars;
 
 public class Roller extends SubsystemBase {
     
-    private CANSparkMax RollerNeo = new CANSparkMax(kRollerBars.RollerNeoPort, MotorType.kBrushless);
+    private CANSparkMax RollerNEO = new CANSparkMax(kRollerBars.RollerNeoPort, MotorType.kBrushless);
+    private CANSparkMax RollerNEO550 = new CANSparkMax(kRollerBars.RollerNeo550Port, MotorType.kBrushless);
+    private SparkPIDController RollerPID;
 
     public Roller(){
-        RollerNeo.setIdleMode(kRollerBars.RollerIdle);
-        RollerNeo.setInverted(kRollerBars.RollerInvert);
+        RollerNEO.setIdleMode(kRollerBars.RollerIdle);
+        RollerNEO.setInverted(kRollerBars.RollerInvert);
+
+        RollerPID = RollerNEO.getPIDController();
+        RollerPID.setP(0.001);
     }
 
     public void RunRoller(){
-        RollerNeo.set(kRollerBars.RollerSpeed);
+        RollerNEO550.set(kRollerBars.RollerSpeed);
     }
 
-    
+    public void StopRoller(){
+        RollerNEO550.set(0);
+    }
 
-    
+    public void RollerBrake(){
+        RollerNEO.setIdleMode(IdleMode.kBrake);
+    }
 
+    public void RollerCoast(){
+        RollerNEO.setIdleMode(IdleMode.kCoast);
+    }
 
+    public void RollerDown(){
+        RollerPID.setReference(kRollerBars.RollerRefDown, CANSparkBase.ControlType.kPosition);
+    }
 
-
+    public void RollerUp(){
+        RollerPID.setReference(kRollerBars.RollerRefUp, CANSparkBase.ControlType.kPosition);
+    }
 }

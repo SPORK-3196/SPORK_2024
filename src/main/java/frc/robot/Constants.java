@@ -26,7 +26,7 @@ public class Constants {
 
         //Setup 
         public static int RightNeoPort = 25;
-    public static int LeftNeoPort = 26;
+        public static int LeftNeoPort = 26;
         public static boolean RightInvert = false;
         public static boolean LeftInvert = true;
         public static IdleMode ShooterIdleMode = IdleMode.kCoast; // may change
@@ -65,10 +65,18 @@ public class Constants {
 
 
     public static class kRollerBars {
-        public static int RollerNeoPort = 9; // TODO change 
+        // SetUp
+
+        public static int RollerNeoPort = 60; // TODO change 
+        public static int RollerNeo550Port = 59; // TODO change
         public static double RollerSpeed = 0.5; // test rollers
         public static boolean RollerInvert = false;
         public static IdleMode RollerIdle = IdleMode.kBrake;
+
+        // Setpoints
+
+        public static double RollerRefUp = 0;
+        public static double RollerRefDown = 0;
         
     }
     
@@ -91,7 +99,7 @@ public class Constants {
         
         public static final double kDeadband = 0.1;
         
-        public static final double MaxAngularSpeed = Units.feetToMeters(8); // m/s
+        public static final double MaxAngularSpeed = Units.feetToMeters(11); // m/s
         public static final double MaxSpeed = Units.feetToMeters(11);  // m/s
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double WheelCircumference = wheelDiameter * Math.PI;
