@@ -78,6 +78,10 @@ public SparkLimitSwitch FloorStop = IntakeAxis.getForwardLimitSwitch(Type.kNorma
         IntakePID.setReference(kIntake.FloorPickup, ControlType.kPosition);
     }
 
+    public Command FeedShooter(){
+        return this.runEnd(() -> this.feed(),() -> this.Keep());
+    }
+
     // To the wall
     public void ShooterPos(){
         IntakePID.setP(kIntake.kP);

@@ -68,8 +68,7 @@ public class Module extends SubsystemBase{
 
         dState = SwerveModuleState.optimize(dState, getCANangle());
 
-        // DriveNEO.set(OpenLoopFF.calculate(dState.speedMetersPerSecond));
-        DriveNEO.setVoltage(OpenLoopFF.calculate(DriveEncoder.getVelocity() ,dState.speedMetersPerSecond));
+        DriveNEO.set(OpenLoopFF.calculate(dState.speedMetersPerSecond));
 
         if(Math.abs(dState.speedMetersPerSecond) > kSwerve.MaxSpeed*0.01){
         var out = AzumuthPID.calculate(getCANangle().getRotations(), dState.angle.getRotations());

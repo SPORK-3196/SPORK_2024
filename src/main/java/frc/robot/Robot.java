@@ -156,6 +156,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     
     SmartDashboard.putBoolean("Note", !mIntake.NoteIn.get());
+    SmartDashboard.putNumber("Roller pos", mRoller.getRollerPos());
 
     // Driver SmartDashboard output
     if(driver.isConnected()){
@@ -301,26 +302,19 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
         // one button intake
     if (secondary.getPOV() == 180) {
-        new AutoIntake(mIntake, mLighting);
+        
     }
         // Run Amp Config
     if(secondary.getPOV() == 0){
-        mRoller.RollerBrake();
-        //new RunAmp(mShooter, mIntake, mRoller);
-    }else{
-        mRoller.RollerCoast();
+        
     }
         // Rollers up
     if (secondary.getPOV() == 90) {
-        new RunAmp(mShooter, mIntake, mRoller);
+        mRoller.RollerDown();
     }
         // Rollers Down
     if (secondary.getPOV() == 270) {
-        mRoller.RollerDown();
-    }
-        // Shooting :/  
-    if (secondary.getLeftTriggerAxis() > 0.01) {
-        mShooter.RunShooter(() -> secondary.getLeftTriggerAxis());
+        mRoller.RollerUp();
     }
   }
 
@@ -358,7 +352,9 @@ public class Robot extends TimedRobot {
         // Intake
     secondary_x_Button.whileTrue(new Vomit(mIntake));
     secondary_RJSD.whileTrue(new IntakeGrab(mIntake));
-    secondary_a_Button.whileTrue(new IntakeFeed(mIntake));
+    secondary_LJSD.whileTrue(new IntakeFeed(mIntake));
+    secondary_a_Button.whileTrue(new AutoIntake(mIntake, mLighting));
+    secondary_y_Button.whileTrue(new RunAmp(mShooter, mIntake, mRoller));
 
       // Climber
     secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
