@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Commands.LEDcolors;
 import frc.robot.Commands.RunAmp;
 import frc.robot.Commands.AutoMove.AutoNoteTrack;
 import frc.robot.Commands.Climber.ArmsDown;
@@ -255,20 +256,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    // ranbow run in disabled
-
+    mLighting.ChangeColor(LEDcolors.kNoAllience);
   }
 
   @Override
   public void disabledPeriodic() {
-    // turn to alliance color if connected 
-
-    
-    // if (isRed()) {
-    //   mLighting.setRed();
-    // }else{
-    //   mLighting.setBlue();
-    // }
+    if(isRed()){
+        mLighting.ChangeColor(LEDcolors.kRedAllience);
+    }else{
+        mLighting.ChangeColor(LEDcolors.kBlueAllience);
+    }
   }
 
   @Override
@@ -304,7 +301,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
         // one button intake
     if (secondary.getPOV() == 180) {
-        new AutoIntake(mIntake);
+        new AutoIntake(mIntake, mLighting);
     }
         // Run Amp Config
     if(secondary.getPOV() == 0){

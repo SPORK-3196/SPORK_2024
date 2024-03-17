@@ -29,7 +29,7 @@ public class Shooter extends SubsystemBase {
 
     // set shooter to a speed
     public void setShooterSpeed(double volts){
-            RightNEO.set(volts);
+            RightNEO.setVoltage(volts);
             LeftNEO.setVoltage(volts);
     }
 

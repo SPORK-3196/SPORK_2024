@@ -6,38 +6,41 @@ package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Commands.LEDcolors;
 
 public class Lighting extends SubsystemBase{
+  public double mColor;
   public Spark Lighting = new Spark(1);
 
 // Using REV Blinkin (Such a fun name)
 
   public Lighting(){
+    mColor = 0;
     Lighting = new Spark(9);
   }
 
-  public void setRed(){
-    Lighting.set(0.61);
+  @Override
+  public void periodic() {
+    Lighting.set(mColor);
   }
 
-  public void setBlue(){
-    Lighting.set(0.87);
-  } 
-  
-  public void setRedRunUP(){
-    Lighting.set(0.87);
+  public void ChangeColor(LEDcolors color){ 
+    switch (color) {
+      case kNoteIn:
+        mColor = 0;
+        break;
+      case kIntakeRunning:
+        mColor = 0;
+        break;
+      case kNoAllience:
+        mColor = 0;
+        break;
+      case kBlueAllience:
+        mColor = 0;
+        break;
+      case kRedAllience:
+        mColor = 0;
+        break;
+    }
   }
-
-  public void setBlueRunUp(){
-    Lighting.set(0.87);
-  }
-
-  public void setRedRunDown(){
-    Lighting.set(0.87);
-  }
-
-  public void setBlueRunDown(){
-    Lighting.set(0.87);
-  }
-
 }

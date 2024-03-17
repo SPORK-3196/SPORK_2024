@@ -65,10 +65,18 @@ public class Constants {
 
 
     public static class kRollerBars {
-        public static int RollerNeoPort = 9; // TODO change 
+        public static int RollerNeoPort = 60; // TODO change 
+        public static int RollerNeo550Port = 59; // TODO change
         public static double RollerSpeed = 0.5; // test rollers
         public static boolean RollerInvert = false;
         public static IdleMode RollerIdle = IdleMode.kBrake;
+
+        // Setpoints 
+
+        public static double RollerRefDown = 0;
+
+        public static double RollerRefUp = 0;
+
         
     }
     
