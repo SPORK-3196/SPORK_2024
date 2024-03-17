@@ -88,12 +88,6 @@
           "data": {
             "name": "Shooter 0%"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "POS 2 - HeadOut"
-          }
         }
       ]
     }

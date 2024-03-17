@@ -17,19 +17,25 @@ public class Shooter extends SubsystemBase {
     public Shooter(){
         RightNEO.setIdleMode(kShooter.ShooterIdleMode);
         LeftNEO.setIdleMode(kShooter.ShooterIdleMode);
+
         RightNEO.setInverted(kShooter.RightInvert);
         LeftNEO.setInverted(kShooter.LeftInvert);
+
+        RightNEO.enableVoltageCompensation(12);
+        LeftNEO.enableVoltageCompensation(12);
+
+        RightNEO.setSmartCurrentLimit(50);
     }
 
     // set shooter to a speed
-    public void setShooterSpeed(double speed){
-            RightNEO.set(speed);
-            LeftNEO.set(speed);
+    public void setShooterSpeed(double volts){
+            RightNEO.set(volts);
+            LeftNEO.setVoltage(volts);
     }
 
     public Command RunShooter(DoubleSupplier TriggerAxis){
         if(TriggerAxis.getAsDouble() >= 0.1){
-            return this.runEnd(() -> setShooterSpeed(kShooter.ShootSpeed), () -> ShooterIdle());
+            return this.runEnd(() -> setShooterSpeed(kShooter.ShooterVolts), () -> ShooterIdle());
         }
         return null;
     }
