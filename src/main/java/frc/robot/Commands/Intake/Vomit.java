@@ -5,34 +5,35 @@ import frc.robot.Constants.kIntake;
 import frc.robot.Subsystems.Intake;
 
 public class Vomit extends Command {
-    
-    private Intake intake;
 
-    public Vomit(Intake intake){
-        this.intake = intake;
+  private Intake intake;
 
-        addRequirements(intake);
+  public Vomit(Intake intake) {
+    this.intake = intake;
+
+    addRequirements(intake);
+  }
+
+  @Override
+  public void initialize() {
+    intake.IntakePID.setP(0.1);
+    intake.spitPos();
+  }
+
+  @Override
+  public void execute() {
+    if (
+      intake.getPos() >= kIntake.spitPos - 2 &&
+      intake.getPos() <= kIntake.spitPos + 2
+    ) {
+      intake.spit();
     }
+  }
 
-    @Override
-    public void initialize() {
-        intake.IntakePID.setP(0.1);
-        intake.spitPos();
-    }
-
-    @Override
-    public void execute() {
-        if(intake.getPos() >= kIntake.spitPos - 2){
-            intake.spit();
-        }
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        intake.Keep();
-        intake.IntakePID.setP(kIntake.kP);
-        intake.ShooterPos();
-    }
-
-
+  @Override
+  public void end(boolean interrupted) {
+    intake.Keep();
+    intake.IntakePID.setP(kIntake.kP);
+    intake.ShooterPos();
+  }
 }

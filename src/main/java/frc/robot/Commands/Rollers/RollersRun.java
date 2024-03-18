@@ -4,23 +4,22 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Roller;
 
 public class RollersRun extends Command {
-    
-    private Roller mRoller;
 
-    public RollersRun(Roller mRoller){
-        this.mRoller = mRoller;
+  private Roller mRoller;
 
-        addRequirements(mRoller);
-    }
+  public RollersRun(Roller mRoller) {
+    this.mRoller = mRoller;
 
-    @Override
-    public void initialize() {
-        mRoller.RunRoller();
-    }
+    addRequirements(mRoller);
+  }
 
-    @Override
-    public void end(boolean interrupted) {
-        mRoller.StopRoller();
-    }
+  @Override
+  public void initialize() {
+    mRoller.RunRoller();
+  }
 
+  @Override
+  public void end(boolean interrupted) {
+    mRoller.StopRoller();
+  }
 }

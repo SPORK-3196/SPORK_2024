@@ -6,49 +6,48 @@ import frc.robot.Robot;
 import frc.robot.Robot.LimelightHelpers;
 import frc.robot.Subsystems.Swerve;
 
-public class AutoNoteTrack extends Command{
-    
-    private Swerve mSwerve;
-    
-    private PIDController PIDController;
+public class AutoNoteTrack extends Command {
 
-    private double kp;
-    private double kd;
-    private double ki;
+  private Swerve mSwerve;
 
-    public AutoNoteTrack(Swerve mSwerve){
-        this.mSwerve = mSwerve;
+  private PIDController PIDController;
 
-        kp = .05;
-        kd = 0;
-        ki = 0;
+  private double kp;
+  private double kd;
+  private double ki;
 
-        addRequirements(mSwerve);
-    }
+  public AutoNoteTrack(Swerve mSwerve) {
+    this.mSwerve = mSwerve;
 
-    @Override
-    public void initialize() {
-        PIDController = new PIDController(kp, ki, kd);
-        PIDController.setTolerance(0.5);
-    
-        LimelightHelpers.setPipelineIndex("", 0);
+    kp = .05;
+    kd = 0;
+    ki = 0;
 
-    }
+    addRequirements(mSwerve);
+  }
 
-    @Override
-    public void execute() {
-        double angle = LimelightHelpers.getTX("");
-        double speed = PIDController.calculate(angle);
+  @Override
+  public void initialize() {
+    PIDController = new PIDController(kp, ki, kd);
+    PIDController.setTolerance(0.5);
 
-        mSwerve.teleDrive(
-            () -> -Robot.driver.getLeftY(),
-            () -> -Robot.driver.getLeftX(),
-            () -> speed);
-    }
+    LimelightHelpers.setPipelineIndex("", 0);
+  }
 
-    @Override
-    public void end(boolean interrupted) {
-        LimelightHelpers.setPipelineIndex("", 1);
-    }
+  @Override
+  public void execute() {
+    double angle = LimelightHelpers.getTX("");
+    double speed = PIDController.calculate(angle);
 
+    mSwerve.teleDrive(
+      () -> -Robot.driver.getLeftY(),
+      () -> -Robot.driver.getLeftX(),
+      () -> speed
+    );
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    LimelightHelpers.setPipelineIndex("", 1);
+  }
 }

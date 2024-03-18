@@ -5,103 +5,163 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class OI {
-    public static ShuffleboardTab X1_Tab = Shuffleboard.getTab("Driver");
-    public static ShuffleboardTab X2_Tab = Shuffleboard.getTab("Secondary");
-    public static ShuffleboardTab Intake_Tab = Shuffleboard.getTab("Intake");
-    public static ShuffleboardTab Shooter_Tab = Shuffleboard.getTab("Shooter");
-    
-    
-    public class oDriver{
 
-        public static boolean a_Button = false;
-        public static boolean b_Button = false;
-        public static boolean x_Button = false;
-        public static boolean y_Button = false;
+  public static ShuffleboardTab X1_Tab = Shuffleboard.getTab("Driver");
+  public static ShuffleboardTab X2_Tab = Shuffleboard.getTab("Secondary");
+  public static ShuffleboardTab Intake_Tab = Shuffleboard.getTab("Intake");
+  public static ShuffleboardTab Shooter_Tab = Shuffleboard.getTab("Shooter");
 
-        public static boolean kRightBumper = false;
-        public static boolean kLeftBumper = false;
+  public class oDriver {
 
-        public static boolean kStart = false;
-        public static boolean kBack = false;
+    public static boolean a_Button = false;
+    public static boolean b_Button = false;
+    public static boolean x_Button = false;
+    public static boolean y_Button = false;
 
-        public static double kRightTrigger = 0.0;
-        public static double kLeftTrigger = 0.0;
+    public static boolean kRightBumper = false;
+    public static boolean kLeftBumper = false;
 
-        public static GenericEntry a_Button_Entry = X1_Tab.add("A_Button", false).getEntry();
-        public static GenericEntry b_Button_Entry = X1_Tab.add("B_Button", false).getEntry();
-        public static GenericEntry x_Button_Entry = X1_Tab.add("X_Button", false).getEntry();
-        public static GenericEntry y_Button_Entry = X1_Tab.add("Y_Button", false).getEntry();
+    public static boolean kStart = false;
+    public static boolean kBack = false;
 
-        public static GenericEntry kRightBumper_Entry = X1_Tab.add("Right Bumper", false).getEntry();
-        public static GenericEntry kLeftBumper_Entry = X1_Tab.add("Left Bumper", false).getEntry();
+    public static double kRightTrigger = 0.0;
+    public static double kLeftTrigger = 0.0;
 
-        public static GenericEntry kBack_Entry = X1_Tab.add("Back", false).getEntry();
-        public static GenericEntry kStart_Entry = X1_Tab.add("Start", false).getEntry();
+    public static GenericEntry a_Button_Entry = X1_Tab
+      .add("A_Button", false)
+      .getEntry();
+    public static GenericEntry b_Button_Entry = X1_Tab
+      .add("B_Button", false)
+      .getEntry();
+    public static GenericEntry x_Button_Entry = X1_Tab
+      .add("X_Button", false)
+      .getEntry();
+    public static GenericEntry y_Button_Entry = X1_Tab
+      .add("Y_Button", false)
+      .getEntry();
 
-        public static GenericEntry kRightTrigger_Entry = X1_Tab.add("Right trigger", 0.0).getEntry();
-        public static GenericEntry kLeftTrigger_Entry = X1_Tab.add("Left trigger", 0.0).getEntry();
-    }
+    public static GenericEntry kRightBumper_Entry = X1_Tab
+      .add("Right Bumper", false)
+      .getEntry();
+    public static GenericEntry kLeftBumper_Entry = X1_Tab
+      .add("Left Bumper", false)
+      .getEntry();
 
-    public class oSecondary{
+    public static GenericEntry kBack_Entry = X1_Tab
+      .add("Back", false)
+      .getEntry();
+    public static GenericEntry kStart_Entry = X1_Tab
+      .add("Start", false)
+      .getEntry();
 
-        public static boolean a_Button = false;
-        public static boolean b_Button = false;
-        public static boolean x_Button = false;
-        public static boolean y_Button = false;
+    public static GenericEntry kRightTrigger_Entry = X1_Tab
+      .add("Right trigger", 0.0)
+      .getEntry();
+    public static GenericEntry kLeftTrigger_Entry = X1_Tab
+      .add("Left trigger", 0.0)
+      .getEntry();
+  }
 
-        public static boolean kRightBumper = false;
-        public static boolean kLeftBumper = false;
+  public class oSecondary {
 
-        public static boolean kStart = false;
-        public static boolean kBack = false;
+    public static boolean a_Button = false;
+    public static boolean b_Button = false;
+    public static boolean x_Button = false;
+    public static boolean y_Button = false;
 
-        public static boolean kRJSD = false;
-        public static boolean kLJSD = false;
+    public static boolean kRightBumper = false;
+    public static boolean kLeftBumper = false;
 
-        public static double kRightTrigger = 0.0;
-        public static double kLeftTrigger = 0.0;
+    public static boolean kStart = false;
+    public static boolean kBack = false;
 
-        public static double kPOV = -1;
+    public static boolean kRJSD = false;
+    public static boolean kLJSD = false;
 
-        public static GenericEntry a_Button_Entry = X2_Tab.add("A_Button", false).getEntry();
-        public static GenericEntry b_Button_Entry = X2_Tab.add("B_Button", false).getEntry();
-        public static GenericEntry x_Button_Entry = X2_Tab.add("X_Button", false).getEntry();
-        public static GenericEntry y_Button_Entry = X2_Tab.add("Y_Button", false).getEntry();
+    public static double kRightTrigger = 0.0;
+    public static double kLeftTrigger = 0.0;
 
-        public static GenericEntry kRightBumper_Entry = X2_Tab.add("Right Bumper", false).getEntry();
-        public static GenericEntry kLeftBumper_Entry = X2_Tab.add("Left Bumper", false).getEntry();
+    public static double kPOV = -1;
 
-        public static GenericEntry kBack_Entry = X2_Tab.add("Back", false).getEntry();
-        public static GenericEntry kStart_Entry = X2_Tab.add("Start", false).getEntry();
+    public static GenericEntry a_Button_Entry = X2_Tab
+      .add("A_Button", false)
+      .getEntry();
+    public static GenericEntry b_Button_Entry = X2_Tab
+      .add("B_Button", false)
+      .getEntry();
+    public static GenericEntry x_Button_Entry = X2_Tab
+      .add("X_Button", false)
+      .getEntry();
+    public static GenericEntry y_Button_Entry = X2_Tab
+      .add("Y_Button", false)
+      .getEntry();
 
-        public static GenericEntry kRJSD_Entry = X2_Tab.add("Right joy", false).getEntry();
-        public static GenericEntry kLJSD_Entry = X2_Tab.add("Left joy", false).getEntry();
+    public static GenericEntry kRightBumper_Entry = X2_Tab
+      .add("Right Bumper", false)
+      .getEntry();
+    public static GenericEntry kLeftBumper_Entry = X2_Tab
+      .add("Left Bumper", false)
+      .getEntry();
 
-        public static GenericEntry kRightTrigger_Entry = X2_Tab.add("Right trigger", 0.0).getEntry();
-        public static GenericEntry kLeftTrigger_Entry = X2_Tab.add("Left trigger", 0.0).getEntry();
+    public static GenericEntry kBack_Entry = X2_Tab
+      .add("Back", false)
+      .getEntry();
+    public static GenericEntry kStart_Entry = X2_Tab
+      .add("Start", false)
+      .getEntry();
 
-        public static GenericEntry kPOV_Entry = X2_Tab.add("D-Pad Value", 0.0).getEntry();
-    }
+    public static GenericEntry kRJSD_Entry = X2_Tab
+      .add("Right joy", false)
+      .getEntry();
+    public static GenericEntry kLJSD_Entry = X2_Tab
+      .add("Left joy", false)
+      .getEntry();
 
-    public static class oShooter{
-        public static double ShooterSpeed = 0.0;
+    public static GenericEntry kRightTrigger_Entry = X2_Tab
+      .add("Right trigger", 0.0)
+      .getEntry();
+    public static GenericEntry kLeftTrigger_Entry = X2_Tab
+      .add("Left trigger", 0.0)
+      .getEntry();
 
-        public static GenericEntry kShooterSpeed_Entry = Shooter_Tab.add("Shooter speed", 0.0).getEntry();
-    }
+    public static GenericEntry kPOV_Entry = X2_Tab
+      .add("D-Pad Value", 0.0)
+      .getEntry();
+  }
 
-    public static class oIntake{
-        public static double IntakePos = 0;
-        public static double IntakeSpeed = 0;
-        public static boolean IntakeRun = false;
+  public static class oShooter {
 
-        public static boolean LimitDown = false;
-        public static boolean LimitUp = false;
+    public static double ShooterSpeed = 0.0;
 
-        public static GenericEntry kIntakePos_Entry = Intake_Tab.add("Intake Pos", 0.0).getEntry();
-        public static GenericEntry kIntakeSpeed_Entry = Intake_Tab.add("Intake Speed", 0.0).getEntry();
-        public static GenericEntry kIntakeRun_Entry = Intake_Tab.add("Intake Run", false).getEntry();
+    public static GenericEntry kShooterSpeed_Entry = Shooter_Tab
+      .add("Shooter speed", 0.0)
+      .getEntry();
+  }
 
-        public static GenericEntry kLimitDown = Intake_Tab.add("Intake Down", false).getEntry();
-        public static GenericEntry kLimitUp = Intake_Tab.add("Intake Up", false).getEntry();
-    }
+  public static class oIntake {
+
+    public static double IntakePos = 0;
+    public static double IntakeSpeed = 0;
+    public static boolean IntakeRun = false;
+
+    public static boolean LimitDown = false;
+    public static boolean LimitUp = false;
+
+    public static GenericEntry kIntakePos_Entry = Intake_Tab
+      .add("Intake Pos", 0.0)
+      .getEntry();
+    public static GenericEntry kIntakeSpeed_Entry = Intake_Tab
+      .add("Intake Speed", 0.0)
+      .getEntry();
+    public static GenericEntry kIntakeRun_Entry = Intake_Tab
+      .add("Intake Run", false)
+      .getEntry();
+
+    public static GenericEntry kLimitDown = Intake_Tab
+      .add("Intake Down", false)
+      .getEntry();
+    public static GenericEntry kLimitUp = Intake_Tab
+      .add("Intake Up", false)
+      .getEntry();
+  }
 }

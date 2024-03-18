@@ -6,22 +6,21 @@ import frc.robot.Subsystems.Shooter;
 
 public class RunShooter extends Command {
 
-    public Shooter shooter;
+  public Shooter shooter;
 
-    public RunShooter(Shooter shooter){
-        this.shooter = shooter;
+  public RunShooter(Shooter shooter) {
+    this.shooter = shooter;
 
-        addRequirements(shooter);
-    }
+    addRequirements(shooter);
+  }
 
-    @Override
-    public void initialize() {
-        shooter.setShooterSpeed(kShooter.ShooterVolts);
-    }
+  @Override
+  public void initialize() {
+    shooter.setShooterSpeed(kShooter.ShooterVolts);
+  }
 
-
-    @Override
-    public void end(boolean interrupted) {
-        shooter.ShooterIdle();
-    }
+  @Override
+  public void end(boolean interrupted) {
+    shooter.ShooterIdle();
+  }
 }

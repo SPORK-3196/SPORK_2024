@@ -8,13 +8,14 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Commands.LEDcolors;
 
-public class Lighting extends SubsystemBase{
+public class Lighting extends SubsystemBase {
+
   public double mColor;
   public Spark Lighting = new Spark(1);
 
-// Using REV Blinkin (Such a fun name)
+  // Using REV Blinkin (Such a fun name)
 
-  public Lighting(){
+  public Lighting() {
     mColor = 0;
     Lighting = new Spark(9);
   }
@@ -24,7 +25,7 @@ public class Lighting extends SubsystemBase{
     Lighting.set(mColor);
   }
 
-  public void ChangeColor(LEDcolors color){ 
+  public void ChangeColor(LEDcolors color) {
     switch (color) {
       case kNoteIn:
         mColor = 0;

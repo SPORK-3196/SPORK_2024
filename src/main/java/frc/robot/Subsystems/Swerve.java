@@ -1,13 +1,10 @@
 package frc.robot.Subsystems;
 
-import java.util.function.DoubleSupplier;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
-
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,210 +19,269 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Commands.Intake.IntakeBump;
 import frc.robot.Constants.kSwerve;
 import frc.robot.Robot;
-import frc.robot.Commands.Intake.IntakeBump;
+import java.util.function.DoubleSupplier;
 
 public class Swerve extends SubsystemBase {
-    
-    public static Module FL = new Module(
+
+  public static Module FL = new Module(
     kSwerve.frontLeftSteer,
     kSwerve.frontLeftDrive,
     kSwerve.kFrontLeftDriveAbsoluteEncoderPort,
-    kSwerve.FlOffset);
-    public static Module FR = new Module(
+    kSwerve.FlOffset
+  );
+  public static Module FR = new Module(
     kSwerve.frontRightSteer,
     kSwerve.frontRightDrive,
     kSwerve.kFrontRightDriveAbsoluteEncoderPort,
-    kSwerve.FrOffset);
-    public static Module BL = new Module(
+    kSwerve.FrOffset
+  );
+  public static Module BL = new Module(
     kSwerve.backLeftSteer,
     kSwerve.backLeftDrive,
     kSwerve.kBackLeftDriveAbsoluteEncoderPort,
-    kSwerve.BlOffset);
-    public static Module BR = new Module(
+    kSwerve.BlOffset
+  );
+  public static Module BR = new Module(
     kSwerve.backRightSteer,
     kSwerve.backRightDrive,
     kSwerve.kBackRightDriveAbsoluteEncoderPort,
-    kSwerve.BrOffset);
+    kSwerve.BrOffset
+  );
 
-    private SwerveDrivePoseEstimator Pose;
-    private ChassisSpeeds chassisSpeedsRR;
-    //private LimelightHelpers.PoseEstimate LimeLightPoseMes;
-    public Field2d field2d;
+  private SwerveDrivePoseEstimator Pose;
+  private ChassisSpeeds chassisSpeedsRR;
+  //private LimelightHelpers.PoseEstimate LimeLightPoseMes;
+  public Field2d field2d;
 
-    public Swerve(){
-        Pose = new SwerveDrivePoseEstimator(
-            kSwerve.kinematics, 
-            gyroAngle(), 
-            getPositions(), 
-            new Pose2d());
-        chassisSpeedsRR = new ChassisSpeeds();
-        ConfigureBuilder();
-        field2d = new Field2d();
-        SmartDashboard.putData(field2d);
-        field2d.setRobotPose(getPose());
-    }
+  public Swerve() {
+    Pose =
+      new SwerveDrivePoseEstimator(
+        kSwerve.kinematics,
+        gyroAngle(),
+        getPositions(),
+        new Pose2d()
+      );
+    chassisSpeedsRR = new ChassisSpeeds();
+    ConfigureBuilder();
+    field2d = new Field2d();
+    SmartDashboard.putData(field2d);
+    field2d.setRobotPose(getPose());
+  }
 
-    public Rotation2d gyroAngle(){
-        return Robot.gyro.getRotation2d();
-    }
+  public Rotation2d gyroAngle() {
+    return Robot.gyro.getRotation2d();
+  }
 
+  // if(LimelightHelpers.getCurrentPipelineIndex("") == 1){
+  // var all = DriverStation.getAlliance();
+  // if(all.isPresent()){
+  //     if (all.get() == DriverStation.Alliance.Red){
+  //         LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiRed("");
+  //     }else{
+  //         LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
+  //     }
+  //     if (LimeLightPoseMes.tagCount >= 2 ) {
+  //         Pose.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+  //         Pose.addVisionMeasurement(
+  //             LimeLightPoseMes.pose,
+  //             LimeLightPoseMes.timestampSeconds);
+  //     }
+  //     }
+  // }
 
-            // if(LimelightHelpers.getCurrentPipelineIndex("") == 1){  
-        // var all = DriverStation.getAlliance();
-        // if(all.isPresent()){
-        //     if (all.get() == DriverStation.Alliance.Red){
-        //         LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiRed("");
-        //     }else{
-        //         LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
-        //     }
-        //     if (LimeLightPoseMes.tagCount >= 2 ) {
-        //         Pose.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-        //         Pose.addVisionMeasurement(
-        //             LimeLightPoseMes.pose,
-        //             LimeLightPoseMes.timestampSeconds);
-        //     }
-        //     }
-        // }
+  @Override
+  public void periodic() {
+    updatePose();
+    field2d.setRobotPose(getPose());
+    chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
+  }
 
-        
-    @Override
-    public void periodic(){
-        updatePose(); 
-        field2d.setRobotPose(getPose());
-        chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
-    }  
+  public void ZeroGyro() {
+    Robot.gyro.reset();
+  }
 
-    public void ZeroGyro(){
-        Robot.gyro.reset();
-    }
+  public Rotation2d gyroRate() {
+    return new Rotation2d(Robot.gyro.getRate());
+    // Degrees/sec
+  }
 
-    public Rotation2d gyroRate(){
-        return new Rotation2d(Robot.gyro.getRate());
-        // Degrees/sec
-    }
+  public void Drive(ChassisSpeeds Speeds) {
+    var targetStates = kSwerve.kinematics.toSwerveModuleStates(Speeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
+    setStates(targetStates);
+  }
 
-    public void Drive(ChassisSpeeds Speeds){
-        var targetStates = kSwerve.kinematics.toSwerveModuleStates(Speeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
-        setStates(targetStates);
-    }
+  public void DriveRR(ChassisSpeeds speeds) {
+    var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
+    setStates(targetStates);
+  }
 
-    public void DriveRR(ChassisSpeeds speeds){
-        var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
-        setStates(targetStates);
-    }
-
-    public Command teleDrive(
+  public Command teleDrive(
     DoubleSupplier translation,
     DoubleSupplier strafe,
-    DoubleSupplier rotation){
-        return this.run(
-            () -> 
-            Drive(Joystickcontrol(
-                translation.getAsDouble(),
-                strafe.getAsDouble(),
-                rotation.getAsDouble())
-            )
-        );
-    }
+    DoubleSupplier rotation
+  ) {
+    return this.run(() ->
+        Drive(
+          Joystickcontrol(
+            translation.getAsDouble(),
+            strafe.getAsDouble(),
+            rotation.getAsDouble()
+          )
+        )
+      );
+  }
 
-    private ChassisSpeeds Joystickcontrol(
-        double xTrans,
-        double yTrans,
-        double Rotation
-    ){
-        if(Math.abs(xTrans) <= kSwerve.kDeadband) xTrans = 0;
-        if(Math.abs(yTrans) <= kSwerve.kDeadband) yTrans = 0;
-        if(Math.abs(Rotation) <= kSwerve.kDeadband) Rotation = 0;
-        
-        xTrans = Math.copySign(xTrans*xTrans, xTrans);
-        yTrans = Math.copySign(yTrans*yTrans, yTrans);
-        Rotation = Math.copySign(Rotation*Rotation, Rotation);
+  private ChassisSpeeds Joystickcontrol(
+    double xTrans,
+    double yTrans,
+    double Rotation
+  ) {
+    if (Math.abs(xTrans) <= kSwerve.kDeadband) xTrans = 0;
+    if (Math.abs(yTrans) <= kSwerve.kDeadband) yTrans = 0;
+    if (Math.abs(Rotation) <= kSwerve.kDeadband) Rotation = 0;
 
-        var ROspeeds = new ChassisSpeeds(xTrans * kSwerve.MaxSpeed, yTrans * kSwerve.MaxSpeed, Rotation * kSwerve.MaxAngularSpeed);
+    xTrans = Math.copySign(xTrans * xTrans, xTrans);
+    yTrans = Math.copySign(yTrans * yTrans, yTrans);
+    Rotation = Math.copySign(Rotation * Rotation, Rotation);
 
-        return ChassisSpeeds.fromFieldRelativeSpeeds(ROspeeds, gyroAngle());
-    }
+    var ROspeeds = new ChassisSpeeds(
+      xTrans * kSwerve.MaxSpeed,
+      yTrans * kSwerve.MaxSpeed,
+      Rotation * kSwerve.MaxAngularSpeed
+    );
 
-    public Pose2d getPose(){
-        return Pose.getEstimatedPosition();
-    }
+    return ChassisSpeeds.fromFieldRelativeSpeeds(ROspeeds, gyroAngle());
+  }
 
-    public void updatePose(){
-        Pose.update(gyroAngle(), getPositions());
-    }
+  public Pose2d getPose() {
+    return Pose.getEstimatedPosition();
+  }
 
-    public void resetPose(Pose2d pose2d){
-        Pose.resetPosition(gyroAngle(), getPositions(), pose2d);
-    }
+  public void updatePose() {
+    Pose.update(gyroAngle(), getPositions());
+  }
 
-    public void Xconfig(){
-        FL.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.FlOffset.getRadians())));
-        FR.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.FrOffset.getRadians())));
-        BL.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.BlOffset.getRadians())));
-        BR.setState(new SwerveModuleState(0, new Rotation2d(Math.PI / 4 + kSwerve.BrOffset.getRadians())));
-    }
+  public void resetPose(Pose2d pose2d) {
+    Pose.resetPosition(gyroAngle(), getPositions(), pose2d);
+  }
 
-    public void ConfigureBuilder(){
-        NamedCommands.registerCommand("Zero Gyro", new InstantCommand(() -> this.ZeroGyro()));
-        NamedCommands.registerCommand("Intake Bump", new IntakeBump(Robot.mIntake));
-        NamedCommands.registerCommand("Intake Down", new InstantCommand(() -> Robot.mIntake.FloorPos()));
-        NamedCommands.registerCommand("Intake Up", new InstantCommand(() -> Robot.mIntake.ShooterPos()));
-        NamedCommands.registerCommand("Run Intake", new InstantCommand(() -> Robot.mIntake.grab()));
-        NamedCommands.registerCommand("Stop Intake", new InstantCommand(() -> Robot.mIntake.Keep()));
-        NamedCommands.registerCommand("Feed Intake", new InstantCommand(() -> Robot.mIntake.feed()));
-        NamedCommands.registerCommand("Shooter 80%", new InstantCommand(() -> Robot.mShooter.setShooterSpeed(0.8)));
-        NamedCommands.registerCommand("Shooter 100%", new InstantCommand(() -> Robot.mShooter.setShooterSpeed(1)));
-        NamedCommands.registerCommand("Shooter 0%", new InstantCommand(() -> Robot.mShooter.setShooterSpeed(0)));
+  public void Xconfig() {
+    FL.setState(
+      new SwerveModuleState(
+        0,
+        new Rotation2d(Math.PI / 4 + kSwerve.FlOffset.getRadians())
+      )
+    );
+    FR.setState(
+      new SwerveModuleState(
+        0,
+        new Rotation2d(Math.PI / 4 + kSwerve.FrOffset.getRadians())
+      )
+    );
+    BL.setState(
+      new SwerveModuleState(
+        0,
+        new Rotation2d(Math.PI / 4 + kSwerve.BlOffset.getRadians())
+      )
+    );
+    BR.setState(
+      new SwerveModuleState(
+        0,
+        new Rotation2d(Math.PI / 4 + kSwerve.BrOffset.getRadians())
+      )
+    );
+  }
 
-        // TODO Rotation
-        AutoBuilder.configureHolonomic(
-            this::getPose,
-            this::resetPose,
-            () -> chassisSpeedsRR,
-            (chassisSpeedsRR) -> DriveRR(chassisSpeedsRR),
-            new HolonomicPathFollowerConfig(
-                new PIDConstants(4,0, 0), 
-                new PIDConstants(0.6,0,0), 
-                Units.feetToMeters(5), 
-                kSwerve.DRIVETRAIN_TRACKWIDTH_METERS/2, 
-                new ReplanningConfig()),
-                () -> {
-                    var Alliance = DriverStation.getAlliance();
-                    if(Alliance.isPresent()){
-                        return Alliance.get() == DriverStation.Alliance.Red;
-                    }
-                        return true;
-                },
-                this);
-    }
+  public void ConfigureBuilder() {
+    NamedCommands.registerCommand(
+      "Zero Gyro",
+      new InstantCommand(() -> this.ZeroGyro())
+    );
+    NamedCommands.registerCommand("Intake Bump", new IntakeBump(Robot.mIntake));
+    NamedCommands.registerCommand(
+      "Intake Down",
+      new InstantCommand(() -> Robot.mIntake.FloorPos())
+    );
+    NamedCommands.registerCommand(
+      "Intake Up",
+      new InstantCommand(() -> Robot.mIntake.ShooterPos())
+    );
+    NamedCommands.registerCommand(
+      "Run Intake",
+      new InstantCommand(() -> Robot.mIntake.grab())
+    );
+    NamedCommands.registerCommand(
+      "Stop Intake",
+      new InstantCommand(() -> Robot.mIntake.Keep())
+    );
+    NamedCommands.registerCommand(
+      "Feed Intake",
+      new InstantCommand(() -> Robot.mIntake.feed())
+    );
+    NamedCommands.registerCommand(
+      "Shooter 80%",
+      new InstantCommand(() -> Robot.mShooter.setShooterSpeed(0.8))
+    );
+    NamedCommands.registerCommand(
+      "Shooter 100%",
+      new InstantCommand(() -> Robot.mShooter.setShooterSpeed(1))
+    );
+    NamedCommands.registerCommand(
+      "Shooter 0%",
+      new InstantCommand(() -> Robot.mShooter.setShooterSpeed(0))
+    );
 
-    public SwerveModuleState[] getStates(){
-        return new SwerveModuleState[]{
-            FL.getstate(),
-            FR.getstate(),
-            BL.getstate(),
-            BR.getstate()
-        };
-    }
+    // TODO Rotation
+    AutoBuilder.configureHolonomic(
+      this::getPose,
+      this::resetPose,
+      () -> chassisSpeedsRR,
+      chassisSpeedsRR -> DriveRR(chassisSpeedsRR),
+      new HolonomicPathFollowerConfig(
+        new PIDConstants(4, 0, 0),
+        new PIDConstants(0.6, 0, 0),
+        Units.feetToMeters(5),
+        kSwerve.DRIVETRAIN_TRACKWIDTH_METERS / 2,
+        new ReplanningConfig()
+      ),
+      () -> {
+        var Alliance = DriverStation.getAlliance();
+        if (Alliance.isPresent()) {
+          return Alliance.get() == DriverStation.Alliance.Red;
+        }
+        return true;
+      },
+      this
+    );
+  }
 
-    public SwerveModulePosition[] getPositions(){
-        return new SwerveModulePosition[]{
-            FL.getPosition(),
-            FR.getPosition(),
-            BL.getPosition(),
-            BR.getPosition()
-        };
-    }
+  public SwerveModuleState[] getStates() {
+    return new SwerveModuleState[] {
+      FL.getstate(),
+      FR.getstate(),
+      BL.getstate(),
+      BR.getstate(),
+    };
+  }
 
-    public void setStates(SwerveModuleState[] state){
-        FL.setState(state[0]);
-        FR.setState(state[1]);
-        BL.setState(state[2]);
-        BR.setState(state[3]);
-    }
+  public SwerveModulePosition[] getPositions() {
+    return new SwerveModulePosition[] {
+      FL.getPosition(),
+      FR.getPosition(),
+      BL.getPosition(),
+      BR.getPosition(),
+    };
+  }
 
+  public void setStates(SwerveModuleState[] state) {
+    FL.setState(state[0]);
+    FR.setState(state[1]);
+    BL.setState(state[2]);
+    BR.setState(state[3]);
+  }
 }
