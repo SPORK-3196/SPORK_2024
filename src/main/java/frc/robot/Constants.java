@@ -9,19 +9,6 @@ import edu.wpi.first.math.util.Units;
 
 public class Constants {
 
-    //TODO constants need to be tested and finalised
-
-    public static class kVision{
-
-
-
-    }
-
-
-    public static class kAuto {
-
-    }
-
     public static class kShooter {
 
         //Setup 
@@ -50,7 +37,7 @@ public class Constants {
         public static IdleMode IntakeIdle = IdleMode.kBrake;
 
         // Positions
-        public static double FloorPickup = 49;  //TODO change these values
+        public static double FloorPickup = 49;
         public static double ShooterPos = 0.0; 
         public static double spitPos = 24.0; 
 
@@ -65,9 +52,9 @@ public class Constants {
 
 
     public static class kRollerBars {
-        public static int RollerNeoPort = 60; // TODO change 
-        public static int RollerNeo550Port = 59; // TODO change
-        public static double RollerSpeed = 0.5; // test rollers
+        public static int RollerNeoPort = 60;
+        public static int RollerNeo550Port = 59;
+        public static double RollerSpeed = 0.5;
         public static boolean RollerInvert = true;
         public static boolean RollerNeo550Invert = false;
         public static IdleMode RollerIdle = IdleMode.kCoast;

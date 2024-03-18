@@ -12,10 +12,8 @@ public class Climb extends SubsystemBase{
     private CANSparkMax RightArm = new CANSparkMax(kClimber.RightArmPort, MotorType.kBrushless);
     private CANSparkMax LeftArm = new CANSparkMax(kClimber.LeftArmPort, MotorType.kBrushless);
 
-
     public RelativeEncoder RightArmEncoder;
     public RelativeEncoder LeftArmEncoder; 
-
 
     public Climb(){
         RightArm.setIdleMode(kClimber.ClimberIdle);
@@ -52,5 +50,4 @@ public class Climb extends SubsystemBase{
     public void RightStop(){
         RightArm.set(0);
     }
-
 }

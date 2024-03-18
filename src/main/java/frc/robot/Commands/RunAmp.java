@@ -1,6 +1,7 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.kRollerBars;
 import frc.robot.Constants.kShooter;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Roller;
@@ -22,15 +23,21 @@ private Roller mRoller;
 
     @Override
     public void initialize() {
-        //mRoller.RollerDown();
+        mRoller.RollerDown();
         mRoller.RunRoller();
-        mShooter.setShooterSpeed(kShooter.ampSpeed);
-        mIntake.feed();
+    }
+
+    @Override
+    public void execute() {
+        if(mRoller.getRollerPos() >= kRollerBars.RollerRefDown-2){
+            mShooter.setShooterSpeed(kShooter.ampSpeed);
+            mIntake.feed();
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
-        //mRoller.RollerUp();
+        mRoller.RollerUp();
         mRoller.StopRoller();
         mShooter.ShooterIdle();
         mIntake.Keep();

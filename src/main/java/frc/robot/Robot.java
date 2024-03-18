@@ -156,7 +156,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     
     SmartDashboard.putBoolean("Note", !mIntake.NoteIn.get());
-    SmartDashboard.putNumber("Roller pos", mRoller.getRollerPos());
+    // SmartDashboard.putNumber("Roller pos", mRoller.getRollerPos());
 
     // Driver SmartDashboard output
     if(driver.isConnected()){
@@ -250,9 +250,6 @@ public class Robot extends TimedRobot {
 
       oShooter.kShooterSpeed_Entry.setDouble(oShooter.ShooterSpeed);
     }
-
-    // SmartDashboard.putNumber("gyro angle", gyro.getYaw());
-
   }
 
   @Override
