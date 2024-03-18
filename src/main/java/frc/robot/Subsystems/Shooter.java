@@ -32,15 +32,15 @@ public class Shooter extends SubsystemBase {
   }
 
   // set shooter to a speed
-  public void setShooterSpeed(double volts) {
-    RightNEO.setVoltage(volts);
-    LeftNEO.setVoltage(volts);
+  public void setShooterSpeed(double speed) {
+    RightNEO.set(speed);
+    LeftNEO.set(speed);
   }
 
   public Command RunShooter(DoubleSupplier TriggerAxis) {
     if (TriggerAxis.getAsDouble() >= 0.1) {
       return this.runEnd(
-          () -> setShooterSpeed(kShooter.ShooterVolts),
+          () -> setShooterSpeed(kShooter.ShooterSpeed),
           () -> ShooterIdle()
         );
     }

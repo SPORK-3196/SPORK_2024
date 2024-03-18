@@ -18,7 +18,7 @@ public class Constants {
     public static IdleMode ShooterIdleMode = IdleMode.kCoast; // may change
 
     // Targets
-    public static double ShooterVolts = 12; // 0.28;
+    public static double ShooterSpeed = 12; // 0.28;
     public static double ampSpeed = 6; // will change
     public static double IdleSpeed = 4; // will change
     public static double TargetVelocity = 0.5;

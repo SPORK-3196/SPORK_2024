@@ -16,7 +16,7 @@ public class RunShooter extends Command {
 
   @Override
   public void initialize() {
-    shooter.setShooterSpeed(kShooter.ShooterVolts);
+    shooter.setShooterSpeed(kShooter.ShooterSpeed);
   }
 
   @Override
