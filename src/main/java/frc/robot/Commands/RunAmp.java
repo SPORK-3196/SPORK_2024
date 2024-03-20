@@ -23,13 +23,13 @@ public class RunAmp extends Command {
 
   @Override
   public void initialize() {
-    mRoller.RollerDown();
+    mRoller.RollerUp();
     mRoller.RunRoller();
   }
 
   @Override
   public void execute() {
-    if (mRoller.getRollerPos() >= kRollerBars.RollerRefDown - 2) {
+    if (mRoller.getRollerPos() >= kRollerBars.RollerRefUp - 2) {
       mShooter.setShooterSpeed(kShooter.ampSpeed);
       mIntake.feed();
     }
@@ -37,7 +37,7 @@ public class RunAmp extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    mRoller.RollerUp();
+    mRoller.RollerDown();
     mRoller.StopRoller();
     mShooter.ShooterIdle();
     mIntake.Keep();

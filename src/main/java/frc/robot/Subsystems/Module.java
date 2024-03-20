@@ -52,7 +52,7 @@ public class Module extends SubsystemBase {
 
     DriveNEO = new CANSparkMax(DriveID, MotorType.kBrushless);
     DriveNEO.setIdleMode(IdleMode.kBrake);
-    DriveNEO.setInverted(true);
+    DriveNEO.setInverted(false);
     DriveNEO.setSmartCurrentLimit(15);
     DriveNEO.enableVoltageCompensation(12);
 

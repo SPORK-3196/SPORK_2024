@@ -245,7 +245,7 @@ public class Swerve extends SubsystemBase {
       new HolonomicPathFollowerConfig(
         new PIDConstants(4, 0, 0),
         new PIDConstants(0.6, 0, 0),
-        Units.feetToMeters(5),
+        Units.feetToMeters(2),
         kSwerve.DRIVETRAIN_TRACKWIDTH_METERS / 2,
         new ReplanningConfig()
       ),

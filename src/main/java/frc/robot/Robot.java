@@ -207,10 +207,6 @@ public class Robot extends TimedRobot {
       )
     );
 
-    mShooter.setDefaultCommand(
-      mShooter.RunShooter(() -> secondary.getLeftTriggerAxis())
-    );
-
     configureBindings();
     LimelightHelpers.setLEDMode_PipelineControl("");
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -367,9 +363,13 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // one button intake
-    if (secondary.getPOV() == 180) {}
+    if (secondary.getPOV() == 180) {
+      mIntake.FloorPos();
+    }
     // Run Amp Config
-    if (secondary.getPOV() == 0) {}
+    if (secondary.getPOV() == 0) {
+      mIntake.ShooterPos();
+    }
     // Rollers up
     if (secondary.getPOV() == 90) {
       mRoller.RollerDown();
