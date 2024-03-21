@@ -242,9 +242,9 @@ public class Swerve extends SubsystemBase {
       () -> chassisSpeedsRR,
       chassisSpeedsRR -> DriveRR(chassisSpeedsRR),
       new HolonomicPathFollowerConfig(
-        new PIDConstants(3, 0, 0),
-        new PIDConstants(0, 0, 0),
-        Units.feetToMeters(2),
+        new PIDConstants(2, 0, 0),
+        new PIDConstants(1, 0, 0),
+        Units.feetToMeters(1),
         kSwerve.DRIVETRAIN_TRACKWIDTH_METERS / 2,
         new ReplanningConfig(false, false)
       ),

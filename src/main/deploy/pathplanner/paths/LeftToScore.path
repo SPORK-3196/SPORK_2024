@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.4330853804564752,
-        "y": 5.6057766972676815
+        "x": 1.6040609524828078,
+        "y": 5.555162990025228
       },
       "prevControl": {
-        "x": 1.9256431655720454,
-        "y": 5.793417758264088
+        "x": 2.096618737598379,
+        "y": 5.7428040510216345
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,11 +29,41 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
-  "eventMarkers": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 0.0,
+        "maxAngularAcceleration": 0.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake Up"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 0.0,
     "maxAngularAcceleration": 0.0
   },
