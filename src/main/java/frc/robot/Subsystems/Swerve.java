@@ -202,7 +202,6 @@ public class Swerve extends SubsystemBase {
       "Zero Gyro",
       new InstantCommand(() -> this.ZeroGyro())
     );
-    NamedCommands.registerCommand("Intake Bump", new IntakeBump(Robot.mIntake));
     NamedCommands.registerCommand(
       "Intake Down",
       new InstantCommand(() -> Robot.mIntake.FloorPos())
@@ -243,11 +242,11 @@ public class Swerve extends SubsystemBase {
       () -> chassisSpeedsRR,
       chassisSpeedsRR -> DriveRR(chassisSpeedsRR),
       new HolonomicPathFollowerConfig(
-        new PIDConstants(4, 0, 0),
-        new PIDConstants(0.6, 0, 0),
+        new PIDConstants(3, 0, 0),
+        new PIDConstants(0, 0, 0),
         Units.feetToMeters(2),
         kSwerve.DRIVETRAIN_TRACKWIDTH_METERS / 2,
-        new ReplanningConfig()
+        new ReplanningConfig(false, false)
       ),
       () -> {
         var Alliance = DriverStation.getAlliance();
