@@ -52,7 +52,7 @@ public class Constants {
 
     public static int RollerNeoPort = 60;
     public static int RollerNeo550Port = 59;
-    public static double RollerSpeed = 0.8;
+    public static double RollerSpeed = 0.3;
     public static boolean RollerInvert = true;
     public static boolean RollerNeo550Invert = false;
     public static IdleMode RollerIdle = IdleMode.kCoast;
@@ -89,7 +89,7 @@ public class Constants {
     public static final double kDeadband = 0.1;
 
     public static final double MaxAngularSpeed = Units.feetToMeters(8); // m/s
-    public static final double MaxSpeed = Units.feetToMeters(12); // m/s
+    public static final double MaxSpeed = Units.feetToMeters(11); // m/s
     public static final double wheelDiameter = Units.inchesToMeters(4.0);
     public static final double WheelCircumference = wheelDiameter * Math.PI;
     public static final double RotationGearRatio = (150 / 7) / 1;

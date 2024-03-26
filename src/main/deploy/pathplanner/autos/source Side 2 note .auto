@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3273251237860504,
-      "y": 5.496947290190876
+      "x": 0.88,
+      "y": 4.48
     },
-    "rotation": 0
+    "rotation": -55.0
   },
   "command": {
     "type": "sequential",
@@ -36,33 +36,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Intake Down"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "ToMiddlePiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "MiddleToScore"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Feed Intake"
+            "pathName": "To outside"
           }
         },
         {
@@ -74,19 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SpeakerToLeftNote"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftToScore"
+            "pathName": "From Outside "
           }
         },
         {
@@ -104,13 +68,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.3
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shooter 0%"
+            "waitTime": 0.2
           }
         },
         {
@@ -120,9 +78,15 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shooter 0%"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "3 note out "
+            "pathName": "To inside"
           }
         }
       ]

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.8040966093794577,
-        "y": 5.496947290190876
+        "x": 6.974051842840528,
+        "y": 0.9464351760783727
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8605567739143474,
-        "y": 5.496947290190876
+        "x": 6.058478683373408,
+        "y": 1.1727566312275484
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8752978027901492,
-        "y": 5.496947290190876
+        "x": 0.9947189562625567,
+        "y": 4.4839877357479825
       },
       "prevControl": {
-        "x": 2.7727748295076333,
-        "y": 5.496947290190876
+        "x": 1.8701178634584756,
+        "y": 2.8012765030269384
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,11 +32,11 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0,
+      "minWaypointRelativePos": 0.85,
+      "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 0.5,
-        "maxAcceleration": 3.0,
+        "maxAcceleration": 2.0,
         "maxAngularVelocity": 0.0,
         "maxAngularAcceleration": 0.0
       }
@@ -45,7 +45,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.55,
+      "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
         "data": {
@@ -53,7 +53,24 @@
             {
               "type": "named",
               "data": {
-                "name": "Run Intake"
+                "name": "Intake Up"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.25,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Intake"
               }
             }
           ]
@@ -69,7 +86,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": -44.999999999999986,
     "rotateFast": false
   },
   "reversed": false,
