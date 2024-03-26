@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase {
   public Command RunShooter(DoubleSupplier TriggerAxis) {
     if (TriggerAxis.getAsDouble() >= 0.1) {
       return this.runEnd(
-          () -> setShooterSpeed(kShooter.ShooterSpeed),
+          () -> setShooterSpeed(kShooter.Shooterspeed),
           () -> ShooterIdle()
         );
     }
