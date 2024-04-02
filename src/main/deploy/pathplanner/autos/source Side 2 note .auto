@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.88,
-      "y": 4.48
+      "x": 0.966245942516948,
+      "y": 4.464705069761017
     },
     "rotation": -55.0
   },
@@ -81,12 +81,6 @@
           "type": "named",
           "data": {
             "name": "Shooter 0%"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "To inside"
           }
         }
       ]

@@ -7,6 +7,8 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,6 +22,7 @@ public class Module extends SubsystemBase {
   public SwerveModuleState State;
   private Rotation2d offset;
 
+  public SparkPIDController DrivePID;
   public PIDController AzumuthPID;
 
   public CANSparkMax AzumuthNEO;
@@ -94,7 +97,7 @@ public class Module extends SubsystemBase {
 
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
-      DriveEncoder.getPosition() * 1 / 20,
+      DriveEncoder.getPosition() * 1 / 28 ,
       getCANangle()
     );
   }

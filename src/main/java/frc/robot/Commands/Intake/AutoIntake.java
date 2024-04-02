@@ -28,13 +28,13 @@ public class AutoIntake extends Command {
 
   @Override
   public void execute() {
-    if (!mIntake.NoteIn.get()) {
+    // dont plz
+    if(Robot.NoteIN) {
+    
+    }else{
       Robot.secondary.setRumble(RumbleType.kBothRumble, 1);
-      mLighting.ChangeColor(LEDcolors.kNoteIn);
+      Robot.driver.setRumble(RumbleType.kBothRumble, 0.5);
       mIntake.ShooterPos();
-    } else {
-      Robot.secondary.setRumble(RumbleType.kBothRumble, 0);
-      mLighting.ChangeColor(LEDcolors.kIntakeRunning);
     }
   }
 
@@ -51,5 +51,6 @@ public class AutoIntake extends Command {
       }
     }
     Robot.secondary.setRumble(RumbleType.kBothRumble, 0);
+    Robot.driver.setRumble(RumbleType.kBothRumble, 0);
   }
 }

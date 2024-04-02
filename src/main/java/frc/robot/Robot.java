@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
@@ -25,9 +27,12 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,6 +52,7 @@ import frc.robot.Commands.Shooter.RunShooter;
 import frc.robot.Constants.kClimber;
 import frc.robot.OI.oDriver;
 import frc.robot.OI.oIntake;
+import frc.robot.OI.oPDH;
 import frc.robot.OI.oSecondary;
 import frc.robot.OI.oShooter;
 import frc.robot.Subsystems.Climb;
@@ -78,6 +84,8 @@ public class Robot extends TimedRobot {
   // Controllers
   public static XboxController driver = new XboxController(0);
   public static XboxController secondary = new XboxController(1);
+
+  public static DigitalInput NoteIn = new DigitalInput(1);
 
   // Driver buttons
   public JoystickButton driver_a_Button = new JoystickButton(
@@ -190,12 +198,11 @@ public class Robot extends TimedRobot {
     XboxController.Button.kLeftStick.value
   );
 
+  public static boolean NoteIN;
   // Camera
   UsbCamera Cam = CameraServer.startAutomaticCapture(0);
-  HttpCamera LimelightStream = new HttpCamera(
-    "Limelight",
-    "http://frcvision.local:1181/stream.mjpg"
-  );
+  UsbCamera Cam2 = CameraServer.startAutomaticCapture(1);
+  PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
   @Override
   public void robotInit() {
@@ -206,23 +213,25 @@ public class Robot extends TimedRobot {
         () -> -driver.getRightX()
       )
     );
-
     configureBindings();
     LimelightHelpers.setLEDMode_PipelineControl("");
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto", autoChooser);
 
-    CameraServer.addCamera(LimelightStream);
     Cam.setFPS(28);
     Cam.setResolution(380, 380);
+    Cam2.setFPS(28);
+    Cam2.setResolution(380, 380);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    NoteIN = NoteIn.get();
 
-    SmartDashboard.putBoolean("Note", !mIntake.NoteIn.get());
-    // SmartDashboard.putNumber("Roller pos", mRoller.getRollerPos());
+    SmartDashboard.putBoolean("Note", NoteIN);
+    SmartDashboard.putNumber("Pose X", mSwerve.getPose().getTranslation().getX());
+    SmartDashboard.putNumber("Pose Y", mSwerve.getPose().getTranslation().getY());
 
     // Driver SmartDashboard output
     if (driver.isConnected()) {
@@ -240,6 +249,8 @@ public class Robot extends TimedRobot {
       oDriver.kRightTrigger = driver.getRightTriggerAxis();
       oDriver.kLeftTrigger = driver.getLeftTriggerAxis();
     }
+
+
 
     // Secondary SmartDashboard output
     if (secondary.isConnected()) {
@@ -262,6 +273,56 @@ public class Robot extends TimedRobot {
 
       oSecondary.kPOV = secondary.getPOV();
     }
+
+    oPDH.Channel_0 = PDH.getCurrent(0);
+    oPDH.Channel_1 = PDH.getCurrent(1);
+    oPDH.Channel_2 = PDH.getCurrent(2);
+    oPDH.Channel_3 = PDH.getCurrent(3);
+    oPDH.Channel_4 = PDH.getCurrent(4);
+    oPDH.Channel_5 = PDH.getCurrent(5);
+    oPDH.Channel_6 = PDH.getCurrent(6);
+    oPDH.Channel_7 = PDH.getCurrent(7);
+    oPDH.Channel_8 = PDH.getCurrent(8);
+    oPDH.Channel_9 = PDH.getCurrent(9);
+    oPDH.Channel_10 = PDH.getCurrent(10);
+    oPDH.Channel_11 = PDH.getCurrent(11);
+    oPDH.Channel_12 = PDH.getCurrent(12);
+    oPDH.Channel_13 = PDH.getCurrent(13);
+    oPDH.Channel_14 = PDH.getCurrent(14);
+    oPDH.Channel_15 = PDH.getCurrent(15);
+    oPDH.Channel_16 = PDH.getCurrent(16);
+    oPDH.Channel_17 = PDH.getCurrent(17);
+    oPDH.Channel_18 = PDH.getCurrent(18);
+    oPDH.Channel_19 = PDH.getCurrent(19);
+    oPDH.Channel_20 = PDH.getCurrent(20);
+    oPDH.Channel_21 = PDH.getCurrent(21);
+    oPDH.Channel_22 = PDH.getCurrent(22);
+    oPDH.Channel_23 = PDH.getCurrent(23);
+
+    oPDH.kChannel_0.setDouble(oPDH.Channel_0);
+    oPDH.kChannel_1.setDouble(oPDH.Channel_1);
+    oPDH.kChannel_2.setDouble(oPDH.Channel_2);
+    oPDH.kChannel_3.setDouble(oPDH.Channel_3);
+    oPDH.kChannel_4.setDouble(oPDH.Channel_4);
+    oPDH.kChannel_5.setDouble(oPDH.Channel_5);
+    oPDH.kChannel_6.setDouble(oPDH.Channel_6);
+    oPDH.kChannel_7.setDouble(oPDH.Channel_7);
+    oPDH.kChannel_8.setDouble(oPDH.Channel_8);
+    oPDH.kChannel_9.setDouble(oPDH.Channel_9);
+    oPDH.kChannel_10.setDouble(oPDH.Channel_10);
+    oPDH.kChannel_11.setDouble(oPDH.Channel_11);
+    oPDH.kChannel_12.setDouble(oPDH.Channel_12);
+    oPDH.kChannel_13.setDouble(oPDH.Channel_13);
+    oPDH.kChannel_14.setDouble(oPDH.Channel_14);
+    oPDH.kChannel_15.setDouble(oPDH.Channel_15);
+    oPDH.kChannel_16.setDouble(oPDH.Channel_16);
+    oPDH.kChannel_17.setDouble(oPDH.Channel_17);
+    oPDH.kChannel_18.setDouble(oPDH.Channel_18);
+    oPDH.kChannel_19.setDouble(oPDH.Channel_19);
+    oPDH.kChannel_20.setDouble(oPDH.Channel_20);
+    oPDH.kChannel_21.setDouble(oPDH.Channel_21);
+    oPDH.kChannel_22.setDouble(oPDH.Channel_22);
+    oPDH.kChannel_23.setDouble(oPDH.Channel_23);
 
     // stream to SmartDashboard if DriverStation is not in game
     if (!DriverStation.isFMSAttached()) {
@@ -340,7 +401,7 @@ public class Robot extends TimedRobot {
     mClimb.LeftDown(kClimber.ClimbSpeed);
     mClimb.RightDown(kClimber.ClimbSpeed);
     m_autonomousCommand = autoChooser.getSelected();
-
+    
     if (!(m_autonomousCommand == null)) {
       m_autonomousCommand.schedule();
     }

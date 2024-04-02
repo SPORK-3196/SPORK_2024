@@ -11,6 +11,7 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.Constants.kIntake;
 
 public class Intake extends SubsystemBase {
@@ -29,7 +30,6 @@ public class Intake extends SubsystemBase {
   public SparkPIDController IntakePID;
 
   // Limit switches
-  public DigitalInput NoteIn = new DigitalInput(0);
   public SparkLimitSwitch SpeakerLimit = IntakeAxis.getReverseLimitSwitch(
     Type.kNormallyClosed
   );
@@ -42,6 +42,8 @@ public class Intake extends SubsystemBase {
     IntakeNeo.setInverted(kIntake.IntakeInvert);
     IntakeAxis.setIdleMode(kIntake.IntakeAxisIdle);
     IntakeAxis.setInverted(kIntake.IntakeAxisInvert);
+
+    IntakeAxis.setSmartCurrentLimit(30);
 
     IntakePID = IntakeAxis.getPIDController();
     IntakePID.setP(kIntake.kP);

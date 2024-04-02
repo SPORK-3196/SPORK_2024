@@ -10,6 +10,7 @@ public class OI {
   public static ShuffleboardTab X2_Tab = Shuffleboard.getTab("Secondary");
   public static ShuffleboardTab Intake_Tab = Shuffleboard.getTab("Intake");
   public static ShuffleboardTab Shooter_Tab = Shuffleboard.getTab("Shooter");
+  public static ShuffleboardTab PDH_Tab = Shuffleboard.getTab("PDH");
 
   public class oDriver {
 
@@ -165,5 +166,58 @@ public class OI {
     public static GenericEntry kLimitUp = Intake_Tab
       .add("Intake Up", false)
       .getEntry();
+  }
+
+  public static class oPDH{
+    public static double Channel_0 = 0.0;
+    public static double Channel_1 = 0.0;
+    public static double Channel_2 = 0.0;
+    public static double Channel_3 = 0.0;
+    public static double Channel_4 = 0.0;
+    public static double Channel_5 = 0.0;
+    public static double Channel_6 = 0.0;
+    public static double Channel_7 = 0.0;
+    public static double Channel_8 = 0.0;
+    public static double Channel_9 = 0.0;
+    public static double Channel_10 = 0.0;
+    public static double Channel_11 = 0.0;
+    public static double Channel_12 = 0.0;
+    public static double Channel_13 = 0.0;
+    public static double Channel_14 = 0.0;
+    public static double Channel_15 = 0.0;
+    public static double Channel_16 = 0.0;
+    public static double Channel_17 = 0.0;
+    public static double Channel_18 = 0.0;
+    public static double Channel_19 = 0.0;
+    public static double Channel_20 = 0.0;
+    public static double Channel_21 = 0.0;
+    public static double Channel_22 = 0.0;
+    public static double Channel_23 = 0.0;
+    
+
+    public static GenericEntry kChannel_0 = PDH_Tab.add("Channel_0", 0.0).getEntry();
+    public static GenericEntry kChannel_1 = PDH_Tab.add("Channel_1", 0.0).getEntry();
+    public static GenericEntry kChannel_2 = PDH_Tab.add("Channel_2", 0.0).getEntry();
+    public static GenericEntry kChannel_3 = PDH_Tab.add("Channel_3", 0.0).getEntry();
+    public static GenericEntry kChannel_4 = PDH_Tab.add("Channel_4", 0.0).getEntry();
+    public static GenericEntry kChannel_5 = PDH_Tab.add("Channel_5", 0.0).getEntry();
+    public static GenericEntry kChannel_6 = PDH_Tab.add("Channel_6",0.0).getEntry();
+    public static GenericEntry kChannel_7 = PDH_Tab.add("Channel_7",0.0).getEntry();
+    public static GenericEntry kChannel_8 = PDH_Tab.add("Channel_8", 0.0).getEntry();
+    public static GenericEntry kChannel_9 = PDH_Tab.add("Channel_9", 0.0).getEntry();
+    public static GenericEntry kChannel_10 = PDH_Tab.add("Channel_10", 0.0).getEntry();
+    public static GenericEntry kChannel_11 = PDH_Tab.add("Channel_11", 0.0).getEntry();
+    public static GenericEntry kChannel_12 = PDH_Tab.add("Channel_12", 0.0).getEntry();
+    public static GenericEntry kChannel_13 = PDH_Tab.add("Channel_13", 0.0).getEntry();
+    public static GenericEntry kChannel_14 = PDH_Tab.add("Channel_14", 0.0).getEntry();
+    public static GenericEntry kChannel_15 = PDH_Tab.add("Channel_15", 0.0).getEntry();
+    public static GenericEntry kChannel_16 = PDH_Tab.add("Channel_16", 0.0).getEntry();
+    public static GenericEntry kChannel_17 = PDH_Tab.add("Channel_17", 0.0).getEntry();
+    public static GenericEntry kChannel_18 = PDH_Tab.add("Channel_18", 0.0).getEntry();
+    public static GenericEntry kChannel_19 = PDH_Tab.add("Channel_19", 0.0).getEntry();
+    public static GenericEntry kChannel_20 = PDH_Tab.add("Channel_20", 0.0).getEntry();
+    public static GenericEntry kChannel_21 = PDH_Tab.add("Channel_21", 0.0).getEntry();
+    public static GenericEntry kChannel_22 = PDH_Tab.add("Channel_22", 0.0).getEntry();
+    public static GenericEntry kChannel_23 = PDH_Tab.add("Channel_23", 0.0).getEntry();
   }
 }
