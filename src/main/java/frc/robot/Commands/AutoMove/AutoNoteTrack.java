@@ -42,7 +42,8 @@ public class AutoNoteTrack extends Command {
     mSwerve.teleDrive(
       () -> -Robot.driver.getLeftY(),
       () -> -Robot.driver.getLeftX(),
-      () -> speed
+      () -> speed,
+      false
     );
   }
 
