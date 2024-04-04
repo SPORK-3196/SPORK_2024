@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
@@ -30,9 +29,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -199,6 +198,7 @@ public class Robot extends TimedRobot {
   );
 
   public static boolean NoteIN;
+  public static boolean Boost = false;
   // Camera
   UsbCamera Cam = CameraServer.startAutomaticCapture(0);
   UsbCamera Cam2 = CameraServer.startAutomaticCapture(1);
@@ -210,7 +210,8 @@ public class Robot extends TimedRobot {
       mSwerve.teleDrive(
         () -> -driver.getLeftY(),
         () -> -driver.getLeftX(),
-        () -> -driver.getRightX()
+        () -> -driver.getRightX(),
+        Boost
       )
     );
     configureBindings();
@@ -230,8 +231,14 @@ public class Robot extends TimedRobot {
     NoteIN = NoteIn.get();
 
     SmartDashboard.putBoolean("Note", NoteIN);
-    SmartDashboard.putNumber("Pose X", mSwerve.getPose().getTranslation().getX());
-    SmartDashboard.putNumber("Pose Y", mSwerve.getPose().getTranslation().getY());
+    SmartDashboard.putNumber(
+      "Pose X",
+      mSwerve.getPose().getTranslation().getX()
+    );
+    SmartDashboard.putNumber(
+      "Pose Y",
+      mSwerve.getPose().getTranslation().getY()
+    );
 
     // Driver SmartDashboard output
     if (driver.isConnected()) {
@@ -249,8 +256,6 @@ public class Robot extends TimedRobot {
       oDriver.kRightTrigger = driver.getRightTriggerAxis();
       oDriver.kLeftTrigger = driver.getLeftTriggerAxis();
     }
-
-
 
     // Secondary SmartDashboard output
     if (secondary.isConnected()) {
@@ -401,7 +406,7 @@ public class Robot extends TimedRobot {
     mClimb.LeftDown(kClimber.ClimbSpeed);
     mClimb.RightDown(kClimber.ClimbSpeed);
     m_autonomousCommand = autoChooser.getSelected();
-    
+
     if (!(m_autonomousCommand == null)) {
       m_autonomousCommand.schedule();
     }
@@ -463,6 +468,10 @@ public class Robot extends TimedRobot {
     driver_x_Button.whileTrue(
       new InstantCommand(() -> mSwerve.Xconfig(), mSwerve)
     );
+
+    driver_Right_Bumper
+      .toggleOnTrue(new InstantCommand(() -> Boost = true))
+      .toggleOnFalse(new InstantCommand(() -> Boost = false));
 
     // Auto Zero
     driver_RJSD.whileTrue(new AutoNoteTrack(mSwerve));
