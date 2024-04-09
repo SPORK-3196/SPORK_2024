@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.253938121911332,
-        "y": 1.080170581393795
+        "x": 7.941061696659734,
+        "y": 2.8290181893646995
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.690262613607935,
-        "y": 1.6048248637850666
+        "x": 7.581004836195136,
+        "y": 3.466833199330559
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.2028547365365412,
-        "y": 4.341257003316012
+        "x": 8.218819846160995,
+        "y": 4.145797564778087
       },
       "prevControl": {
-        "x": 3.8569881651041498,
-        "y": 1.7899969634525734
+        "x": 6.490546915930924,
+        "y": 4.13551022590767
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,11 +32,11 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.95,
+      "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 0.5,
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
         "maxAngularVelocity": 0.0,
         "maxAngularAcceleration": 0.0
       }
@@ -53,24 +53,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake Up"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.25,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Stop Intake"
+                "name": "Run Intake"
               }
             }
           ]
@@ -86,7 +69,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -44.999999999999986,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,

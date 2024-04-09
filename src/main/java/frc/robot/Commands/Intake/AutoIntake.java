@@ -28,10 +28,7 @@ public class AutoIntake extends Command {
 
   @Override
   public void execute() {
-    // dont plz
-    if(Robot.NoteIN) {
-    
-    }else{
+    if(!Robot.NoteIN) {
       Robot.secondary.setRumble(RumbleType.kBothRumble, 1);
       Robot.driver.setRumble(RumbleType.kBothRumble, 0.5);
       mIntake.ShooterPos();

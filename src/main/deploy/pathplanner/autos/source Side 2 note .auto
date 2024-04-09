@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.966245942516948,
-      "y": 4.464705069761017
+      "x": 0.9148092481648629,
+      "y": 4.526429102983519
     },
-    "rotation": -55.0
+    "rotation": -50.71059313749959
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.3
+            "waitTime": 0.2
           }
         },
         {
@@ -38,25 +38,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "To outside"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
+            "pathName": "To Outside "
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "From Outside "
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
           }
         },
         {

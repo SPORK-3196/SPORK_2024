@@ -12,10 +12,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.PathPlannerPath;
-
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -30,9 +27,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -199,6 +196,8 @@ public class Robot extends TimedRobot {
   );
 
   public static boolean NoteIN;
+  public static boolean boost;
+
   // Camera
   UsbCamera Cam = CameraServer.startAutomaticCapture(0);
   UsbCamera Cam2 = CameraServer.startAutomaticCapture(1);
@@ -206,11 +205,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    boost = true;
     mSwerve.setDefaultCommand(
       mSwerve.teleDrive(
         () -> -driver.getLeftY(),
         () -> -driver.getLeftX(),
-        () -> -driver.getRightX()
+        () -> -driver.getRightX(),
+        () -> boost
       )
     );
     configureBindings();
@@ -219,9 +220,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto", autoChooser);
 
     Cam.setFPS(28);
-    Cam.setResolution(380, 380);
+    Cam.setResolution(244, 244);
     Cam2.setFPS(28);
-    Cam2.setResolution(380, 380);
+    Cam2.setResolution(244, 244);
   }
 
   @Override
@@ -229,9 +230,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     NoteIN = NoteIn.get();
 
-    SmartDashboard.putBoolean("Note", NoteIN);
-    SmartDashboard.putNumber("Pose X", mSwerve.getPose().getTranslation().getX());
-    SmartDashboard.putNumber("Pose Y", mSwerve.getPose().getTranslation().getY());
+    SmartDashboard.putBoolean("Note", !NoteIN);
+    SmartDashboard.putBoolean("slow", !driver.getRightStickButton());
 
     // Driver SmartDashboard output
     if (driver.isConnected()) {
@@ -249,8 +249,6 @@ public class Robot extends TimedRobot {
       oDriver.kRightTrigger = driver.getRightTriggerAxis();
       oDriver.kLeftTrigger = driver.getLeftTriggerAxis();
     }
-
-
 
     // Secondary SmartDashboard output
     if (secondary.isConnected()) {
@@ -401,7 +399,7 @@ public class Robot extends TimedRobot {
     mClimb.LeftDown(kClimber.ClimbSpeed);
     mClimb.RightDown(kClimber.ClimbSpeed);
     m_autonomousCommand = autoChooser.getSelected();
-    
+
     if (!(m_autonomousCommand == null)) {
       m_autonomousCommand.schedule();
     }
@@ -439,6 +437,11 @@ public class Robot extends TimedRobot {
     if (secondary.getPOV() == 270) {
       mRoller.RollerUp();
     }
+    // Boost
+    if (driver.getRightStickButton()){
+      boost = true;
+    }
+    boost = false;
   }
 
   @Override
@@ -465,17 +468,17 @@ public class Robot extends TimedRobot {
     );
 
     // Auto Zero
-    driver_RJSD.whileTrue(new AutoNoteTrack(mSwerve));
+    // driver_RJSD.whileTrue(new AutoNoteTrack(mSwerve));
 
     // Secondary Button Bindings
 
-    // Scoring
+      // Scoring
 
-    // Shooter
+        // Shooter
     secondary_b_Button.whileTrue(new RunShooter(mShooter)); // save for later ig
     // secondary_LJSD.whileTrue(new RunAmp(mShooter));
 
-    // Intake
+        // Intake
     secondary_x_Button.whileTrue(new Vomit(mIntake));
     secondary_RJSD.whileTrue(new IntakeGrab(mIntake));
     secondary_LJSD.whileTrue(new IntakeFeed(mIntake));
@@ -483,8 +486,8 @@ public class Robot extends TimedRobot {
     secondary_y_Button.whileTrue(new RunAmp(mShooter, mIntake, mRoller));
 
     // Climber
-    secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, kClimber.ClimbSpeed));
-    secondary_Right_Bumper.whileTrue(new ArmsUp(mClimb, kClimber.ClimbSpeed));
+    secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, mIntake, kClimber.ClimbSpeed)).whileFalse(new ArmsDown(mClimb, mIntake, kClimber.ClimbSpeed));
+    secondary_Right_Bumper.whileTrue(new IntakeFeed(mIntake));
   }
 
   public boolean isRed() {

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.8040966093794577,
-        "y": 5.496947290190876
+        "x": 1.59,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8605567739143474,
-        "y": 5.496947290190876
+        "x": 1.64646016453489,
+        "y": 5.55
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8752978027901492,
-        "y": 5.496947290190876
+        "x": 2.63,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 2.7727748295076333,
-        "y": 5.496947290190876
+        "x": 2.527477026717484,
+        "y": 5.55
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,38 +32,20 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0,
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 0.5,
-        "maxAcceleration": 3.0,
+        "maxAcceleration": 0.5,
         "maxAngularVelocity": 0.0,
         "maxAngularAcceleration": 0.0
       }
     }
   ],
-  "eventMarkers": [
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.55,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Run Intake"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 0.0,
     "maxAngularAcceleration": 0.0
   },

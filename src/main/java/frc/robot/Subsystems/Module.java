@@ -52,11 +52,13 @@ public class Module extends SubsystemBase {
     AzumuthNEO = new CANSparkMax(TurnNeoID, MotorType.kBrushless);
     AzumuthNEO.setInverted(true);
     AzumuthNEO.setIdleMode(IdleMode.kBrake);
+    AzumuthNEO.enableVoltageCompensation(12);
+    AzumuthNEO.setSmartCurrentLimit(15);
 
     DriveNEO = new CANSparkMax(DriveID, MotorType.kBrushless);
     DriveNEO.setIdleMode(IdleMode.kBrake);
     DriveNEO.setInverted(true);
-    DriveNEO.setSmartCurrentLimit(15);
+    DriveNEO.setSmartCurrentLimit(40);
     DriveNEO.enableVoltageCompensation(12);
 
     DriveEncoder = DriveNEO.getEncoder();

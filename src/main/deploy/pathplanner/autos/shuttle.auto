@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3160154641111295,
-      "y": 5.55
+      "x": 0.4621663378665108,
+      "y": 2.01631841860175
     },
     "rotation": 0
   },
@@ -14,13 +14,25 @@
         {
           "type": "named",
           "data": {
-            "name": "Shooter 100%"
+            "name": "Shooter 80%"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "source to middle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Up"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.2
+            "waitTime": 1.0
           }
         },
         {
@@ -44,55 +56,25 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.1
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Run Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ToMiddlePiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "MiddleToScore"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Feed Intake"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
             "waitTime": 0.2
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "SpeakerToLeftNote"
+            "pathName": "note 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Up"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.2
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftToScore"
+            "waitTime": 1.0
           }
         },
         {
@@ -110,19 +92,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Shooter 0%"
+            "name": "Intake Down"
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "Stop Intake"
+            "waitTime": 0.2
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 note out "
+            "pathName": "note 3"
           }
         }
       ]

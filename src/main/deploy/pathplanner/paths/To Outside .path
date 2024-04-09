@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.253938121911332,
-        "y": 1.080170581393795
+        "x": 0.9148092481648629,
+        "y": 4.526429102983519
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.690262613607935,
-        "y": 1.6048248637850666
+        "x": 4.021585587030824,
+        "y": 1.4505147807288095
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.2028547365365412,
-        "y": 4.341257003316012
+        "x": 8.054222424234322,
+        "y": 0.7921250930221164
       },
       "prevControl": {
-        "x": 3.8569881651041498,
-        "y": 1.7899969634525734
+        "x": 6.78887974317302,
+        "y": 0.8126997707629515
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,20 +32,20 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.95,
+      "minWaypointRelativePos": 0.75,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 0.5,
-        "maxAngularVelocity": 0.0,
-        "maxAngularAcceleration": 0.0
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
       }
     }
   ],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.35,
       "command": {
         "type": "parallel",
         "data": {
@@ -53,24 +53,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake Up"
+                "name": "Intake Down"
               }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.25,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
+            },
             {
               "type": "named",
               "data": {
-                "name": "Stop Intake"
+                "name": "Run Intake"
               }
             }
           ]
@@ -86,13 +75,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -44.999999999999986,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -52.125016348901745,
     "velocity": 0
   },
   "useDefaultConstraints": true

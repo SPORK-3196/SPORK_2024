@@ -86,7 +86,7 @@ public class Constants {
       24
     );
 
-    public static final double kDeadband = 0.1;
+    public static final double kDeadband = 0.15;
 
     public static final double MaxAngularSpeed = Units.feetToMeters(8); // m/s
     public static final double MaxSpeed = Units.feetToMeters(12); // m/s
