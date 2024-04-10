@@ -29,9 +29,9 @@ public class Module extends SubsystemBase {
   public CANSparkMax DriveNEO;
 
   private SimpleMotorFeedforward OpenLoopFF = new SimpleMotorFeedforward(
-    0.046,
-    2.67,
-    0.113
+    0.0,
+    2.0,
+    0.5
   );
 
   public RelativeEncoder DriveEncoder;
@@ -52,8 +52,8 @@ public class Module extends SubsystemBase {
     AzumuthNEO = new CANSparkMax(TurnNeoID, MotorType.kBrushless);
     AzumuthNEO.setInverted(true);
     AzumuthNEO.setIdleMode(IdleMode.kBrake);
-    AzumuthNEO.enableVoltageCompensation(12);
     AzumuthNEO.setSmartCurrentLimit(15);
+    AzumuthNEO.enableVoltageCompensation(12);
 
     DriveNEO = new CANSparkMax(DriveID, MotorType.kBrushless);
     DriveNEO.setIdleMode(IdleMode.kBrake);
@@ -63,6 +63,7 @@ public class Module extends SubsystemBase {
 
     DriveEncoder = DriveNEO.getEncoder();
     DriveEncoder.setPosition(0);
+    DriveEncoder.setPositionConversionFactor(28);
 
     absoluteEncoder = new CANcoder(absoluteEncoderID);
     var absoluteEncoderConfigu = absoluteEncoder.getConfigurator();
@@ -99,7 +100,7 @@ public class Module extends SubsystemBase {
 
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
-      DriveEncoder.getPosition() * 1 / 28 ,
+      DriveEncoder.getPosition(),
       getCANangle()
     );
   }
