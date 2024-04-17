@@ -20,7 +20,7 @@ public class ArmsDown extends Command {
 
   @Override
   public void initialize() {
-    intake.ShooterPos();
+    intake.ClimbPos();
   }
   
   @Override

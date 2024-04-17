@@ -19,7 +19,7 @@ public class ArmsUp extends Command {
 
   @Override
   public void initialize() {
-    intake.spitPos();
+    intake.ClimbPos();
   }
 
   @Override

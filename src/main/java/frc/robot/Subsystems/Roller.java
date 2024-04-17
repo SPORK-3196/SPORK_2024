@@ -25,6 +25,7 @@ public class Roller extends SubsystemBase {
   public Roller() {
     RollerNEO.setIdleMode(kRollerBars.RollerIdle);
     RollerNEO.setInverted(kRollerBars.RollerInvert);
+    RollerNEO.setSmartCurrentLimit(15);
     RollerNEO550.setInverted(kRollerBars.RollerNeo550Invert);
     RollerEncoder = RollerNEO.getEncoder();
 

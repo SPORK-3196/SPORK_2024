@@ -12,35 +12,33 @@ public class Lighting extends SubsystemBase {
 
   public double mColor;
   public Spark Lighting = new Spark(1);
-
+  
   // Using REV Blinkin (Such a fun name)
 
   public Lighting() {
     mColor = 0;
-    Lighting = new Spark(9);
   }
 
-  @Override
-  public void periodic() {
+  public void ManualChange(){
     Lighting.set(mColor);
   }
 
   public void ChangeColor(LEDcolors color) {
     switch (color) {
       case kNoteIn:
-        mColor = 0;
+        mColor = 0.93;
         break;
       case kIntakeRunning:
-        mColor = 0;
+        mColor = 0.69;
         break;
       case kNoAllience:
-        mColor = 0;
+        mColor = -0.99;
         break;
       case kBlueAllience:
-        mColor = 0;
+        mColor = 0.61;
         break;
       case kRedAllience:
-        mColor = 0;
+        mColor = 0.87;
         break;
     }
   }

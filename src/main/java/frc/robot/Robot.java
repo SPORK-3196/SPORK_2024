@@ -36,7 +36,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Commands.AutoMove.AutoNoteTrack;
 import frc.robot.Commands.Climber.ArmsDown;
 import frc.robot.Commands.Climber.ArmsUp;
 import frc.robot.Commands.Intake.AutoIntake;
@@ -223,12 +222,15 @@ public class Robot extends TimedRobot {
     Cam.setResolution(244, 244);
     Cam2.setFPS(28);
     Cam2.setResolution(244, 244);
+
+
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     NoteIN = NoteIn.get();
+    // mLighting.ManualChange();
 
     SmartDashboard.putBoolean("Note", !NoteIN);
     SmartDashboard.putBoolean("slow", !driver.getRightStickButton());
@@ -421,6 +423,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    //mLighting.ManualChange();
     // one button intake
     if (secondary.getPOV() == 180) {
       mIntake.FloorPos();
@@ -440,8 +443,10 @@ public class Robot extends TimedRobot {
     // Boost
     if (driver.getRightStickButton()){
       boost = true;
+    }else{
+      boost = false;
     }
-    boost = false;
+    
   }
 
   @Override
@@ -486,7 +491,7 @@ public class Robot extends TimedRobot {
     secondary_y_Button.whileTrue(new RunAmp(mShooter, mIntake, mRoller));
 
     // Climber
-    secondary_left_Bumper.whileTrue(new ArmsDown(mClimb, mIntake, kClimber.ClimbSpeed)).whileFalse(new ArmsDown(mClimb, mIntake, kClimber.ClimbSpeed));
+    secondary_left_Bumper.whileTrue(new ArmsUp(mClimb, mIntake, kClimber.ClimbSpeed)).whileFalse(new ArmsDown(mClimb, mIntake, kClimber.ClimbSpeed));
     secondary_Right_Bumper.whileTrue(new IntakeFeed(mIntake));
   }
 

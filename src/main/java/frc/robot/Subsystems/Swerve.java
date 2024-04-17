@@ -54,7 +54,6 @@ public class Swerve extends SubsystemBase {
 
   private SwerveDrivePoseEstimator Pose;
   private ChassisSpeeds chassisSpeedsRR;
-  //private LimelightHelpers.PoseEstimate LimeLightPoseMes;
   public Field2d field2d;
 
   public Swerve() {
@@ -76,23 +75,6 @@ public class Swerve extends SubsystemBase {
     return Robot.gyro.getRotation2d();
   }
 
-  // if(LimelightHelpers.getCurrentPipelineIndex("") == 1){
-  // var all = DriverStation.getAlliance();
-  // if(all.isPresent()){
-  //     if (all.get() == DriverStation.Alliance.Red){
-  //         LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiRed("");
-  //     }else{
-  //         LimeLightPoseMes = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
-  //     }
-  //     if (LimeLightPoseMes.tagCount >= 2 ) {
-  //         Pose.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-  //         Pose.addVisionMeasurement(
-  //             LimeLightPoseMes.pose,
-  //             LimeLightPoseMes.timestampSeconds);
-  //     }
-  //     }
-  // }
-
   @Override
   public void periodic() {
     updatePose();
@@ -110,15 +92,17 @@ public class Swerve extends SubsystemBase {
   }
 
   public void Drive(ChassisSpeeds Speeds) {
+    Speeds = ChassisSpeeds.discretize(Speeds, 0.05);
     var targetStates = kSwerve.kinematics.toSwerveModuleStates(Speeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
-    setStates(targetStates);
+    setStates(targetStates, false);
   }
 
   public void DriveRR(ChassisSpeeds speeds) {
+    speeds = ChassisSpeeds.discretize(speeds, 0.05);
     var targetStates = kSwerve.kinematics.toSwerveModuleStates(speeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, kSwerve.MaxSpeed);
-    setStates(targetStates);
+    setStates(targetStates, false);
   }
 
   public Command teleDrive(
@@ -153,21 +137,20 @@ public class Swerve extends SubsystemBase {
     yTrans = Math.copySign(yTrans * yTrans, yTrans);
     Rotation = Math.copySign(Rotation * Rotation, Rotation);
 
-    var ROspeeds = new ChassisSpeeds();
-
-    if(!boost) {
-    ROspeeds = new ChassisSpeeds(
-      xTrans * kSwerve.MaxSpeed,
-      yTrans * kSwerve.MaxSpeed,
-      Rotation * kSwerve.MaxSpeed
-    );
-    }else{
-    ROspeeds = new ChassisSpeeds(
+    // var ROspeeds = new ChassisSpeeds();
+    // if (boost) {
+      var ROspeeds = new ChassisSpeeds(
       xTrans * kSwerve.MaxSpeed,
       yTrans * kSwerve.MaxSpeed,
       Rotation * kSwerve.MaxAngularSpeed
     );
-    }
+    // }else{
+    // ROspeeds = new ChassisSpeeds(
+    //   xTrans * kSwerve.MaxSpeed,
+    //   yTrans * kSwerve.MaxSpeed,
+    //   Rotation * kSwerve.MaxSpeed
+    // );
+    // }
   
     return ChassisSpeeds.fromFieldRelativeSpeeds(ROspeeds, gyroAngle());
   }
@@ -189,25 +172,29 @@ public class Swerve extends SubsystemBase {
       new SwerveModuleState(
         0,
         new Rotation2d(Math.PI / 4 + kSwerve.FlOffset.getRadians())
-      )
+      ),
+      false
     );
     FR.setState(
       new SwerveModuleState(
         0,
         new Rotation2d(Math.PI / 4 + kSwerve.FrOffset.getRadians())
-      )
+      ),
+      false
     );
     BL.setState(
       new SwerveModuleState(
         0,
         new Rotation2d(Math.PI / 4 + kSwerve.BlOffset.getRadians())
-      )
+      ),
+      false
     );
     BR.setState(
       new SwerveModuleState(
         0,
         new Rotation2d(Math.PI / 4 + kSwerve.BrOffset.getRadians())
-      )
+      ),
+      false
     );
   }
 
@@ -248,15 +235,14 @@ public class Swerve extends SubsystemBase {
       "Shooter 0%",
       new InstantCommand(() -> Robot.mShooter.setShooterSpeed(0))
     );
-
-    // TODO Rotation  
+ 
     AutoBuilder.configureHolonomic(
       this::getPose,
       this::resetPose,
       () -> chassisSpeedsRR,
       chassisSpeedsRR -> DriveRR(chassisSpeedsRR),
       new HolonomicPathFollowerConfig(
-        new PIDConstants(5, 0, 0),
+        new PIDConstants(2, 0, 0),
         new PIDConstants(0, 0, 0),
         Units.feetToMeters(2),
         kSwerve.DRIVETRAIN_TRACKWIDTH_METERS / 2,
@@ -267,7 +253,7 @@ public class Swerve extends SubsystemBase {
         if (Alliance.isPresent()) {
           return Alliance.get() == DriverStation.Alliance.Red;
         }
-        return true;
+        return false;
       },
       this
     );
@@ -291,10 +277,12 @@ public class Swerve extends SubsystemBase {
     };
   }
 
-  public void setStates(SwerveModuleState[] state) {
-    FL.setState(state[0]);
-    FR.setState(state[1]);
-    BL.setState(state[2]);
-    BR.setState(state[3]);
+  public void setStates(SwerveModuleState[] state, boolean IsClosedLoop) {
+    FL.setState(state[0],IsClosedLoop);
+    FR.setState(state[1],IsClosedLoop);
+    BL.setState(state[2],IsClosedLoop);
+    BR.setState(state[3],IsClosedLoop);
   }
+
+
 }

@@ -3,10 +3,12 @@ package frc.robot.Subsystems;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -52,8 +54,8 @@ public class Module extends SubsystemBase {
     AzumuthNEO = new CANSparkMax(TurnNeoID, MotorType.kBrushless);
     AzumuthNEO.setInverted(true);
     AzumuthNEO.setIdleMode(IdleMode.kBrake);
-    AzumuthNEO.enableVoltageCompensation(12);
     AzumuthNEO.setSmartCurrentLimit(15);
+    AzumuthNEO.enableVoltageCompensation(12);
 
     DriveNEO = new CANSparkMax(DriveID, MotorType.kBrushless);
     DriveNEO.setIdleMode(IdleMode.kBrake);
@@ -70,14 +72,24 @@ public class Module extends SubsystemBase {
       AbsoluteSensorRangeValue.Unsigned_0To1;
     absoluteEncoderConfigu.apply(config);
 
-    AzumuthPID = new PIDController(2, 0, 0);
+    DrivePID = DriveNEO.getPIDController();
+    DrivePID.setP(1);
+
+    AzumuthPID = new PIDController(3, 0, 0.1);
     AzumuthPID.enableContinuousInput(0, 1);
   }
 
-  public void setState(SwerveModuleState dState) {
+  public void setState(SwerveModuleState dState, boolean IsClosedloop) {
     dState = SwerveModuleState.optimize(dState, getCANangle());
 
-    DriveNEO.set(OpenLoopFF.calculate(dState.speedMetersPerSecond));
+    if(IsClosedloop){
+      DrivePID.setReference(dState.speedMetersPerSecond,
+      ControlType.kVelocity,
+      0,
+      OpenLoopFF.calculate(dState.speedMetersPerSecond));
+    }else{
+      DriveNEO.set(OpenLoopFF.calculate(dState.speedMetersPerSecond));
+    }
 
     if (Math.abs(dState.speedMetersPerSecond) > kSwerve.MaxSpeed * 0.01) {
       var out = AzumuthPID.calculate(

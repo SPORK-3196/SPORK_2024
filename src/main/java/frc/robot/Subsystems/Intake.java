@@ -100,6 +100,9 @@ public class Intake extends SubsystemBase {
   public void spitPos() {
     IntakePID.setReference(kIntake.spitPos, ControlType.kPosition);
   }
+  public void ClimbPos() {
+    IntakePID.setReference(kIntake.ClimbPos, ControlType.kPosition);
+  }
 
   // Honestly this seems kinda stupid but it might be better than seting the motor to 0
   public Command Stop() {

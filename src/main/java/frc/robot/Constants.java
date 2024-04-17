@@ -38,6 +38,7 @@ public class Constants {
     public static double FloorPickup = 49;
     public static double ShooterPos = 0.0;
     public static double spitPos = 24.0;
+    public static double ClimbPos = 15.0;
 
     // Speeds
     public static double IntakeSpeed = -0.5;
@@ -88,8 +89,8 @@ public class Constants {
 
     public static final double kDeadband = 0.15;
 
-    public static final double MaxAngularSpeed = Units.feetToMeters(8); // m/s
-    public static final double MaxSpeed = Units.feetToMeters(12); // m/s
+    public static final double MaxAngularSpeed = Units.feetToMeters(4); // m/s
+    public static final double MaxSpeed = Units.feetToMeters(8); // m/s
     public static final double wheelDiameter = Units.inchesToMeters(4.0);
     public static final double WheelCircumference = wheelDiameter * Math.PI;
     public static final double RotationGearRatio = (150 / 7) / 1;
