@@ -29,7 +29,7 @@ public class Intake extends SubsystemBase {
   public SparkPIDController IntakePID;
 
   // Limit switches
-  public DigitalInput NoteIn = new DigitalInput(0);
+  public DigitalInput NoteIn = new DigitalInput(1);
   public SparkLimitSwitch SpeakerLimit = IntakeAxis.getReverseLimitSwitch(
     Type.kNormallyClosed
   );

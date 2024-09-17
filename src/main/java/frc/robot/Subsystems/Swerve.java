@@ -14,12 +14,12 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Commands.Intake.IntakeBump;
 import frc.robot.Constants.kSwerve;
 import frc.robot.Robot;
 import java.util.function.DoubleSupplier;
@@ -97,6 +97,9 @@ public class Swerve extends SubsystemBase {
     updatePose();
     field2d.setRobotPose(getPose());
     chassisSpeedsRR = kSwerve.kinematics.toChassisSpeeds(getStates());
+
+    SmartDashboard.putNumber("Speed MPS",FL.getstate().speedMetersPerSecond);
+    SmartDashboard.putNumber("desired Speed MPS", FL.getDesiredSpeed());
   }
 
   public void ZeroGyro() {

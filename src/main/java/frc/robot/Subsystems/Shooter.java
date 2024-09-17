@@ -28,7 +28,7 @@ public class Shooter extends SubsystemBase {
     RightNEO.enableVoltageCompensation(12);
     LeftNEO.enableVoltageCompensation(12);
 
-    RightNEO.setSmartCurrentLimit(50);
+    RightNEO.setSmartCurrentLimit(15);
   }
 
   // set shooter to a speed
@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase {
   public Command RunShooter(DoubleSupplier TriggerAxis) {
     if (TriggerAxis.getAsDouble() >= 0.1) {
       return this.runEnd(
-          () -> setShooterSpeed(kShooter.Shooterspeed),
+          () -> setShooterSpeed(kShooter.ShooterSpeed),
           () -> ShooterIdle()
         );
     }

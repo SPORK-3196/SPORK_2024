@@ -25,6 +25,8 @@ public class Module extends SubsystemBase {
   public CANSparkMax AzumuthNEO;
   public CANSparkMax DriveNEO;
 
+  public double DesiredSpeed;
+
   private SimpleMotorFeedforward OpenLoopFF = new SimpleMotorFeedforward(
     0.046,
     2.67,
@@ -83,6 +85,12 @@ public class Module extends SubsystemBase {
     } else {
       AzumuthNEO.set(0);
     }
+
+    DesiredSpeed = dState.speedMetersPerSecond;
+  }
+
+  public double getDesiredSpeed(){
+    return DesiredSpeed;
   }
 
   public Rotation2d getCANangle() {
@@ -99,7 +107,14 @@ public class Module extends SubsystemBase {
     );
   }
 
+
   public SwerveModuleState getstate() {
     return new SwerveModuleState(DriveEncoder.getVelocity(), getCANangle());
   }
+
+
+public double getNSwerveModuleState(){
+  return DriveEncoder.getVelocity() * 4.4/39 * Math.PI;
+}
+
 }

@@ -89,7 +89,7 @@ public class Constants {
     public static final double kDeadband = 0.1;
 
     public static final double MaxAngularSpeed = Units.feetToMeters(8); // m/s
-    public static final double MaxSpeed = Units.feetToMeters(11); // m/s
+    public static final double MaxSpeed = Units.feetToMeters(12); // m/s
     public static final double wheelDiameter = Units.inchesToMeters(4.0);
     public static final double WheelCircumference = wheelDiameter * Math.PI;
     public static final double RotationGearRatio = (150 / 7) / 1;
@@ -122,8 +122,8 @@ public class Constants {
     // Test Bot
     // public static Rotation2d FlOffset = Rotation2d.fromRotations(0.72);
     // public static Rotation2d FrOffset = Rotation2d.fromRotations(0.31);
-    // // public static Rotation2d BlOffset = Rotation2d.fromRotations(0.08);
-    // // public static Rotation2d BrOffset = Rotation2d.fromRotations(0.96);
+    // public static Rotation2d BlOffset = Rotation2d.fromRotations(0.08);
+    // public static Rotation2d BrOffset = Rotation2d.fromRotations(0.96);
 
     public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
       // Front left

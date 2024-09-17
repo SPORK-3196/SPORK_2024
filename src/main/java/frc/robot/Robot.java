@@ -151,8 +151,6 @@ public class Robot extends TimedRobot {
     XboxController.Button.kY.value
   );
 
-  // Secondary POVS
-
   // Secondary bumpers and triggers
   public JoystickButton secondary_left_Bumper = new JoystickButton(
     secondary,
@@ -194,7 +192,7 @@ public class Robot extends TimedRobot {
   UsbCamera Cam = CameraServer.startAutomaticCapture(0);
   HttpCamera LimelightStream = new HttpCamera(
     "Limelight",
-    "http://frcvision.local:1181/stream.mjpg"
+    "http://frcvision.local:3196/stream.mjpg"
   );
 
   @Override
@@ -221,8 +219,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-    SmartDashboard.putBoolean("Note", !mIntake.NoteIn.get());
-    // SmartDashboard.putNumber("Roller pos", mRoller.getRollerPos());
+    SmartDashboard.putNumber("Pose Meters", mSwerve.getPose().getX());
 
     // Driver SmartDashboard output
     if (driver.isConnected()) {
@@ -305,6 +302,7 @@ public class Robot extends TimedRobot {
       oIntake.IntakeSpeed = mIntake.getSpeed();
       oIntake.LimitDown = mIntake.FloorStop.isPressed();
       oIntake.LimitUp = mIntake.SpeakerLimit.isPressed();
+      oIntake.NoteIn = mIntake.NoteIn.get();
 
       oShooter.ShooterSpeed = mShooter.getShooterSpeed();
 
@@ -313,6 +311,7 @@ public class Robot extends TimedRobot {
       oIntake.kIntakeSpeed_Entry.setDouble(oIntake.IntakeSpeed);
       oIntake.kLimitDown.setBoolean(oIntake.LimitDown);
       oIntake.kLimitUp.setBoolean(oIntake.LimitUp);
+      oIntake.kNoteInEntry.setBoolean(oIntake.NoteIn);
 
       oShooter.kShooterSpeed_Entry.setDouble(oShooter.ShooterSpeed);
     }
@@ -409,7 +408,7 @@ public class Robot extends TimedRobot {
     // Secondary Button Bindings
 
     // Scoring
-
+ 
     // Shooter
     secondary_b_Button.whileTrue(new RunShooter(mShooter)); // save for later ig
     // secondary_LJSD.whileTrue(new RunAmp(mShooter));
