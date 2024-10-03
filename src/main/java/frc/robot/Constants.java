@@ -9,8 +9,6 @@ import edu.wpi.first.math.util.Units;
 public class Constants {
 
   public static class kShooter {
-	  
-	  //Andrew doing a test to see if this all works
 
     //Setup
     public static int RightNeoPort = 25;
